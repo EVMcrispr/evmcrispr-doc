@@ -6,8 +6,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'EVM CRISPR documentation',
-  tagline: 'Scripting for DAOs',
+  title: 'EVMcrispr Docs',
+  tagline: "Mutate a DAO's DNA",
   url: 'https://docs.evm-crispr.blossom.software',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -19,13 +19,7 @@ const config = {
   presets: [
     [
       'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
-        docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl: 'https://github.com/BlossomLabs/evmcrispr-doc/blob/master/'
-        },
+      {
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
@@ -35,32 +29,42 @@ const config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css')
         }
-      })
+      }
     ]
   ],
 
   themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
+    {
       navbar: {
-        title: 'documentation',
         logo: {
           alt: 'evmcrispr logo',
           src: 'img/logo.svg'
         },
         items: [
           {
-            type: 'doc',
-            docId: 'intro',
-            position: 'left',
-            label: 'Tutorial'
+            to: 'getStarted/',
+            activeBasePath: 'getStarted',
+            label: 'Get Started',
+            position: 'left'
           },
-          { to: '/blog', label: 'Blog', position: 'left' },
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
-            position: 'right'
-          }
+            to: 'aragonOS/',
+            activeBasePath: 'aragonOS',
+            label: 'Aragon DAOs',
+            position: 'left'
+          },
+          {
+            to: 'gardens/',
+            activeBasePath: 'gardens',
+            label: 'Gardens',
+            position: 'left'
+          },
+          {
+            to: 'helpers/',
+            activeBasePath: 'helpers',
+            label: 'Helper Functions',
+            position: 'left'
+          },
         ]
       },
       footer: {
@@ -112,7 +116,46 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme
       }
-    })
+    },
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'getStarted',
+        path: 'getStarted',
+        routeBasePath: 'getStarted',
+        sidebarPath: require.resolve('./sidebarGetstarted.js'),
+      }
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'aragonOS',
+        path: 'aragonOS',
+        routeBasePath: 'aragonOS',
+        sidebarPath: require.resolve('./sidebarAragonOS.js'),
+      }
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'gardens',
+        path: 'gardens',
+        routeBasePath: 'gardens',
+        sidebarPath: require.resolve('./sidebarGardens.js'),
+      }
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'helpers',
+        path: 'helpers',
+        routeBasePath: 'helpers',
+        sidebarPath: require.resolve('./sidebarHelpers.js'),
+      }
+    ],
+  ]
 }
+
 
 module.exports = config

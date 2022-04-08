@@ -2,14 +2,14 @@ import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
 
+
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'AragonOS Ready',
+    Svg: require('@site/static/img/Aragon_Logo1.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Optimize your Aragon DAO operations. EVMcrispr is tailor made to be used with AragonOS Apps.
       </>
     ),
   },
