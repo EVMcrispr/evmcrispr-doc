@@ -7,14 +7,13 @@
   "sourceDirName": "tutorial-extras",
   "slug": "/tutorial-extras/manage-docs-versions",
   "permalink": "/docs/tutorial-extras/manage-docs-versions",
-  "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-extras/manage-docs-versions.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 1,
   "frontMatter": {
     "sidebar_position": 1
   },
-  "sidebar": "tutorialSidebar",
+  "sidebar": "defaultSidebar",
   "previous": {
     "title": "Congratulations!",
     "permalink": "/docs/tutorial-basics/congratulations"

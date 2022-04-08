@@ -7,16 +7,13 @@
           "versionLabel": "Next",
           "versionPath": "/docs",
           "tagsPath": "/docs/tags",
-          "versionEditUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs",
-          "versionEditUrlLocalized": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/i18n/en/docusaurus-plugin-content-docs/current",
           "versionBanner": null,
           "versionBadge": false,
           "versionClassName": "docs-version-current",
           "isLast": true,
           "routePriority": -1,
-          "sidebarFilePath": "/Users/geleeroyale/Github/evmcrispr-doc/sidebars.js",
-          "contentPath": "/Users/geleeroyale/Github/evmcrispr-doc/docs",
-          "contentPathLocalized": "/Users/geleeroyale/Github/evmcrispr-doc/i18n/en/docusaurus-plugin-content-docs/current",
+          "contentPath": "/home/mitch/github/evmcrispr-doc/docs",
+          "contentPathLocalized": "/home/mitch/github/evmcrispr-doc/i18n/en/docusaurus-plugin-content-docs/current",
           "docs": [
             {
               "unversionedId": "intro",
@@ -27,14 +24,13 @@
               "sourceDirName": ".",
               "slug": "/intro",
               "permalink": "/docs/intro",
-              "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/intro.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 1,
               "frontMatter": {
                 "sidebar_position": 1
               },
-              "sidebar": "tutorialSidebar",
+              "sidebar": "defaultSidebar",
               "next": {
                 "title": "Create a Page",
                 "permalink": "/docs/tutorial-basics/create-a-page"
@@ -49,14 +45,13 @@
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/congratulations",
               "permalink": "/docs/tutorial-basics/congratulations",
-              "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-basics/congratulations.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 6,
               "frontMatter": {
                 "sidebar_position": 6
               },
-              "sidebar": "tutorialSidebar",
+              "sidebar": "defaultSidebar",
               "previous": {
                 "title": "Deploy your site",
                 "permalink": "/docs/tutorial-basics/deploy-your-site"
@@ -75,14 +70,13 @@
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/create-a-blog-post",
               "permalink": "/docs/tutorial-basics/create-a-blog-post",
-              "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-basics/create-a-blog-post.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 3,
               "frontMatter": {
                 "sidebar_position": 3
               },
-              "sidebar": "tutorialSidebar",
+              "sidebar": "defaultSidebar",
               "previous": {
                 "title": "Create a Document",
                 "permalink": "/docs/tutorial-basics/create-a-document"
@@ -101,14 +95,13 @@
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/create-a-document",
               "permalink": "/docs/tutorial-basics/create-a-document",
-              "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-basics/create-a-document.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 2,
               "frontMatter": {
                 "sidebar_position": 2
               },
-              "sidebar": "tutorialSidebar",
+              "sidebar": "defaultSidebar",
               "previous": {
                 "title": "Create a Page",
                 "permalink": "/docs/tutorial-basics/create-a-page"
@@ -127,14 +120,13 @@
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/create-a-page",
               "permalink": "/docs/tutorial-basics/create-a-page",
-              "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-basics/create-a-page.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 1,
               "frontMatter": {
                 "sidebar_position": 1
               },
-              "sidebar": "tutorialSidebar",
+              "sidebar": "defaultSidebar",
               "previous": {
                 "title": "Tutorial Intro",
                 "permalink": "/docs/intro"
@@ -153,14 +145,13 @@
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/deploy-your-site",
               "permalink": "/docs/tutorial-basics/deploy-your-site",
-              "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-basics/deploy-your-site.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 5,
               "frontMatter": {
                 "sidebar_position": 5
               },
-              "sidebar": "tutorialSidebar",
+              "sidebar": "defaultSidebar",
               "previous": {
                 "title": "Markdown Features",
                 "permalink": "/docs/tutorial-basics/markdown-features"
@@ -179,14 +170,13 @@
               "sourceDirName": "tutorial-basics",
               "slug": "/tutorial-basics/markdown-features",
               "permalink": "/docs/tutorial-basics/markdown-features",
-              "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-basics/markdown-features.mdx",
               "tags": [],
               "version": "current",
               "sidebarPosition": 4,
               "frontMatter": {
                 "sidebar_position": 4
               },
-              "sidebar": "tutorialSidebar",
+              "sidebar": "defaultSidebar",
               "previous": {
                 "title": "Create a Blog Post",
                 "permalink": "/docs/tutorial-basics/create-a-blog-post"
@@ -205,14 +195,13 @@
               "sourceDirName": "tutorial-extras",
               "slug": "/tutorial-extras/manage-docs-versions",
               "permalink": "/docs/tutorial-extras/manage-docs-versions",
-              "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-extras/manage-docs-versions.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 1,
               "frontMatter": {
                 "sidebar_position": 1
               },
-              "sidebar": "tutorialSidebar",
+              "sidebar": "defaultSidebar",
               "previous": {
                 "title": "Congratulations!",
                 "permalink": "/docs/tutorial-basics/congratulations"
@@ -231,14 +220,13 @@
               "sourceDirName": "tutorial-extras",
               "slug": "/tutorial-extras/translate-your-site",
               "permalink": "/docs/tutorial-extras/translate-your-site",
-              "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-extras/translate-your-site.md",
               "tags": [],
               "version": "current",
               "sidebarPosition": 2,
               "frontMatter": {
                 "sidebar_position": 2
               },
-              "sidebar": "tutorialSidebar",
+              "sidebar": "defaultSidebar",
               "previous": {
                 "title": "Manage Docs Versions",
                 "permalink": "/docs/tutorial-extras/manage-docs-versions"
@@ -246,7 +234,7 @@
             }
           ],
           "sidebars": {
-            "tutorialSidebar": [
+            "defaultSidebar": [
               {
                 "type": "doc",
                 "id": "intro"
@@ -305,6 +293,174 @@
           "categoryGeneratedIndices": []
         }
       ]
+    },
+    "getStarted": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "versionLabel": "Next",
+          "versionPath": "/getStarted",
+          "tagsPath": "/getStarted/tags",
+          "versionBanner": null,
+          "versionBadge": false,
+          "versionClassName": "docs-version-current",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/home/mitch/github/evmcrispr-doc/sidebarGetstarted.js",
+          "contentPath": "/home/mitch/github/evmcrispr-doc/getStarted",
+          "contentPathLocalized": "/home/mitch/github/evmcrispr-doc/i18n/en/docusaurus-plugin-content-docs-getStarted/current",
+          "docs": [
+            {
+              "unversionedId": "getStarted",
+              "id": "getStarted",
+              "title": "Intro",
+              "description": "EVMcrispr is a powerful tool that combines a command line interface with a Javascript library to interact with Aragon DAOs. With it, you can bundle many DAO operations into just one script, generating a singular transaction/vote.",
+              "source": "@site/getStarted/getStarted.md",
+              "sourceDirName": ".",
+              "slug": "/",
+              "permalink": "/getStarted/",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {
+                "id": "getStarted",
+                "title": "Intro",
+                "slug": "/"
+              },
+              "sidebar": "getStarted"
+            }
+          ],
+          "sidebars": {
+            "getStarted": [
+              {
+                "type": "doc",
+                "id": "getStarted"
+              }
+            ]
+          },
+          "mainDocId": "getStarted",
+          "categoryGeneratedIndices": []
+        }
+      ]
+    },
+    "aragonOS": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "versionLabel": "Next",
+          "versionPath": "/aragonOS",
+          "tagsPath": "/aragonOS/tags",
+          "versionBanner": null,
+          "versionBadge": false,
+          "versionClassName": "docs-version-current",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/home/mitch/github/evmcrispr-doc/sidebarAragonOS.js",
+          "contentPath": "/home/mitch/github/evmcrispr-doc/aragonOS",
+          "contentPathLocalized": "/home/mitch/github/evmcrispr-doc/i18n/en/docusaurus-plugin-content-docs-aragonOS/current",
+          "docs": [
+            {
+              "unversionedId": "aragonOSintro",
+              "id": "aragonOSintro",
+              "title": "Introduction to Aragon DAOs",
+              "description": "",
+              "source": "@site/aragonOS/aragonOSintro.md",
+              "sourceDirName": ".",
+              "slug": "/",
+              "permalink": "/aragonOS/",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {
+                "id": "aragonOSintro",
+                "title": "Introduction to Aragon DAOs",
+                "slug": "/"
+              }
+            }
+          ],
+          "sidebars": {},
+          "mainDocId": "aragonOSintro",
+          "categoryGeneratedIndices": []
+        }
+      ]
+    },
+    "gardens": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "versionLabel": "Next",
+          "versionPath": "/gardens",
+          "tagsPath": "/gardens/tags",
+          "versionBanner": null,
+          "versionBadge": false,
+          "versionClassName": "docs-version-current",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/home/mitch/github/evmcrispr-doc/sidebarGardens.js",
+          "contentPath": "/home/mitch/github/evmcrispr-doc/gardens",
+          "contentPathLocalized": "/home/mitch/github/evmcrispr-doc/i18n/en/docusaurus-plugin-content-docs-gardens/current",
+          "docs": [
+            {
+              "unversionedId": "introGardens",
+              "id": "introGardens",
+              "title": "Introduction to Gardens",
+              "description": "",
+              "source": "@site/gardens/introGardens.md",
+              "sourceDirName": ".",
+              "slug": "/",
+              "permalink": "/gardens/",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {
+                "id": "introGardens",
+                "title": "Introduction to Gardens",
+                "slug": "/"
+              }
+            }
+          ],
+          "sidebars": {},
+          "mainDocId": "introGardens",
+          "categoryGeneratedIndices": []
+        }
+      ]
+    },
+    "helpers": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "versionLabel": "Next",
+          "versionPath": "/helpers",
+          "tagsPath": "/helpers/tags",
+          "versionBanner": null,
+          "versionBadge": false,
+          "versionClassName": "docs-version-current",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/home/mitch/github/evmcrispr-doc/sidebarHelpers.js",
+          "contentPath": "/home/mitch/github/evmcrispr-doc/helpers",
+          "contentPathLocalized": "/home/mitch/github/evmcrispr-doc/i18n/en/docusaurus-plugin-content-docs-helpers/current",
+          "docs": [
+            {
+              "unversionedId": "introHelpers",
+              "id": "introHelpers",
+              "title": "Introduction to Helper Functions",
+              "description": "",
+              "source": "@site/helpers/introHelpers.md",
+              "sourceDirName": ".",
+              "slug": "/",
+              "permalink": "/helpers/",
+              "tags": [],
+              "version": "current",
+              "frontMatter": {
+                "id": "introHelpers",
+                "title": "Introduction to Helper Functions",
+                "slug": "/"
+              }
+            }
+          ],
+          "sidebars": {},
+          "mainDocId": "introHelpers",
+          "categoryGeneratedIndices": []
+        }
+      ]
     }
   },
   "docusaurus-plugin-content-blog": {
@@ -315,7 +471,7 @@
           "id": "welcome",
           "metadata": {
             "permalink": "/blog/welcome",
-            "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/blog/2021-08-26-welcome/index.md",
+            "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/blog/2021-08-26-welcome/index.md",
             "source": "@site/blog/2021-08-26-welcome/index.md",
             "title": "Welcome",
             "description": "Docusaurus blogging features are powered by the blog plugin.",
@@ -377,7 +533,7 @@
           "id": "mdx-blog-post",
           "metadata": {
             "permalink": "/blog/mdx-blog-post",
-            "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/blog/2021-08-01-mdx-blog-post.mdx",
+            "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/blog/2021-08-01-mdx-blog-post.mdx",
             "source": "@site/blog/2021-08-01-mdx-blog-post.mdx",
             "title": "MDX Blog Post",
             "description": "Blog posts support Docusaurus Markdown features, such as MDX.",
@@ -425,7 +581,7 @@
           "id": "long-blog-post",
           "metadata": {
             "permalink": "/blog/long-blog-post",
-            "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/blog/2019-05-29-long-blog-post.md",
+            "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/blog/2019-05-29-long-blog-post.md",
             "source": "@site/blog/2019-05-29-long-blog-post.md",
             "title": "Long Blog Post",
             "description": "This is the summary of a very long blog post,",
@@ -476,7 +632,7 @@
           "id": "first-blog-post",
           "metadata": {
             "permalink": "/blog/first-blog-post",
-            "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/blog/2019-05-28-first-blog-post.md",
+            "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/blog/2019-05-28-first-blog-post.md",
             "source": "@site/blog/2019-05-28-first-blog-post.md",
             "title": "First Blog Post",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",

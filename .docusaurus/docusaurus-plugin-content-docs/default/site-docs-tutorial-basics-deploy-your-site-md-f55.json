@@ -7,14 +7,13 @@
   "sourceDirName": "tutorial-basics",
   "slug": "/tutorial-basics/deploy-your-site",
   "permalink": "/docs/tutorial-basics/deploy-your-site",
-  "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-basics/deploy-your-site.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 5,
   "frontMatter": {
     "sidebar_position": 5
   },
-  "sidebar": "tutorialSidebar",
+  "sidebar": "defaultSidebar",
   "previous": {
     "title": "Markdown Features",
     "permalink": "/docs/tutorial-basics/markdown-features"

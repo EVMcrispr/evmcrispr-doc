@@ -7,14 +7,13 @@
   "sourceDirName": "tutorial-basics",
   "slug": "/tutorial-basics/congratulations",
   "permalink": "/docs/tutorial-basics/congratulations",
-  "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-basics/congratulations.md",
   "tags": [],
   "version": "current",
   "sidebarPosition": 6,
   "frontMatter": {
     "sidebar_position": 6
   },
-  "sidebar": "tutorialSidebar",
+  "sidebar": "defaultSidebar",
   "previous": {
     "title": "Deploy your site",
     "permalink": "/docs/tutorial-basics/deploy-your-site"

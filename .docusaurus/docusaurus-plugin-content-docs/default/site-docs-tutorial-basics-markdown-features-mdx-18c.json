@@ -7,14 +7,13 @@
   "sourceDirName": "tutorial-basics",
   "slug": "/tutorial-basics/markdown-features",
   "permalink": "/docs/tutorial-basics/markdown-features",
-  "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial-basics/markdown-features.mdx",
   "tags": [],
   "version": "current",
   "sidebarPosition": 4,
   "frontMatter": {
     "sidebar_position": 4
   },
-  "sidebar": "tutorialSidebar",
+  "sidebar": "defaultSidebar",
   "previous": {
     "title": "Create a Blog Post",
     "permalink": "/docs/tutorial-basics/create-a-blog-post"
