@@ -94,6 +94,26 @@ export default [
     exact: true
   },
   {
+    path: '/getStarted',
+    component: ComponentCreator('/getStarted','18f'),
+    exact: true
+  },
+  {
+    path: '/getStarted/',
+    component: ComponentCreator('/getStarted/','72b'),
+    exact: true
+  },
+  {
+    path: '/getStarted/getStarted',
+    component: ComponentCreator('/getStarted/getStarted','7f4'),
+    exact: true
+  },
+  {
+    path: '/getStarted/markdown-page',
+    component: ComponentCreator('/getStarted/markdown-page','726'),
+    exact: true
+  },
+  {
     path: '/markdown-page',
     component: ComponentCreator('/markdown-page','e31'),
     exact: true
@@ -177,18 +197,6 @@ export default [
         path: '/gardens/',
         component: ComponentCreator('/gardens/','9ae'),
         exact: true
-      }
-    ]
-  },
-  {
-    path: '/getStarted',
-    component: ComponentCreator('/getStarted','262'),
-    routes: [
-      {
-        path: '/getStarted/',
-        component: ComponentCreator('/getStarted/','71d'),
-        exact: true,
-        sidebar: "getStarted"
       }
     ]
   },

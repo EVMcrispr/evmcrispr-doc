@@ -294,54 +294,6 @@
         }
       ]
     },
-    "getStarted": {
-      "loadedVersions": [
-        {
-          "versionName": "current",
-          "versionLabel": "Next",
-          "versionPath": "/getStarted",
-          "tagsPath": "/getStarted/tags",
-          "versionBanner": null,
-          "versionBadge": false,
-          "versionClassName": "docs-version-current",
-          "isLast": true,
-          "routePriority": -1,
-          "sidebarFilePath": "/home/mitch/github/evmcrispr-doc/sidebarGetstarted.js",
-          "contentPath": "/home/mitch/github/evmcrispr-doc/getStarted",
-          "contentPathLocalized": "/home/mitch/github/evmcrispr-doc/i18n/en/docusaurus-plugin-content-docs-getStarted/current",
-          "docs": [
-            {
-              "unversionedId": "getStarted",
-              "id": "getStarted",
-              "title": "Intro",
-              "description": "EVMcrispr is a powerful tool that combines a command line interface with a Javascript library to interact with Aragon DAOs. With it, you can bundle many DAO operations into just one script, generating a singular transaction/vote.",
-              "source": "@site/getStarted/getStarted.md",
-              "sourceDirName": ".",
-              "slug": "/",
-              "permalink": "/getStarted/",
-              "tags": [],
-              "version": "current",
-              "frontMatter": {
-                "id": "getStarted",
-                "title": "Intro",
-                "slug": "/"
-              },
-              "sidebar": "getStarted"
-            }
-          ],
-          "sidebars": {
-            "getStarted": [
-              {
-                "type": "doc",
-                "id": "getStarted"
-              }
-            ]
-          },
-          "mainDocId": "getStarted",
-          "categoryGeneratedIndices": []
-        }
-      ]
-    },
     "aragonOS": {
       "loadedVersions": [
         {
@@ -362,7 +314,7 @@
               "unversionedId": "aragonOSintro",
               "id": "aragonOSintro",
               "title": "Introduction to Aragon DAOs",
-              "description": "",
+              "description": "AragonOS is the main framework that EVMcrispr has been tailored to interact with. Aragon DAOs are easily deployable and highly customizable govenance platforms that can be launched using the Aragon Client on Mainnet or on Gnosis Chain via 1hive's Aragon Deployment",
               "source": "@site/aragonOS/aragonOSintro.md",
               "sourceDirName": ".",
               "slug": "/",
@@ -471,7 +423,6 @@
           "id": "welcome",
           "metadata": {
             "permalink": "/blog/welcome",
-            "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/blog/2021-08-26-welcome/index.md",
             "source": "@site/blog/2021-08-26-welcome/index.md",
             "title": "Welcome",
             "description": "Docusaurus blogging features are powered by the blog plugin.",
@@ -533,7 +484,6 @@
           "id": "mdx-blog-post",
           "metadata": {
             "permalink": "/blog/mdx-blog-post",
-            "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/blog/2021-08-01-mdx-blog-post.mdx",
             "source": "@site/blog/2021-08-01-mdx-blog-post.mdx",
             "title": "MDX Blog Post",
             "description": "Blog posts support Docusaurus Markdown features, such as MDX.",
@@ -581,7 +531,6 @@
           "id": "long-blog-post",
           "metadata": {
             "permalink": "/blog/long-blog-post",
-            "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/blog/2019-05-29-long-blog-post.md",
             "source": "@site/blog/2019-05-29-long-blog-post.md",
             "title": "Long Blog Post",
             "description": "This is the summary of a very long blog post,",
@@ -632,7 +581,6 @@
           "id": "first-blog-post",
           "metadata": {
             "permalink": "/blog/first-blog-post",
-            "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/blog/2019-05-28-first-blog-post.md",
             "source": "@site/blog/2019-05-28-first-blog-post.md",
             "title": "First Blog Post",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
@@ -809,6 +757,18 @@
   "docusaurus-plugin-content-pages": {
     "default": [
       {
+        "type": "mdx",
+        "permalink": "/getStarted",
+        "source": "@site/src/pages/getStarted.md",
+        "title": "Intro",
+        "description": "EVMcrispr is a powerful tool that combines a command line interface with a Javascript library to interact with Aragon DAOs. With it, you can bundle many DAO operations into just one script, generating a singular transaction/vote.",
+        "frontMatter": {
+          "id": "getStarted",
+          "title": "Intro",
+          "slug": "/"
+        }
+      },
+      {
         "type": "jsx",
         "permalink": "/",
         "source": "@site/src/pages/index.js"
@@ -816,6 +776,35 @@
       {
         "type": "mdx",
         "permalink": "/markdown-page",
+        "source": "@site/src/pages/markdown-page.md",
+        "title": "Markdown page example",
+        "description": "You don't need React to write simple standalone pages.",
+        "frontMatter": {
+          "title": "Markdown page example"
+        }
+      }
+    ],
+    "getStarted": [
+      {
+        "type": "mdx",
+        "permalink": "/getStarted/getStarted",
+        "source": "@site/src/pages/getStarted.md",
+        "title": "Intro",
+        "description": "EVMcrispr is a powerful tool that combines a command line interface with a Javascript library to interact with Aragon DAOs. With it, you can bundle many DAO operations into just one script, generating a singular transaction/vote.",
+        "frontMatter": {
+          "id": "getStarted",
+          "title": "Intro",
+          "slug": "/"
+        }
+      },
+      {
+        "type": "jsx",
+        "permalink": "/getStarted/",
+        "source": "@site/src/pages/index.js"
+      },
+      {
+        "type": "mdx",
+        "permalink": "/getStarted/markdown-page",
         "source": "@site/src/pages/markdown-page.md",
         "title": "Markdown page example",
         "description": "You don't need React to write simple standalone pages.",

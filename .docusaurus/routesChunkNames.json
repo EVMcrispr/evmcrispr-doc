@@ -143,6 +143,26 @@
     "content": "content---blog-welcomed-9-f-ffb",
     "__routeContextModule": "__routeContextModule---blogd-10-4b8"
   },
+  "/getStarted-18f": {
+    "component": "component---theme-mdx-page-1-f-3-b90",
+    "content": "content---get-started-29-d-d2c",
+    "__routeContextModule": "__routeContextModule---markdown-page-485-500"
+  },
+  "/getStarted/-72b": {
+    "component": "component---site-src-pages-index-jsc-4-f-f99",
+    "config": "config---5-e-9-4f3",
+    "__routeContextModule": "__routeContextModule---get-started-c-97-032"
+  },
+  "/getStarted/getStarted-7f4": {
+    "component": "component---theme-mdx-page-1-f-3-b90",
+    "content": "content---get-started-29-d-d2c",
+    "__routeContextModule": "__routeContextModule---get-started-c-97-032"
+  },
+  "/getStarted/markdown-page-726": {
+    "component": "component---theme-mdx-page-1-f-3-b90",
+    "content": "content---markdown-page-393-028",
+    "__routeContextModule": "__routeContextModule---get-started-c-97-032"
+  },
   "/markdown-page-e31": {
     "component": "component---theme-mdx-page-1-f-3-b90",
     "content": "content---markdown-page-393-028",
@@ -206,15 +226,6 @@
   "/gardens/-9ae": {
     "component": "component---theme-doc-item-178-a40",
     "content": "content---gardens-fbe-f74"
-  },
-  "/getStarted-262": {
-    "component": "component---theme-doc-page-1-be-9be",
-    "versionMetadata": "versionMetadata---get-started-3-c-6-fe1",
-    "__routeContextModule": "__routeContextModule---get-startedfd-2-073"
-  },
-  "/getStarted/-71d": {
-    "component": "component---theme-doc-item-178-a40",
-    "content": "content---get-started-ec-0-34f"
   },
   "/helpers-023": {
     "component": "component---theme-doc-page-1-be-9be",

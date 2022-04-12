@@ -20,12 +20,6 @@ const config = {
     [
       'classic',
       {
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/'
-        },
         theme: {
           customCss: require.resolve('./src/css/custom.css')
         }
@@ -119,12 +113,11 @@ const config = {
     },
   plugins: [
     [
-      '@docusaurus/plugin-content-docs',
+      '@docusaurus/plugin-content-pages',
       {
         id: 'getStarted',
-        path: 'getStarted',
+        path: 'src/pages',
         routeBasePath: 'getStarted',
-        sidebarPath: require.resolve('./sidebarGetstarted.js'),
       }
     ],
     [

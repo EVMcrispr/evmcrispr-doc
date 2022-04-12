@@ -17,10 +17,6 @@ export default {
     [
       "classic",
       {
-        "blog": {
-          "showReadingTime": true,
-          "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/"
-        },
         "theme": {
           "customCss": "/home/mitch/github/evmcrispr-doc/src/css/custom.css"
         }
@@ -318,12 +314,11 @@ export default {
   },
   "plugins": [
     [
-      "@docusaurus/plugin-content-docs",
+      "@docusaurus/plugin-content-pages",
       {
         "id": "getStarted",
-        "path": "getStarted",
-        "routeBasePath": "getStarted",
-        "sidebarPath": "/home/mitch/github/evmcrispr-doc/sidebarGetstarted.js"
+        "path": "src/pages",
+        "routeBasePath": "getStarted"
       }
     ],
     [

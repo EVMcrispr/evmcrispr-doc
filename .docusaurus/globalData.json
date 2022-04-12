@@ -1,5 +1,25 @@
 {
   "docusaurus-plugin-content-docs": {
+    "gardens": {
+      "path": "/gardens",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/gardens",
+          "mainDocId": "introGardens",
+          "docs": [
+            {
+              "id": "introGardens",
+              "path": "/gardens/"
+            }
+          ],
+          "sidebars": {}
+        }
+      ],
+      "breadcrumbs": true
+    },
     "helpers": {
       "path": "/helpers",
       "versions": [
@@ -13,6 +33,26 @@
             {
               "id": "introHelpers",
               "path": "/helpers/"
+            }
+          ],
+          "sidebars": {}
+        }
+      ],
+      "breadcrumbs": true
+    },
+    "aragonOS": {
+      "path": "/aragonOS",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/aragonOS",
+          "mainDocId": "aragonOSintro",
+          "docs": [
+            {
+              "id": "aragonOSintro",
+              "path": "/aragonOS/"
             }
           ],
           "sidebars": {}
@@ -84,74 +124,6 @@
               }
             }
           }
-        }
-      ],
-      "breadcrumbs": true
-    },
-    "aragonOS": {
-      "path": "/aragonOS",
-      "versions": [
-        {
-          "name": "current",
-          "label": "Next",
-          "isLast": true,
-          "path": "/aragonOS",
-          "mainDocId": "aragonOSintro",
-          "docs": [
-            {
-              "id": "aragonOSintro",
-              "path": "/aragonOS/"
-            }
-          ],
-          "sidebars": {}
-        }
-      ],
-      "breadcrumbs": true
-    },
-    "getStarted": {
-      "path": "/getStarted",
-      "versions": [
-        {
-          "name": "current",
-          "label": "Next",
-          "isLast": true,
-          "path": "/getStarted",
-          "mainDocId": "getStarted",
-          "docs": [
-            {
-              "id": "getStarted",
-              "path": "/getStarted/",
-              "sidebar": "getStarted"
-            }
-          ],
-          "sidebars": {
-            "getStarted": {
-              "link": {
-                "path": "/getStarted/",
-                "label": "getStarted"
-              }
-            }
-          }
-        }
-      ],
-      "breadcrumbs": true
-    },
-    "gardens": {
-      "path": "/gardens",
-      "versions": [
-        {
-          "name": "current",
-          "label": "Next",
-          "isLast": true,
-          "path": "/gardens",
-          "mainDocId": "introGardens",
-          "docs": [
-            {
-              "id": "introGardens",
-              "path": "/gardens/"
-            }
-          ],
-          "sidebars": {}
         }
       ],
       "breadcrumbs": true
