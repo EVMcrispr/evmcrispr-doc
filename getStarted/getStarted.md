@@ -2,10 +2,12 @@
 id: getStarted
 title: Intro
 slug: /
+displayed_sidebar: null
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
 
+# Getting Started
 
 [**EVMcrispr**](https://evm-crispr.blossom.software/) is a powerful tool that combines a command line interface with a Javascript library to interact with Aragon DAOs. With it, you can bundle many DAO operations into just one script, generating a singular transaction/vote.
 
