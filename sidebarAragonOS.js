@@ -1,3 +1,3 @@
-module.export = {
-  aragonOS : [ 'aragonOSintro']
+module.exports = {
+  aragonOS: ['aragonOSintro']
 }

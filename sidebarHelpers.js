@@ -1,3 +1,3 @@
-module.export = {
-  helpers : [ 'introHelpers' ]
+module.exports = {
+  helpers: ['introHelpers']
 }

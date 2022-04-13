@@ -1,3 +1,3 @@
-module.export = {
-  gardens : [ 'introGardens']
+module.exports = {
+  gardens: ['introGardens']
 }
