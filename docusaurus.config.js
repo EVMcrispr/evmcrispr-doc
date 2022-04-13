@@ -27,97 +27,96 @@ const config = {
     ]
   ],
 
-  themeConfig:
-    {
-      navbar: {
-        logo: {
-          alt: 'evmcrispr logo',
-          src: 'img/logo.svg'
+  themeConfig: {
+    navbar: {
+      logo: {
+        alt: 'evmcrispr logo',
+        src: 'img/logo.svg'
+      },
+      items: [
+        {
+          to: 'getStarted/',
+          activeBasePath: 'getStarted',
+          label: 'Get Started',
+          position: 'left'
         },
-        items: [
-          {
-            to: 'getStarted/',
-            activeBasePath: 'getStarted',
-            label: 'Get Started',
-            position: 'left'
-          },
-          {
-            to: 'aragonOS/',
-            activeBasePath: 'aragonOS',
-            label: 'Aragon DAOs',
-            position: 'left'
-          },
-          {
-            to: 'gardens/',
-            activeBasePath: 'gardens',
-            label: 'Gardens',
-            position: 'left'
-          },
-          {
-            to: 'helpers/',
-            activeBasePath: 'helpers',
-            label: 'Helper Functions',
-            position: 'left'
-          },
-        ]
-      },
-      footer: {
-        style: 'dark',
-        links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/intro'
-              }
-            ]
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus'
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus'
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus'
-              }
-            ]
-          },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'Blog',
-                to: '/blog'
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus'
-              }
-            ]
-          }
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} Blossom Labs. Built with Docusaurus.`
-      },
-      prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme
-      }
+        {
+          to: 'aragonOS/',
+          activeBasePath: 'aragonOS',
+          label: 'Aragon DAOs',
+          position: 'left'
+        },
+        {
+          to: 'gardens/',
+          activeBasePath: 'gardens',
+          label: 'Gardens',
+          position: 'left'
+        },
+        {
+          to: 'helpers/',
+          activeBasePath: 'helpers',
+          label: 'Helper Functions',
+          position: 'left'
+        }
+      ]
     },
+    footer: {
+      style: 'dark',
+      links: [
+        {
+          title: 'Docs',
+          items: [
+            {
+              label: 'Tutorial',
+              to: '/docs/intro'
+            }
+          ]
+        },
+        {
+          title: 'Community',
+          items: [
+            {
+              label: 'Stack Overflow',
+              href: 'https://stackoverflow.com/questions/tagged/docusaurus'
+            },
+            {
+              label: 'Discord',
+              href: 'https://discordapp.com/invite/docusaurus'
+            },
+            {
+              label: 'Twitter',
+              href: 'https://twitter.com/docusaurus'
+            }
+          ]
+        },
+        {
+          title: 'More',
+          items: [
+            {
+              label: 'Blog',
+              to: '/blog'
+            },
+            {
+              label: 'GitHub',
+              href: 'https://github.com/facebook/docusaurus'
+            }
+          ]
+        }
+      ],
+      copyright: `Copyright © ${new Date().getFullYear()} Blossom Labs. Built with Docusaurus.`
+    },
+    prism: {
+      theme: lightCodeTheme,
+      darkTheme: darkCodeTheme
+    }
+  },
   plugins: [
     [
-      '@docusaurus/plugin-content-pages',
+      '@docusaurus/plugin-content-docs',
       {
         id: 'getStarted',
-        path: 'src/pages',
-        routeBasePath: 'getStarted',
+        path: 'getStarted',
+        routeBasePath: 'getStarted'
       }
     ],
     [
@@ -126,7 +125,7 @@ const config = {
         id: 'aragonOS',
         path: 'aragonOS',
         routeBasePath: 'aragonOS',
-        sidebarPath: require.resolve('./sidebarAragonOS.js'),
+        sidebarPath: require.resolve('./sidebarAragonOS.js')
       }
     ],
     [
@@ -135,7 +134,7 @@ const config = {
         id: 'gardens',
         path: 'gardens',
         routeBasePath: 'gardens',
-        sidebarPath: require.resolve('./sidebarGardens.js'),
+        sidebarPath: require.resolve('./sidebarGardens.js')
       }
     ],
     [
@@ -144,11 +143,10 @@ const config = {
         id: 'helpers',
         path: 'helpers',
         routeBasePath: 'helpers',
-        sidebarPath: require.resolve('./sidebarHelpers.js'),
+        sidebarPath: require.resolve('./sidebarHelpers.js')
       }
-    ],
+    ]
   ]
 }
-
 
 module.exports = config
