@@ -2,12 +2,10 @@
 id: getStarted
 title: Intro
 slug: /
-displayed_sidebar: null
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
 
-# Getting Started
 
 [**EVMcrispr**](https://evm-crispr.blossom.software/) is a powerful tool that combines a command line interface with a Javascript library to interact with Aragon DAOs. With it, you can bundle many DAO operations into just one script, generating a singular transaction/vote.
 
@@ -37,7 +35,7 @@ You should probably figure out where to send your scripts. Collecting key DAO in
 
 ### The `connect` Command
 
-Interacting with any Aragon DAO will require you to preface your script with the `connect` command. This will tell EVMcrispr which DAO to send the script to and also which apps we need to ask permissions from. Let's take a look at this example:  
+Interacting with any Aragon DAO will require you to preface your script with the `connect` command. This will tell EVMcrispr which DAO to send the script to and also the forwarding path which specifies through which apps we need to ask permissions from. Let's take a look at this example:  
 
 ```
 connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618`
@@ -51,6 +49,6 @@ Referencing the addresses in the example Organization above we can see we're rou
 
  `connect mitchcorp token-manager voting`
 
- This will connect us using the aragonID ENS name associated with the DAO. This can be found usually in the top right of the Aragon DAO navbar.
+ This will connect us using the aragonID ENS name associated with the DAO. This can be found usually in the top left of the Aragon DAO navbar.
 
   More on syntax-sugar in the <a href={useBaseUrl('helpers/')} target='_blank'>Helpers Section</a>
