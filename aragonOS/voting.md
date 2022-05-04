@@ -69,7 +69,7 @@ You should also consider what permissions you'll need to integrate your new voti
 ## Revoking Permissions
 
 :::warning
- This command can potentially remove a permission that is needed for the DAO to work. Be careful not removing the permissions to create votes in voting, create permissions in ACL, or manage apps in the kernel.
+ This command can potentially remove a permission that is needed for the DAO to work. Be careful to not remove the permissions to create votes in voting, create permissions in ACL, or manage apps in the Kernel.
 :::
 
 To remove a permission from an entity follow this syntax:

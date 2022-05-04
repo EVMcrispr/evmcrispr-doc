@@ -49,7 +49,7 @@ Some Functionalities have been added to the contract that has not yet been added
 
 ## Installing the App
 
-To Install the Voting App you'll need to include two few parameters:
+To Install the Voting App you'll need to include two parameters:
  - Vault Address
     - This is the address of the installed Vault or Agent where the finance app will manage funds.
  - Period duration
@@ -65,7 +65,7 @@ install finance:new {vaultAddress} {periodDuration}
 ## Revoking Permissions
 
 :::warning
- This command can potentially remove a permission that is needed for the DAO to work. Be careful not removing the permissions to create votes in voting, create permissions in ACL, or manage apps in the kernel.
+ This command can potentially remove a permission that is needed for the DAO to work. Be careful to not remove the permissions to create votes in voting, create permissions in ACL, or manage apps in the Kernel.
 :::
 
 To remove a permission from an entity follow this syntax:
@@ -76,7 +76,7 @@ in practice this could look like:
 
 `revoke voting finance EXECUTE_PAYMENTS_ROLE false`
 
-This would remove the ability for the voting app to execute a payment, while keeping the Permission Manager in place should this perission need to be modified in the future.
+This would remove the ability for the voting app to execute a payment, while keeping the Permission Manager in place should this permission need to be modified in the future.
 
 ## Modifying the App
 

@@ -14,22 +14,20 @@ const FeatureList = [
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Evolve your DAO tooling',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Install and modify apps, streamline your governance and unlock the full potential of DeGov.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Accessible for all',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Create powerful and complex EVM scripts without needing to be a developer. EVMcrispr is open-source and easy to use.
       </>
     ),
   },
