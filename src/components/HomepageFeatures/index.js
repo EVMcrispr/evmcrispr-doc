@@ -2,34 +2,32 @@ import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
 
+
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'AragonOS Ready',
+    Svg: require('@site/static/img/Aragon_Logo1.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Optimize your Aragon DAO operations. EVMcrispr is tailor made to be used with AragonOS Apps.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Evolve your DAO tooling',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Install and modify apps, streamline your governance and unlock the full potential of DeGov.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Accessible for all',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Create powerful and complex EVM scripts without needing to be a developer. EVMcrispr is open-source and easy to use.
       </>
     ),
   },

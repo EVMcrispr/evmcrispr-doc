@@ -1,0 +1,4 @@
+---
+id: vault
+title: Vault
+---
