@@ -18,15 +18,15 @@ export default {
       "classic",
       {
         "docs": {
-          "sidebarPath": "/Users/geleeroyale/Github/evmcrispr-doc/sidebars.js",
-          "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/"
+          "sidebarPath": "/home/mitch/github/evmcrispr-doc/sidebars.js",
+          "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/blob/master/"
         },
         "blog": {
           "showReadingTime": true,
-          "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/tree/main/packages/create-docusaurus/templates/shared/"
+          "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/"
         },
         "theme": {
-          "customCss": "/Users/geleeroyale/Github/evmcrispr-doc/src/css/custom.css"
+          "customCss": "/home/mitch/github/evmcrispr-doc/src/css/custom.css"
         }
       }
     ]
