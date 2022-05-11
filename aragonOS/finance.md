@@ -11,15 +11,15 @@ The Finance App will allow you to keep track of your DAO's finances, each app ca
 
 Before installing an app you should consider any permissions it will need to fit your purposes. Here is an exhaustive list of roles for the voting app:
 
-- CREATE_PAYMENTS_ROLE
+- `CREATE_PAYMENTS_ROLE`
     - Allows an entity to create a payment request
-- CHANGE_PERIOD_ROLE
+- `CHANGE_PERIOD_ROLE`
     - Allows an entity the budget period
-- CHANGE_BUDGETS_ROLE
+- `CHANGE_BUDGETS_ROLE`
     - Allows an entity to modify the budget for the set period
-- EXECUTE_PAYMENTS_ROLE
+- `EXECUTE_PAYMENTS_ROLE`
     - Allows an entity to execute payments
-- MANAGE_PAYMENTS_ROLE
+- `MANAGE_PAYMENTS_ROLE`
     - Allows an entity to manage payments
 
 ### Types of Entities
@@ -33,9 +33,15 @@ There are four eligible entities you can choose from: App, Anyone, Token Holders
 
 ## Granting Permissions
 
+:::warning
+This command can potentially remove a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
+
+The most critical permissions are argumentably the ones on the Kernel (DAO main contract) and the ACL (permission management contract), so be careful who we grant them to.
+:::
+
 To grant permissions you'll use the following syntax:
 
-`grant {entity} {app} {role} {defaultPermissionManager}`
+`grant <entity> <app> <roleName> [defaultPermissionManager]`
 
 In practice this would look like:
 
@@ -58,7 +64,7 @@ To Install the Voting App you'll need to include two parameters:
 The syntax is as follows to install the app:
 
 ```
-install finance:new {vaultAddress} {periodDuration} 
+install finance:new <vaultAddress> <periodDuration> 
 // add any permissions you want to grant here.
 ```
 
@@ -70,7 +76,7 @@ install finance:new {vaultAddress} {periodDuration}
 
 To remove a permission from an entity follow this syntax:
 
-`revoke {entity} {app} {role} {removePermissionManager?}`
+`revoke <entity> <app> <roleName> [removePermissionManager?]`
 
 in practice this could look like:
 
@@ -78,15 +84,15 @@ in practice this could look like:
 
 This would remove the ability for the voting app to execute a payment, while keeping the Permission Manager in place should this permission need to be modified in the future.
 
-## Modifying the App
+## Internal Actions
 
 Using the `exec` command we can create internal actions.
 
-An exhaustive list of actions that can be performed on the voting app can be found on the [base implementation contract](https://etherscan.io/address/0x8b2bc1aa673aae1ec9c75704f9ad2a475804cec8#writeProxyContract)
+An exhaustive list of actions that can be performed with the finance app can be found on the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/finance/contracts/Finance.sol)
 
 We'll use the `newImmediatePayment` function to show the syntax of the `exec` command. This is the base syntax:
 
-`exec {app} {methodName} {parameters}`
+`exec <app> <methodName> [parameters]`
 
 i.e
 `exec finance newImmediatePayment 0xa117000000f279d81a1d3cc75430faa017fa5a2e 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"`

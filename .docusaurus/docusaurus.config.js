@@ -4,8 +4,8 @@
  * Modify the docusaurus.config.js file at your site's root instead.
  */
 export default {
-  "title": "EVM CRISPR documentation",
-  "tagline": "Scripting for DAOs",
+  "title": "EVMcrispr Docs",
+  "tagline": "Mutate a DAO's DNA",
   "url": "https://docs.evm-crispr.blossom.software",
   "baseUrl": "/",
   "onBrokenLinks": "throw",
@@ -17,14 +17,6 @@ export default {
     [
       "classic",
       {
-        "docs": {
-          "sidebarPath": "/home/mitch/github/evmcrispr-doc/sidebars.js",
-          "editUrl": "https://github.com/BlossomLabs/evmcrispr-doc/blob/master/"
-        },
-        "blog": {
-          "showReadingTime": true,
-          "editUrl": "https://https://github.com/BlossomLabs/evmcrispr-doc/blob/master/"
-        },
         "theme": {
           "customCss": "/home/mitch/github/evmcrispr-doc/src/css/custom.css"
         }
@@ -33,27 +25,34 @@ export default {
   ],
   "themeConfig": {
     "navbar": {
-      "title": "documentation",
       "logo": {
         "alt": "evmcrispr logo",
         "src": "img/logo.svg"
       },
       "items": [
         {
-          "type": "doc",
-          "docId": "intro",
-          "position": "left",
-          "label": "Tutorial"
-        },
-        {
-          "to": "/blog",
-          "label": "Blog",
+          "to": "getStarted/",
+          "activeBasePath": "getStarted",
+          "label": "Get Started",
           "position": "left"
         },
         {
-          "href": "https://github.com/facebook/docusaurus",
-          "label": "GitHub",
-          "position": "right"
+          "to": "aragonOS/",
+          "activeBasePath": "aragonOS",
+          "label": "Aragon DAOs",
+          "position": "left"
+        },
+        {
+          "to": "gardens/",
+          "activeBasePath": "gardens",
+          "label": "Gardens",
+          "position": "left"
+        },
+        {
+          "to": "helpers/",
+          "activeBasePath": "helpers",
+          "label": "Helper Functions",
+          "position": "left"
         }
       ],
       "hideOnScroll": false
@@ -313,6 +312,43 @@ export default {
       "maxHeadingLevel": 3
     }
   },
+  "plugins": [
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        "id": "getStarted",
+        "path": "getStarted",
+        "routeBasePath": "getStarted"
+      }
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        "id": "aragonOS",
+        "path": "aragonOS",
+        "routeBasePath": "aragonOS",
+        "sidebarPath": "/home/mitch/github/evmcrispr-doc/sidebarAragonOS.js"
+      }
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        "id": "gardens",
+        "path": "gardens",
+        "routeBasePath": "gardens",
+        "sidebarPath": "/home/mitch/github/evmcrispr-doc/sidebarGardens.js"
+      }
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        "id": "helpers",
+        "path": "helpers",
+        "routeBasePath": "helpers",
+        "sidebarPath": "/home/mitch/github/evmcrispr-doc/sidebarHelpers.js"
+      }
+    ]
+  ],
   "baseUrlIssueBanner": true,
   "i18n": {
     "defaultLocale": "en",
@@ -326,7 +362,6 @@ export default {
     "static"
   ],
   "customFields": {},
-  "plugins": [],
   "themes": [],
   "scripts": [],
   "stylesheets": [],

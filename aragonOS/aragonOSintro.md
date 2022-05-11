@@ -14,7 +14,7 @@ This DAO structure allows a variety of native and custom apps to be plugged into
 
 In this section we'll be breaking down all of the possible DAO commands that can be done via EVM crispr to modify the DNA of your Aaragon DAO.
 
-### The `connect` Command
+## The `connect` Command
 
 Interacting with any Aragon DAO will require you to preface your script with the `connect` command. This will tell EVMcrispr which DAO to send the script to and also the forwarding path which specifies through which apps we need to ask permissions from.
 
@@ -33,3 +33,8 @@ Referencing the addresses in the example Organization above we can see we're rou
  This will connect us using the aragonID ENS name associated with the DAO. This can be found usually in the top left of the Aragon DAO navbar.
 
   More on syntax-sugar in the <a href={useBaseUrl('helpers/')} target='_blank'>Helpers Section</a>
+
+
+## Aliasing Multiple Apps in Aragon DAOs
+
+If you have multiple instances of the same app installed you can specify which app you want to interact with by a simple numbering nomenclature. The first app installed on your DAO can always be referenced by `{appName}:0`, as in `agent:0`, `finance:0` or `token-manager:0`. Any additional apps installed will have the next number appended to their name. For example if you have 1 agent installed and you install another, the second agent can be referenced by `agent:1`, the third by `agent:2` and so on.

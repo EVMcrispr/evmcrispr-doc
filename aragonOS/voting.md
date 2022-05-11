@@ -28,9 +28,15 @@ There are three eligible entities you can choose from, Anyone, Token Holders, Sp
 
 ## Granting Permissions
 
+:::warning
+This command can potentially remove a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
+
+The most critical permissions are argumentably the ones on the Kernel (DAO main contract) and the ACL (permission management contract), so be careful who we grant them to.
+:::
+
 To grant permissions you'll use the following syntax:
 
-`grant {entity} {app} {role} {defaultPermissionManager}`
+`grant <entity> <app> <roleName> [defaultPermissionManager]`
 
 which in practice could look something like:
 
@@ -59,8 +65,7 @@ You'll need the following parameters to install a new Voting App to your DAO:
 to install this app the syntax is as follows:
 
 ```
-connect {yourDAOsAddress} {forwardingPath}
-install voting:new {votingTokenAddress} {supportRequiredPercent} {miniumApproval} {voteDuration} 
+install voting:new <votingTokenAddress> <supportRequiredPercent> <miniumApproval> <voteDuration> 
 // add any permissions you want to grant here.
 ```
 You should also consider what permissions you'll need to integrate your new voting app. You can append these directly to your installation scripts. Learn more in the grants command documentaion.(ADD LINK)
@@ -74,7 +79,7 @@ You should also consider what permissions you'll need to integrate your new voti
 
 To remove a permission from an entity follow this syntax:
 
-`revoke {entity} {app} {role} {removePermissionManager?}`
+`revoke <entity> <app> <roleName> [removePermissionManager?]`
 
 in practice this could look like:
 
@@ -87,11 +92,11 @@ This would remove the ability for anyone to create votes in the voting app, whil
 
 Using the `exec` command we can create internal actions that will modify the settings of our DAO.
 
-An exhaustive list of actions that can be performed on the voting app can be found on the [base implementation contract](https://blockscout.com/xdai/mainnet/address/0xD4856Cd82Cb507B2691Bcc3F02d8939671a800C0/write-contract)
+An exhaustive list of actions that can be performed on the voting app can be found in the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/voting/contracts/Voting.sol)
 
 However we'll use the two most common modifications `changeMinAcceptQuorumPct` and `changeSupportRequiredPct` to showcase the `exec` command. We use the following base syntax:
 
-`exec {app} {methodName} {parameters}`
+`exec <app> <methodName> [parameters]`
 
 i.e.
 `exec voting changeMinAcceptQuorumPct 18e16`
