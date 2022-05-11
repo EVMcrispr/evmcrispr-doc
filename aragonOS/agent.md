@@ -12,18 +12,18 @@ The Agent App executes interactions with external ethereum addresses, including 
 
 Before installing an app you should consider any permissions it will need to fit your purposes. Here is an exhaustive list of roles for the agent app:
 
-EXECUTE_ROLE 
+`EXECUTE_ROLE` 
  - Allows an entity to execute an external transaction through the agent
-SAFE_EXECUTE_ROLE
-TRANSFER_ROLE
+`SAFE_EXECUTE_ROLE`
+`TRANSFER_ROLE`
     - Allows an entity to transfer tokens from the agent's wallet
-ADD_PROTECTED_TOKEN_ROLE
-REMOVE_PROTECTED_TOKEN_ROLE
-ADD_PRESIGNED_HASH_ROLE
+`ADD_PROTECTED_TOKEN_ROLE`
+`REMOVE_PROTECTED_TOKEN_ROLE`
+`ADD_PRESIGNED_HASH_ROLE`
     - Allows this entity to add a presigned hash to the agent. [Learn more](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275 
-DESIGNATE_SIGNER_ROLE
+`DESIGNATE_SIGNER_ROLE`
     - Designates this entity as a signer for the agent. [Learn more](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275).
-RUN_SCRIPT_ROLE
+`RUN_SCRIPT_ROLE`
     - Allows this entity to run an EVM script on the agent
 
 ### Types of Entities
@@ -37,11 +37,17 @@ There are four eligible entities you can choose from: App, Anyone, Token Holders
 
 ## Granting Permissions
 
+:::warning
+This command can potentially remove a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
+
+The most critical permissions are argumentably the ones on the Kernel (DAO main contract) and the ACL (permission management contract), so be careful who we grant them to.
+:::
+
 The agent is made to carry out the requests from other apps or DAO members, take some time to consider what entities need access to your agent.
 
 To grant permissions you'll use the following syntax:
 
-`grant {entity} {app} {role} {defaultPermissionManager}`
+`grant <entity> <app> <roleName> [defaultPermissionManager]`
 
 In practice this would look like:
 
@@ -66,7 +72,7 @@ install agent:new
 
 To remove a permission from an entity follow this syntax:
 
-`revoke {entity} {app} {role} {removePermissionManager?}`
+`revoke <entity> <app> <roleName> [removePermissionManager?]`
 
 in practice this could look like:
 
@@ -74,10 +80,21 @@ in practice this could look like:
 
 This would remove the ability for the voting app to transfer funds held by the agent, while keeping the Permission Manager in place should this permission need to be modified in the future.
 
-## Creating External Actions
+## Internal Actions
+The agent can also perform actions to other apps within the DAO, however the syntax is a bit different:
+
+`exec <app> <methodName> [parameters]`
+
+For example:
+
+`exec agent transfer 0xa117000000f279d81a1d3cc75430faa017fa5a2e agent:1 100e18`
+
+This would transfer 100 ANT tokens from the first agent to the second agent, given a second agent is installed.
+
+## External Actions
 The agent uses the `act` command to interact with external entities such as smart contracts. The syntax is as follows:
 
-`act {agent} {targetEthereumAddress} {function} {inputParameters}`
+`act <agent> <targetEthereumAddress> <function> [inputParameters]`
 
 The functions for a given *verified* smart contract can be found on the `write` or `write proxy` page in the network's block explorer. For example here is the [contract for the Aragon token `ANT`](https://etherscan.io/token/0xa117000000f279d81a1d3cc75430faa017fa5a2e#writeContract). We can use the basic task of sending ANT to another address to showcase the syntax for `act`:
 
@@ -89,12 +106,15 @@ To approve sending 10 ANT tokens from the agent, and then:
 
 This would transfer 10 ANT from the agent's wallet to the specified ETH address `0x62Bb362d63f14449398B79EBC46574F859A6045D`
 
-## Modifying the App
+For an exhaustive list of functions that agent can perform, check out the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/agent/contracts/Agent.sol)
 
-Using the `exec` command we can create internal actions.
-
-An exhaustive list of actions that can be performed on the voting app can be found on the [base implementation contract](https://etherscan.io/address/0x8b2bc1aa673aae1ec9c75704f9ad2a475804cec8#writeProxyContract)
-
-We'll use the `newImmediatePayment` function to show the syntax of the `exec` command. This is the base syntax:
+## Internal Actions
+Th agent can also perform actions to other apps within the DAO, however the syntax is a bit different:
 
 `exec {app} {methodName} {parameters}`
+
+For example:
+
+`exec agent transfer 0xa117000000f279d81a1d3cc75430faa017fa5a2e agent:1 100e18`
+
+This would transfer 100 ANT tokens from the first agent to the second agent, given a second agent is installed.

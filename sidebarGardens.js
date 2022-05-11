@@ -1,3 +1,3 @@
 module.exports = {
-  gardens: ['introGardens']
+  gardens: ['introGardens', 'disputableVoting', `convictionVoting`]
 }
