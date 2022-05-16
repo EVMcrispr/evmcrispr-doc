@@ -104,3 +104,94 @@ i.e.
 
 `exec voting changeSupportRequiredPct 50e16`
 - This would change the Support Required to 50%
+
+## Contract Functions 
+
+Below is an exhaustive list of all possible actions you can perform with the voting app. we'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+
+### `changeSupportRequiredPct`
+
+This function will change the Support Required Percentage needed to pass votes on the voting app.
+
+#### Parameters
+
+- `supportRequiredPct` - This is decimal value of the percentage you wish to change your Support Required to. It is expressed in WEI with a decimal precision of 18. (uint256)
+
+#### Permissions
+
+The entity creating the action will need the `MODIFY_SUPPORT_ROLE` role.
+
+#### Syntax
+
+`exec voting changeSupportRequiredPct <supportRequiredPct>`
+i.e `exec voting changeSupportRequiredPct 51e16` would change the Support Required to 51%
+
+### `changeMinAcceptQuorumPct`
+
+This function will change the Minimum Approval percentage needed to pass votes on the voting app.
+
+#### Parameters
+
+- `minAcceptQuorumPct` - This is decimal value of the percentage you wish to change your Minimum Approval to. It is expressed in WEI with a decimal precision of 18. (uint256)
+
+#### Permissions
+
+The entity creating the action will need the `MODIFY_QUORUM_ROLE` role.
+
+#### Syntax
+
+`exec voting changeMinAcceptQuorumPct <minAcceptQuorumPct>`
+i.e `exec voting changeMinAcceptQuorumPct 10e16` would change the Minium Quorum to 10%
+
+### `newVote`
+
+This function will create new vote on the voting app.
+
+#### Parameters
+
+- `executionScript` - This is the EVM script that will be executed on approval and execution of the vote. (bytes)
+- `metadata` - The metadata of the vote. (string)
+- `castVote` - Whether or not to cast your vote along with the vote creation. (boolean)
+- `executesIfDecided`- Whether to immediately execute newly created vote if it passes with the cast vote. (boolean)
+
+#### Permissions
+
+The entity creating the action will need the `CREATE_VOTES_ROLE` role.
+
+#### Syntax
+
+`exec voting newVote <exectuionScript> <metadata> <castVote> <executesIfDecided>`
+
+### `vote`
+
+This function will cast your vote if eligible on the specified vote on the voting app.
+
+#### Parameters 
+
+- `voteId` - The vote ID number on the voting app that you wish to vote on. (uint256)
+- `supports` - Where the entity supports the vote or not. (boolean)
+- `executesIfDecided` - If the vote should be executed if the votes passes resulting from cast vote. (boolean)
+
+#### Permissions
+
+No additional permissions are needed to perform this function.
+
+#### Syntax 
+
+`exec voting vote <voteId> <supports> <executesIfDecided>`
+
+### `executeVote`
+
+This function will execute, if possible, an existing vote that has already passed.
+
+#### Parameters
+
+- `voteId` - The vote ID number on the voting app that you wish to vote on. (uint256)
+
+#### Permissions
+
+No additional permissions are needed to perform this function.
+
+#### Syntax
+
+`exec voting executeVote <voteId>`

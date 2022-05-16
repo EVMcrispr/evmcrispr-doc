@@ -12,19 +12,22 @@ The Agent App executes interactions with external ethereum addresses, including 
 
 Before installing an app you should consider any permissions it will need to fit your purposes. Here is an exhaustive list of roles for the agent app:
 
-`EXECUTE_ROLE` 
- - Allows an entity to execute an external transaction through the agent
-`SAFE_EXECUTE_ROLE`
-`TRANSFER_ROLE`
-    - Allows an entity to transfer tokens from the agent's wallet
-`ADD_PROTECTED_TOKEN_ROLE`
-`REMOVE_PROTECTED_TOKEN_ROLE`
-`ADD_PRESIGNED_HASH_ROLE`
-    - Allows this entity to add a presigned hash to the agent. [Learn more](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275 
-`DESIGNATE_SIGNER_ROLE`
-    - Designates this entity as a signer for the agent. [Learn more](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275).
-`RUN_SCRIPT_ROLE`
-    - Allows this entity to run an EVM script on the agent
+- `EXECUTE_ROLE` 
+  - Allows an entity to execute an external transaction through the agent
+- `SAFE_EXECUTE_ROLE`
+  - Allows the given entity to perform the `safeExecute` function through the agent
+- `TRANSFER_ROLE`
+  - Allows an entity to transfer tokens from the agent's wallet
+- `ADD_PROTECTED_TOKEN_ROLE`
+  - Allows this entity to add tokens to a list of tokens that cannot be spent or transferred while held by the agent.
+- `REMOVE_PROTECTED_TOKEN_ROLE`
+  - Allows this entity to remove tokens from a list of tokens that cannot be spent or transferred while held by the agent.
+- `ADD_PRESIGNED_HASH_ROLE`
+  - Allows this entity to add a presigned hash to the agent. [Learn more](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275) 
+- `DESIGNATE_SIGNER_ROLE`
+  - Designates this entity as a signer for the agent. [Learn more](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275).
+- `RUN_SCRIPT_ROLE`
+  - Allows this entity to run an EVM script on the agent
 
 ### Types of Entities
 
@@ -92,7 +95,8 @@ For example:
 This would transfer 100 ANT tokens from the first agent to the second agent, given a second agent is installed.
 
 ## External Actions
-The agent uses the `act` command to interact with external entities such as smart contracts. The syntax is as follows:
+The agent uses the `act` command to interact with external entities such as smart contracts. The entity wishing to execute an external action will need the role `EXECUTE_ROLE`.
+ The syntax is as follows:
 
 `act <agent> <targetEthereumAddress> <function> [inputParameters]`
 
@@ -108,13 +112,103 @@ This would transfer 10 ANT from the agent's wallet to the specified ETH address 
 
 For an exhaustive list of functions that agent can perform, check out the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/agent/contracts/Agent.sol)
 
-## Internal Actions
-Th agent can also perform actions to other apps within the DAO, however the syntax is a bit different:
 
-`exec {app} {methodName} {parameters}`
+## Contract Functions 
 
-For example:
+Below is an exhaustive list of all possible external and internal actions you can perform with the agent. we'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 
-`exec agent transfer 0xa117000000f279d81a1d3cc75430faa017fa5a2e agent:1 100e18`
+### `safeExecute`
+Executes the specified action to an external contract, while preventing protected tokens from being spent.
 
-This would transfer 100 ANT tokens from the first agent to the second agent, given a second agent is installed.
+#### Parameters
+- `target` - The ETH address of the external contract you want to interact with. (ethAddress)
+- `data` - Calldata for the action. (bytes)
+
+#### Permissions
+
+The entity executing the action via the agent will need the `SAFE_EXECUTE_ROLE` role.
+
+#### Syntax
+
+`exec agent safeExecute <target> <data>`
+
+### `addProtectedToken`
+
+This will add a specified token address, to a list of tokens that cannot be spent or trasnferred while held by the agent.
+
+#### Parameters
+- `address` - The token address of the token you want to protect
+
+#### Permissions
+
+The entity executing the action via the agent will need the `ADD_PROTECTED_TOKEN_ROLE` role. (ETHaddress)
+
+#### Syntax
+
+`exec agent addProtectedtoken <address>`
+
+### `removeProtectedToken`
+
+This will remove a specified token address, to a list of tokens that cannot be spent or trasnferred while held by the agent.
+
+#### Parameters
+- `address` - The token address of the token you want to remove from the protected tokens list. (ETHaddress)
+
+#### Permissions
+
+The entity executing the action via the agent will need the `REMOVE_PROTECTED_TOKEN_ROLE` role.
+
+#### Syntax
+
+`exec agent removeProtectedtoken <address>`
+
+### `presignHash`
+
+Identifies a hash that will automatically be considered signed
+
+#### Parameters
+
+- `hash` - The hash that will be considered signed automatically. (bytes)
+
+#### Permissions
+The entity executing the action via the agent will need the `ADD_PRESIGNED_HASH_ROLE` role.
+
+#### Syntax
+
+`exec agent presignHash <hash>`
+
+
+### `setDesignatedSigner`
+
+Sets an ETH address as the designated signer of the app, which then can sign messages on behalf of the app. 
+
+#### Parameters
+
+- `address` - The address of the entity you want to designate as the signer. (ETHaddress)
+
+### Permissions
+
+The entity executing the action via the agent will need the `DESIGNATE_SIGNER_ROLE` role.
+
+#### Syntax
+
+`exec agent setDesignatedSigner <address>`
+
+### `transfer`
+
+Transfers tokens from the agent to a specified ETH adress.
+
+#### Parameters
+
+- `token` - The token contract address of the token you wish to transfer. (ETHaddress) 
+- `to` - The ETH address to send tokens to. (ETHaddress)
+- `value` - The amount of tokens you wish to send, taking into consideration the decimal precision. (uint256)
+
+#### Permissions
+
+The entity executing the action via the agent will need the `TRANSFER_ROLE` role.
+
+#### Syntax 
+
+`exec agent transfer <token> <to> <value>`
+

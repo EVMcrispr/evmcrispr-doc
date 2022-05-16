@@ -97,3 +97,183 @@ We'll use the `newImmediatePayment` function to show the syntax of the `exec` co
 i.e
 `exec finance newImmediatePayment 0xa117000000f279d81a1d3cc75430faa017fa5a2e 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"`
 This would request to send 100 ANT tokens to 0x62Bb362d63f14449398B79EBC46574F859A6045D with the context of "payment for documentation work", which would show up on a DAO vote.
+
+## Contract Functions 
+
+Below is an exhaustive list of all possible actions you can perform with the finance app. we'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+
+### `deposit`
+
+This will deposit approved ERC20 or ETH tokens into the vault managed by the finance app.
+
+#### Parameters
+
+- `token` - The address of the token that you wish to deposit. (address)
+- `amount` - The amount of tokens you wish to deposit. **Take note of the token's decimal precision**. (uint256)
+- `reference` - The reason for the deposit. (string)
+
+#### Permissions
+
+No additional permissions are needed to perform this function.
+
+#### Syntax
+
+`exec finance deposit <token> <amount> <reference>`
+
+### `newImmediatePayment`
+
+This will create a new payment submission, requesting tokens held in the finance app's specified vault.
+
+#### Parameters 
+
+- `token` - The address of the token you are requesting payment of. (address)
+- `receiver` - The address of the entity that will receive the tokens. (address)
+- `amount` - The amount of tokens being requested. **Take note of the token's decimal precision**. (uint256)
+- `reference` - The reason for the deposit. (string)
+
+#### Permissions 
+
+The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
+
+#### Syntax 
+
+`exec finance newImmediatePayment <token> <receiver> <amount> <reference>`
+
+### `newScheduledPayment`
+
+Sets up a recurring payment scheduled for a specified amount of time, at set intervals with a specified token. 
+
+#### Parameters
+
+- `token` - The address of the token you are requesting payment of. (address)
+- `receiver` - The address of the entity that will receive the tokens. (address)
+- `amount` - The amount of tokens being requested. **Take note of the token's decimal precision**. (uint256)
+- `initialPaymentTime` - The timestamp of when the first payment is created. (unint64)
+- `interval` - The amount of time that passes between one payment to the next. (uint64)
+- `maxExecutions` - The maximum instances a payment can be executed. (uint64)
+- `reference` - The reason for the deposit. (string)
+
+#### Permissions 
+
+The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
+
+#### Syntax 
+
+`exec finance newImmediatePayment <token> <receiver> <amount> <initialPaymentTime> <interval> <maxExecutions> <reference>`
+
+### `setPeriodDuration`
+
+Changes the accounting period duration, used for establishing periodic budgets. 
+
+#### Parameters
+
+- `periodDuration` - The amount of time you want to change the budget duration to. (uint64)
+
+### Permissions
+
+The entity creating the action will need the `CHANGE_PERIOD_ROLE` role.
+
+#### Syntax 
+
+`exec finance setPeriodDuration <periodDuration>`
+
+### `setBudget`
+
+This will establish a budget, setting a cap on the amount of a specified token that can be paid out in each period.
+
+#### Parameters 
+
+- `token` - The address of the token you wish to set a budget for. 
+- `amount` - The maximum amount of specified tokens that can be paid out within the budget. 
+
+### Permissions
+
+The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
+
+### Syntax 
+
+`exec finance setBudget <token> <amount>`
+
+### `removeBudget`
+
+Removes any set budget for the specified token.
+
+#### Parameters 
+
+- `token` - The address of the token you wish to remove a budget for. 
+
+### Permissions
+
+The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
+
+### Syntax 
+
+`exec finance removeBudget <token> <amount>`
+
+### `executePayment`
+
+Execute a pending payment.
+
+#### Parameters
+
+- `paymentId` - The numerical identifier of the pending payment. (uint256)
+
+#### Permissions
+
+The entity that will execute the payment needs the `EXECUTE_PAYMENTS_ROLE` role.
+
+#### Syntax
+
+`exec finance executePayment <paymentId>`
+
+### `receiverExecutePayment`
+
+This allows the receipient of the payment to execute it without needing the `EXECUTE_PAYMENTS_ROLE`.
+
+#### Parameters 
+
+- `paymentId` - The numerical identifier of the pending payment. (uint256)
+
+#### Permissions 
+
+There are no permissions needed to execute this function, except that the caller must be the payment recipient address.
+
+#### Syntax
+
+`exec finance receiverExecutePayment <paymentId>`
+
+### `setPaymentStatus`
+
+Can activate or disable an established payment. 
+
+#### Parameters
+
+- `paymentId` - The numerical identifier of the payment you wish to change the status of. (uint256)
+- `active` - Whether to change the payment status to active (true) or disabled (false). (boolean)
+
+#### Permissions 
+
+The entity that wishes to change the status of a payment will need the `MANAGE_PAYMENTS_ROLE` role.
+
+#### Syntax
+
+`exec finance setPaymentStatus <paymentId> <active>`
+
+#### `recoverToVault`
+
+Sends the full holdings of a specified token that is held by this contract the vault/agent. This is in case tokens are mistakenly sent to this contract.
+
+#### Parameters 
+
+- `token` - The address of the token you wish to recover to the vault. 
+
+#### Permissions 
+
+No permissions are needed to perform this function.
+
+#### Syntax 
+
+`exec finance recoverToVault <token>`
+
+
+
