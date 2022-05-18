@@ -186,7 +186,7 @@ Sets an ETH address as the designated signer of the app, which then can sign mes
 
 - `address` - The address of the entity you want to designate as the signer. (ETHaddress)
 
-### Permissions
+#### Permissions
 
 The entity executing the action via the agent will need the `DESIGNATE_SIGNER_ROLE` role.
 

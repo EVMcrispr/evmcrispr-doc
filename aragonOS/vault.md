@@ -64,3 +64,41 @@ i.e
 
 This would send 10 ANT tokens from the 1st vault to the second vault, assuming two vaults are installed
 
+## Contract Functions
+
+Below is an exhaustive list of all possible actions you can perform with the vault app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+
+### `deposit`
+
+This will deposit approved ERC20 or ETH tokens into the vault.
+
+#### Parameters
+
+- `token` - The address of the token that you wish to deposit. (address)
+- `amount` - The amount of tokens you wish to deposit. **Take note of the token's decimal precision**. (uint256)
+
+#### Permissions
+
+No additional permissions are needed to perform this function.
+
+#### Syntax
+
+`exec vault deposit <token> <amount> <reference>`
+
+### `transfer`
+
+Transfers tokens from the vault to a specified ETH adress.
+
+#### Parameters
+
+- `token` - The token contract address of the token you wish to transfer. (ETHaddress) 
+- `to` - The ETH address to send tokens to. (ETHaddress)
+- `value` - The amount of tokens you wish to send, taking into consideration the decimal precision. (uint256)
+
+#### Permissions
+
+The entity wishing to send funds from the vault will need the `TRANSFER_ROLE` role.
+
+#### Syntax 
+
+`exec vault transfer <token> <to> <value>`

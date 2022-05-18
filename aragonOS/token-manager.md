@@ -77,3 +77,133 @@ For example:
 This would mint 100 DAO tokens from the token manager to the agent, given the tokens decimal precision is set to 18.
 
 An exhaustive list of functions that can be performed by the token-manager can be found in the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/token-manager/contracts/TokenManager.sol)
+
+## Contract Functions
+
+Below is an exhaustive list of all possible actions you can perform with the token-manager app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+
+### `mint`
+
+This function will mint more of the tokens that are associated with the token-manager app.
+
+#### Parameters 
+
+- `receiver` - The address of the entity that will receive the minted tokens. (address)
+- `amount` - The amount of tokens you wish to mint. **Take note of the token's decimal precision**. (uint256)
+
+#### Permissions 
+
+The entity that wishes to mint more tokens will need the `MINT_ROLE` role.
+
+#### Syntax
+
+`exec token-manager mint <receiver> <amount>`
+
+### `issue`
+
+This will mint a specified amount of tokens that will be held by the token-manager app.
+
+#### Parameters 
+
+- `amount` - The amount of tokens you wish to mint. **Take note of the token's decimal precision**. (uint256)
+
+#### Permissions 
+
+The entity that wishes to mint more tokens to the token-manager app will need the `ISSUE_ROLE` role.
+
+#### Syntax 
+
+`exec token-manager issue <amount>`
+
+### `assign` 
+
+Sends a specified amount of the assoiacted token-manager tokens that are currently held by the token-manager to a specified address.
+
+#### Parameters
+- `receiver` - The address of the entity that will receive the assigned tokens. (address)
+- `amount` - The amount of tokens you wish to assign. **Take note of the token's decimal precision**. (uint256)
+
+#### Permissions
+
+The entity that wishes to assign tokens to a specified address will require the `ASSIGN_ROLE` role.
+
+#### Syntax
+`exec token-manager assign <receiver> <amount>`
+
+### `burn`
+
+This function will burn a specified amount of the associated token-manager tokens from a specified address.
+
+#### Parameters
+
+- `holder` - The address of the current token holder of which you would like to burn tokens from.
+- `amount` - The amount of tokens you wish to burn. **Take note of the token's decimal precision**. (uint256)
+
+#### Permissions
+
+The entity that wishes to burn tokens must have the `BURN_ROLE` role.
+
+#### Syntax
+
+`exec token-manager burn <holder> <amount>`
+
+### `assignVested` 
+
+Creates a revokable vesting schedule. Assigning tokens held by the token-manager to a specified address according to a specified vesting schedule. (NEEDS MORE INFO)
+
+#### Parameters
+
+- `receiver` - The address of the entity that will receive the vested tokens. (address)
+- `amount` - The amount of tokens you wish to vest. **Take note of the token's decimal precision**. (uint256)
+- `start` - (UNCLEAR FORMAT DATE IS COMPOSED HOW?)
+- `cliff` - 
+- `vested` - 
+- `revokable` - Whether the vesting can be revoked by the token-manager. (boolean)
+
+```
+/**
+    * @notice Assign `@tokenAmount(self.token(): address, _amount, false)` tokens to `_receiver` from the Token Manager's holdings with a `_revokable : 'revokable' : ''` vesting starting at `@formatDate(_start)`, cliff at `@formatDate(_cliff)` (first portion of tokens transferable), and completed vesting at `@formatDate(_vested)` (all tokens transferable)
+    * @param _receiver The address receiving the tokens, cannot be Token Manager itself
+    * @param _amount Number of tokens vested
+    * @param _start Date the vesting calculations start
+    * @param _cliff Date when the initial portion of tokens are transferable
+    * @param _vested Date when all tokens are transferable
+    * @param _revokable Whether the vesting can be revoked by the Token Manager
+    */
+    function assignVested(
+        address _receiver,
+        uint256 _amount,
+        uint64 _start,
+        uint64 _cliff,
+        uint64 _vested,
+        bool _revokable
+    )
+```
+
+#### Permissions 
+
+The entity wishing to assign a vesting schedule will need the `ASSIGN_ROLE` role.
+
+#### Syntax 
+
+`exec token-manager assignVested <receiver> <amount> <start> <cliff> <vested> <revokable>`
+
+### `revokeVesting`
+
+Revoke the specified vesting from a specified token holder.
+
+#### Parameters 
+
+- `holder` - The address of the recipient of the vested tokens. (address)
+- `vestingId` - The numerical identifier of the vesting schedule. (uint256)
+
+#### Permissions 
+
+The entity that wishes to revoke a vesting schedule will need the `REVOKE_VESTINGS_ROLE` role. 
+
+#### Syntax 
+
+`exec token-manager revokeVesting <holder> <vestingId>`
+
+
+
