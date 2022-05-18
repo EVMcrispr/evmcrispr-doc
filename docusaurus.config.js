@@ -10,7 +10,7 @@ const config = {
   tagline: "Mutate a DAO's DNA",
   url: 'https://docs.evmcrispr.blossom.software',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'BlossomLabs', // Usually your GitHub org/user name.
