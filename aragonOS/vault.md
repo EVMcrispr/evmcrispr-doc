@@ -5,6 +5,16 @@ title: Vault
 
 The Vault is a simple app intended to store funds. It doesn't have a user interface so it is typically installed in tandem with the `finance` app to manage the funds inside of it. 
 
+
+## Installing the App
+
+There are no parameters needed to install a new vault to your DAO, review the `grant` section before proceeding. You can use this syntax to install the agent:
+
+```
+install vault:new
+// add any permissions you want to grant here.
+```
+
 ## Granting Permissions
 
 :::warning
@@ -19,23 +29,21 @@ To grant permissions you'll use the following syntax:
 
 `grant <entity> <app> <roleName> [defaultPermissionManager]`
 
-### Types of Entities
+Here is an exhaustive list of roles for the vault app:
+
+- `TRANSFER_ROLE`
+  - Allows an entity to transfer tokens from the vault's address
+
+<details>
+<summary>Types of Entities</summary>
 
 There are four eligible entities you can choose from: **App**, **Anyone**, **Token Holders**, **Specified Eth Address**.
-
 - Anyone is expressed as `ANY_ENTITY` and can be any user visiting your DAO with a web wallet.
-- Token Holders is expressed as token-manager and is affiliated with your token-managers token. Anyone holding the token-manager's token is inside of this entity
+- Token Holders is expressed as token-manager and is affiliated with your token-managers token. Anyone holding the token-manager's token is inside of this entity.
 - Specified Eth Address is expressed as the ETH address starting with `0x`, only this address will be the specified entity.
-- App is the internal name of the internal Aragon App installed on your DAO, such as `voting`, `token-manager`, or `agent`
+- App is the internal name of the internal Aragon App installed on your DAO, such as `voting`, `token-manager`, or `agent`.
 
-## Installing the App
-
-There are no parameters needed to install a new vault to your DAO, review the `grant` section before proceeding. You can use this syntax to install the agent:
-
-```
-install vault:new
-// add any permissions you want to grant here.
-```
+</details>
 
 ## Revoking Permissions
 
@@ -53,7 +61,7 @@ in practice this could look like:
 
 This would remove the ability for the finance app to transfer funds held by the vault, while keeping the Permission Manager in place should this permission need to be modified in the future.
 
-## Internal Transactions
+## Internal Actions
 
 If we wanted to create an interaction between the vault inside of our DAO we can use the following syntax: 
 
@@ -64,28 +72,8 @@ i.e
 
 This would send 10 ANT tokens from the 1st vault to the second vault, assuming two vaults are installed
 
-## Contract Functions
-
-Below is an exhaustive list of all possible actions you can perform with the vault app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
-
-### `deposit`
-
-This will deposit approved ERC20 or ETH tokens into the vault.
-
-#### Parameters
-
-- `token` - The address of the token that you wish to deposit. (address)
-- `amount` - The amount of tokens you wish to deposit. **Take note of the token's decimal precision**. (uint256)
-
-#### Permissions
-
-No additional permissions are needed to perform this function.
-
-#### Syntax
-
-`exec vault deposit <token> <amount> <reference>`
-
-### `transfer`
+<details>
+<summary>transfer: token, to, value</summary>
 
 Transfers tokens from the vault to a specified ETH adress.
 
@@ -97,8 +85,10 @@ Transfers tokens from the vault to a specified ETH adress.
 
 #### Permissions
 
-The entity wishing to send funds from the vault will need the `TRANSFER_ROLE` role.
+The entity executing the action via the vault will need the `TRANSFER_ROLE` role.
 
 #### Syntax 
 
 `exec vault transfer <token> <to> <value>`
+
+</details>

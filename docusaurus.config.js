@@ -8,9 +8,9 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 const config = {
   title: 'EVMcrispr Docs',
   tagline: "Mutate a DAO's DNA",
-  url: 'https://docs.evm-crispr.blossom.software',
+  url: 'https://docs.evmcrispr.blossom.software',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'BlossomLabs', // Usually your GitHub org/user name.
@@ -43,19 +43,7 @@ const config = {
         {
           to: 'aragonOS/',
           activeBasePath: 'aragonOS',
-          label: 'Aragon DAOs',
-          position: 'left'
-        },
-        {
-          to: 'gardens/',
-          activeBasePath: 'gardens',
-          label: 'Gardens',
-          position: 'left'
-        },
-        {
-          to: 'helpers/',
-          activeBasePath: 'helpers',
-          label: 'Helper Functions',
+          label: 'AragonOS Apps',
           position: 'left'
         }
       ]
@@ -64,20 +52,11 @@ const config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Tutorial',
-              to: '/docs/intro'
-            }
-          ]
-        },
-        {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus'
+              label: 'Forum',
+              href: 'https://forum.1hive.org'
             },
             {
               label: 'Discord',
@@ -85,7 +64,7 @@ const config = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/docusaurus'
+              href: 'https://twitter.com/blossom_labs'
             }
           ]
         },
@@ -93,12 +72,8 @@ const config = {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: '/blog'
-            },
-            {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus'
+              href: 'https://github.com/1hive/evmcrispr'
             }
           ]
         }
@@ -106,8 +81,8 @@ const config = {
       copyright: `Copyright © ${new Date().getFullYear()} Blossom Labs. Built with Docusaurus.`
     },
     prism: {
-      theme: lightCodeTheme,
-      darkTheme: darkCodeTheme
+      theme: darkCodeTheme,
+      // darkTheme: darkCodeTheme
     }
   },
   plugins: [
@@ -126,24 +101,6 @@ const config = {
         path: 'aragonOS',
         routeBasePath: 'aragonOS',
         sidebarPath: require.resolve('./sidebarAragonOS.js')
-      }
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'gardens',
-        path: 'gardens',
-        routeBasePath: 'gardens',
-        sidebarPath: require.resolve('./sidebarGardens.js')
-      }
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'helpers',
-        path: 'helpers',
-        routeBasePath: 'helpers',
-        sidebarPath: require.resolve('./sidebarHelpers.js')
       }
     ]
   ]
