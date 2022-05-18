@@ -1,3 +1,3 @@
 module.exports = {
-  aragonOS: ['aragonOSintro','voting','finance','token-manager','vault','agent']
+  aragonOS: ['aragonOSintro', 'token-manager', 'voting', 'finance', 'vault', 'agent']
 }
