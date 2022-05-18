@@ -72,7 +72,6 @@ i.e
 
 This would send 10 ANT tokens from the 1st vault to the second vault, assuming two vaults are installed
 
-
 <details>
 <summary>transfer: token, to, value</summary>
 

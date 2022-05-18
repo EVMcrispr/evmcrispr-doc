@@ -181,7 +181,7 @@ Changes the accounting period duration, used for establishing periodic budgets.
 
 - `periodDuration` - The amount of time you want to change the budget duration to. (uint64)
 
-### Permissions
+#### Permissions
 
 The entity creating the action will need the `CHANGE_PERIOD_ROLE` role.
 
@@ -201,11 +201,11 @@ This will establish a budget, setting a cap on the amount of a specified token t
 - `token` - The address of the token you wish to set a budget for. 
 - `amount` - The maximum amount of specified tokens that can be paid out within the budget. 
 
-### Permissions
+#### Permissions
 
 The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
-### Syntax 
+#### Syntax 
 
 `exec finance setBudget <token> <amount>`
 
@@ -220,11 +220,11 @@ Removes any set budget for the specified token.
 
 - `token` - The address of the token you wish to remove a budget for. 
 
-### Permissions
+#### Permissions
 
 The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
-### Syntax 
+#### Syntax 
 
 `exec finance removeBudget <token> <amount>`
 
