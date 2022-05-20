@@ -8,7 +8,7 @@ export default {
   "tagline": "Mutate a DAO's DNA",
   "url": "https://docs.evmcrispr.blossom.software",
   "baseUrl": "/",
-  "onBrokenLinks": "throw",
+  "onBrokenLinks": "warn",
   "onBrokenMarkdownLinks": "warn",
   "favicon": "img/favicon.ico",
   "organizationName": "BlossomLabs",
@@ -24,6 +24,11 @@ export default {
     ]
   ],
   "themeConfig": {
+    "colorMode": {
+      "defaultMode": "dark",
+      "disableSwitch": true,
+      "respectPrefersColorScheme": false
+    },
     "navbar": {
       "logo": {
         "alt": "evmcrispr logo",
@@ -77,107 +82,13 @@ export default {
       ],
       "copyright": "Copyright © 2022 Blossom Labs. Built with Docusaurus."
     },
-    "prism": {
-      "theme": {
-        "plain": {
-          "color": "#F8F8F2",
-          "backgroundColor": "#282A36"
-        },
-        "styles": [
-          {
-            "types": [
-              "prolog",
-              "constant",
-              "builtin"
-            ],
-            "style": {
-              "color": "rgb(189, 147, 249)"
-            }
-          },
-          {
-            "types": [
-              "inserted",
-              "function"
-            ],
-            "style": {
-              "color": "rgb(80, 250, 123)"
-            }
-          },
-          {
-            "types": [
-              "deleted"
-            ],
-            "style": {
-              "color": "rgb(255, 85, 85)"
-            }
-          },
-          {
-            "types": [
-              "changed"
-            ],
-            "style": {
-              "color": "rgb(255, 184, 108)"
-            }
-          },
-          {
-            "types": [
-              "punctuation",
-              "symbol"
-            ],
-            "style": {
-              "color": "rgb(248, 248, 242)"
-            }
-          },
-          {
-            "types": [
-              "string",
-              "char",
-              "tag",
-              "selector"
-            ],
-            "style": {
-              "color": "rgb(255, 121, 198)"
-            }
-          },
-          {
-            "types": [
-              "keyword",
-              "variable"
-            ],
-            "style": {
-              "color": "rgb(189, 147, 249)",
-              "fontStyle": "italic"
-            }
-          },
-          {
-            "types": [
-              "comment"
-            ],
-            "style": {
-              "color": "rgb(98, 114, 164)"
-            }
-          },
-          {
-            "types": [
-              "attr-name"
-            ],
-            "style": {
-              "color": "rgb(241, 250, 140)"
-            }
-          }
-        ]
-      },
-      "additionalLanguages": []
-    },
-    "colorMode": {
-      "defaultMode": "light",
-      "disableSwitch": false,
-      "respectPrefersColorScheme": false
-    },
     "docs": {
       "versionPersistence": "localStorage"
     },
     "metadata": [],
+    "prism": {
+      "additionalLanguages": []
+    },
     "hideableSidebar": false,
     "autoCollapseSidebarCategories": false,
     "tableOfContents": {

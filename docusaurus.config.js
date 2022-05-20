@@ -28,6 +28,11 @@ const config = {
   ],
 
   themeConfig: {
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
+    },
     navbar: {
       logo: {
         alt: 'evmcrispr logo',
@@ -79,10 +84,6 @@ const config = {
         }
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Blossom Labs. Built with Docusaurus.`
-    },
-    prism: {
-      theme: darkCodeTheme,
-      // darkTheme: darkCodeTheme
     }
   },
   plugins: [
