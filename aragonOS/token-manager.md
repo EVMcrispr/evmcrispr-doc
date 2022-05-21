@@ -7,11 +7,26 @@ The Token Manager app, as the name implies, is for managing tokens. Usually this
 
 ## Installing the app
 
-You usually want to create a new token along with the installation of the new token mananger.
+You usually want to create a new token along with the installation of the new token mananger. You'll need a couple parameters:
 
+- `token-symbol` 
+    - The symbol you wish to set for the token. 
+- `token-name`
+    - The name of the token you wish to create.
+- `token-manager` 
+    - The associated token-manage app which will have mint and burn priveleges for the token.
+- `token-decimals` 
+    - The number of decimal precision you wish to set for the token. The most common decimal precision is 18.
+- `token`
+    - The address of the token you wish to associate with the new token.
+- `transferable`
+    - Whether or not the token should be transferable 
+- `max-per-account`
+    - The maximum account of tokens a single address can hold. Setting this parameter to 0 means this amount is unlimited. This number is also related to the decimal precision. For example if the token decimal precision is 18 and you want the `max-per-account` to be 1 then this parameter input would be `1e18`
+    
 ```
 new token:<token-symbol> <token-name> <token-manager> [token-decimals]
-install token-manager:<id> <token> <transferable> <max-per-account>
+install token-manager:new <token> <transferable> <max-per-account>
 ```
 
 ## Granting Permissions
@@ -90,13 +105,10 @@ exec token-manager mint agent 100e18
 
 This would mint 100 DAO tokens from the token manager to the agent, given the tokens decimal precision is set to 18.
 
-An exhaustive list of functions that can be performed by the token-manager can be found in the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/token-manager/contracts/TokenManager.sol)
-
-## Contract Functions
-
 Below is an exhaustive list of all possible actions you can perform with the token-manager app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 
-### `mint`
+<details>
+<summary>mint</summary>
 
 This function will mint more of the tokens that are associated with the token-manager app.
 
@@ -112,8 +124,10 @@ The entity that wishes to mint more tokens will need the `MINT_ROLE` role.
 #### Syntax
 
 `exec token-manager mint <receiver> <amount>`
+</details>
 
-### `issue`
+<details>
+<summary>issue</summary>
 
 This will mint a specified amount of tokens that will be held by the token-manager app.
 
@@ -128,8 +142,9 @@ The entity that wishes to mint more tokens to the token-manager app will need th
 #### Syntax 
 
 `exec token-manager issue <amount>`
-
-### `assign` 
+</details>
+<details>
+<summary>assign</summary> 
 
 Sends a specified amount of the assoiacted token-manager tokens that are currently held by the token-manager to a specified address.
 
@@ -143,8 +158,10 @@ The entity that wishes to assign tokens to a specified address will require the 
 
 #### Syntax
 `exec token-manager assign <receiver> <amount>`
+</details>
 
-### `burn`
+<details>
+<summary>burn</summary>
 
 This function will burn a specified amount of the associated token-manager tokens from a specified address.
 
@@ -160,8 +177,10 @@ The entity that wishes to burn tokens must have the `BURN_ROLE` role.
 #### Syntax
 
 `exec token-manager burn <holder> <amount>`
+</details>
 
-### `assignVested` 
+<details>
+<summary>assignVested</summary> 
 
 Creates a revokable vesting schedule. Assigning tokens held by the token-manager to a specified address according to a specified vesting schedule. (NEEDS MORE INFO)
 
@@ -201,8 +220,9 @@ The entity wishing to assign a vesting schedule will need the `ASSIGN_ROLE` role
 #### Syntax 
 
 `exec token-manager assignVested <receiver> <amount> <start> <cliff> <vested> <revokable>`
-
-### `revokeVesting`
+</details>
+<details>
+<summary>revokeVesting</summary>
 
 Revoke the specified vesting from a specified token holder.
 
@@ -219,5 +239,5 @@ The entity that wishes to revoke a vesting schedule will need the `REVOKE_VESTIN
 
 `exec token-manager revokeVesting <holder> <vestingId>`
 
-
+</details>
 

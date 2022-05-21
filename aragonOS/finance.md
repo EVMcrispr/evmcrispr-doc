@@ -11,9 +11,9 @@ The Finance App will allow you to keep track of your DAO's finances, each app ca
 ## Installing the App
 
 To Install the Voting App you'll need to include two parameters:
- - Vault Address
+ - `vault`
     - This is the address of the installed Vault or Agent where the finance app will manage funds.
- - Period duration
+ - `periodDuration`
     - This is the budgeting period duration. This parameter is required but only relevant if you plan to make use of the budgeting feature (currently not on the UI).
 
 The syntax is as follows to install the app:
@@ -87,8 +87,6 @@ This would remove the ability for the voting app to execute a payment, while kee
 ## Internal Actions
 
 Using the `exec` command we can create internal actions.
-
-An exhaustive list of actions that can be performed with the finance app can be found on the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/finance/contracts/Finance.sol)
 
 We'll use the `newImmediatePayment` function to show the syntax of the `exec` command. This is the base syntax:
 
