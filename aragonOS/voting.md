@@ -12,13 +12,13 @@ The Voting App will allow your DAO members to create votes that will usually exe
 
 You'll need the following parameters to install a new Voting App to your DAO:
 
-- Voting Token Address
+- `votingTokenAddress`
     - This is the token your DAO recognizes to give voting power to your members, you should by default have already a Minime Token associated with your DAO from setup in the `Tokens` App. To learn how to configure a new token for your app, check out the `Tokens` section (ADD LINK)
-- Support Required Percent
+- `supportRequiredPercent`
     - This is the percent of YES votes vs. NO votes needed to pass a proposal. This parameter is expressed in WEI. i.e. for a Support Required of 51% this is 0.51 which in WEI equals *51e16* (51000000000000000000)
-- Minimum Approval Percent
+- `miniumApproval`
     - This is the amount of YES votes needed from the total token supply. This parameter is expressed in WEI similar to the example above in Support Required
-- Vote Duration 
+- `voteDuration` 
     - This is the amount of time each vote remains open for, be aware that currently this parameter cannot be changed once it is set, so choose wisely. This parameter is normally expressed in seconds*.
 
 :::info
@@ -101,9 +101,7 @@ This would remove the ability for anyone to create votes in the voting app, whil
 
 Using the `exec` command we can create internal actions that will modify the settings of our DAO.
 
-An exhaustive list of actions that can be performed on the voting app can be found in the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/voting/contracts/Voting.sol)
-
-However we'll use the two most common modifications `changeMinAcceptQuorumPct` and `changeSupportRequiredPct` to showcase the `exec` command. We use the following base syntax:
+We'll use the two most common modifications `changeMinAcceptQuorumPct` and `changeSupportRequiredPct` to showcase the `exec` command. We use the following base syntax:
 
 `exec <app> <methodName> [parameters]`
 

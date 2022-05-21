@@ -90,7 +90,7 @@ This would transfer 100 ANT tokens from the first agent to the second agent, giv
 Below is an exhaustive list of all possible internal actions you can perform with the agent. we'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 
 <details>
-<summary>safeExecute: target, data</summary>
+<summary>safeExecute</summary>
 Executes the specified action to an external contract, while preventing protected tokens from being spent.
 
 #### Parameters
@@ -109,7 +109,7 @@ The entity executing the action via the agent will need the `SAFE_EXECUTE_ROLE` 
 
 <details>
 
-<summary>addProtectedToken: token</summary>
+<summary>addProtectedToken</summary>
 
 This will add a specified token address, to a list of tokens that cannot be spent or trasnferred while held by the agent.
 
@@ -127,7 +127,7 @@ The entity executing the action via the agent will need the `ADD_PROTECTED_TOKEN
 </details>
 
 <details>
-<summary>removeProtectedToken: token</summary>
+<summary>removeProtectedToken</summary>
 
 This will remove a specified token address, to a list of tokens that cannot be spent or trasnferred while held by the agent.
 
@@ -146,7 +146,7 @@ The entity executing the action via the agent will need the `REMOVE_PROTECTED_TO
 
 <details>
 
-<summary>presignHash: hash</summary>
+<summary>presignHash</summary>
 
 Identifies a hash that will automatically be considered signed
 
@@ -165,7 +165,7 @@ The entity executing the action via the agent will need the `ADD_PRESIGNED_HASH_
 
 <details>
 
-<summary>setDesignatedSigner: address</summary>
+<summary>setDesignatedSigner</summary>
 
 Sets an ETH address as the designated signer of the app, which then can sign messages on behalf of the app. 
 
@@ -184,7 +184,7 @@ The entity executing the action via the agent will need the `DESIGNATE_SIGNER_RO
 </details>
 
 <details>
-<summary>transfer: token, to, value</summary>
+<summary>transfer</summary>
 
 Transfers tokens from the agent to a specified ETH adress.
 

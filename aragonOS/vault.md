@@ -72,8 +72,10 @@ i.e
 
 This would send 10 ANT tokens from the 1st vault to the second vault, assuming two vaults are installed
 
+Below is an exhaustive list of all possible actions you can perform with the vault app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+
 <details>
-<summary>transfer: token, to, value</summary>
+<summary>transfer</summary>
 
 Transfers tokens from the vault to a specified ETH adress.
 
