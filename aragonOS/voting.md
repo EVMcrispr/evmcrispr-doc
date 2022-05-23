@@ -10,6 +10,13 @@ The Voting App will allow your DAO members to create votes that will usually exe
 
 ## Installing the App
 
+
+To install this app the syntax is as follows:
+
+```
+install voting:new <votingTokenAddress> <supportRequiredPercent> <miniumApproval> <voteDuration> 
+```
+
 You'll need the following parameters to install a new Voting App to your DAO:
 
 - `votingTokenAddress`
@@ -19,26 +26,21 @@ You'll need the following parameters to install a new Voting App to your DAO:
 - `miniumApproval`
     - This is the amount of YES votes needed from the total token supply. This parameter is expressed in WEI similar to the example above in Support Required
 - `voteDuration` 
-    - This is the amount of time each vote remains open for, be aware that currently this parameter cannot be changed once it is set, so choose wisely. This parameter is normally expressed in seconds*.
+    - This is the amount of time each vote remains open for, be aware that currently this parameter cannot be changed once it is set, so choose wisely. This parameter is expressed in seconds, although you can append the letters "s", "m", "h", "w", "mo", and "y" at the end of the number.
 
-:::info
-We can leverage a bit of syntax-sugar to make calculating time easier with EVMcrispr. Time can also be expressed by appending s, m, h, d, w, and y at the end of the number for defining them as seconds, minutes, hours, days, weeks, and years respectively. For example 2d would get converted to 172,800 seconds, which is usually the format solidity smart contracts expect time periods to be passed in as.
-:::
+### Common use example
 
-to install this app the syntax is as follows:
+After installing a new voting app, one of the most important permissions to set up is the `CREATE_VOTES_ROLE`. Without it, the app is useless.
 
 ```
-install voting:new <votingTokenAddress> <supportRequiredPercent> <miniumApproval> <voteDuration> 
-// add any permissions you want to grant here.
+install voting:new @token(HNY) 50e16 10e16 3d
+grant ANY_ADDRESS voting:new CREATE_VOTES_ROLE voting:new
 ```
-You should also consider what permissions you'll need to integrate your new voting app. You can append these directly to your installation scripts. Learn more in the grants command documentaion.(ADD LINK)
 
 ## Granting Permissions
 
 :::warning
-This command can potentially remove a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
-
-The most critical permissions are argumentably the ones on the Kernel (DAO main contract) and the ACL (permission management contract), so be careful who we grant them to.
+This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
 :::
 
 To grant permissions you'll use the following syntax:
@@ -79,7 +81,7 @@ There are four eligible entities you can choose from: **App**, **Anyone**, **Tok
 ## Revoking Permissions
 
 :::warning
- This command can potentially remove a permission that is needed for the DAO to work. Be careful to not remove the permissions to create votes in voting.
+ This command can potentially remove a permission that is needed for the DAO to work. Be careful if you remove the CREATE_VOTES_ROLE, it may break the DAO.
 :::
 
 To remove a permission from an entity follow this syntax:

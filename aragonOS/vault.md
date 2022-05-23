@@ -8,26 +8,42 @@ The Vault is a simple app intended to store funds. It doesn't have a user interf
 
 ## Installing the App
 
-There are no parameters needed to install a new vault to your DAO, review the `grant` section before proceeding. You can use this syntax to install the agent:
+You can use this syntax to install the agent:
 
 ```
 install vault:new
-// add any permissions you want to grant here.
+```
+
+There are no parameters needed to install a new vault to your DAO.
+
+### Common use example
+
+The vault is usually used alongisde with the Finance app, although it can be used alone. You can install it and grant voting with the `TRANSFER_ROLE`.
+
+```
+install vault:new
+grant voting vault:new TRANSFER_ROLE voting
+```
+
+After filling the vault with some tokens, we can send 1 ANT to our accout with:
+
+```
+exec vault transfer @token(ANT) @me 1e18
 ```
 
 ## Granting Permissions
 
 :::warning
-This command can potentially remove a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
-
-The most critical permissions are argumentably the ones on the Kernel (DAO main contract) and the ACL (permission management contract), so be careful who we grant them to.
+This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
 :::
 
 The vault only has one role it can give to other entities and that is `TRANSFER_ROLE` which would allow a given entity to transfer the funds held in the vault.
 
 To grant permissions you'll use the following syntax:
 
-`grant <entity> <app> <roleName> [defaultPermissionManager]`
+```
+grant <entity> <app> <roleName> [defaultPermissionManager]
+```
 
 Here is an exhaustive list of roles for the vault app:
 
@@ -53,11 +69,15 @@ There are four eligible entities you can choose from: **App**, **Anyone**, **Tok
 
 To remove a permission from an entity follow this syntax:
 
-`revoke <entity> <app> <roleName> [removePermissionManager?]`
+```
+revoke <entity> <app> <roleName> [removePermissionManager=false]
+```
 
 in practice this could look like:
 
-`revoke finance vault TRANSFER_ROLE false`
+```
+revoke finance vault TRANSFER_ROLE
+```
 
 This would remove the ability for the finance app to transfer funds held by the vault, while keeping the Permission Manager in place should this permission need to be modified in the future.
 
@@ -65,12 +85,17 @@ This would remove the ability for the finance app to transfer funds held by the 
 
 If we wanted to create an interaction between the vault inside of our DAO we can use the following syntax: 
 
-`exec <app> <methodName> [parameters]`
+```
+exec <app> <methodName> [parameters]
+```
 
 i.e 
-`exec vault transfer 0xa117000000f279d81a1d3cc75430faa017fa5a2e  vault:1 10e18`
 
-This would send 10 ANT tokens from the 1st vault to the second vault, assuming two vaults are installed
+```
+exec vault transfer @token(ANT) vault:1 10e18
+```
+
+This would send 10 ANT tokens from the 1st vault to the second vault, assuming two vaults are installed.
 
 Below is an exhaustive list of all possible actions you can perform with the vault app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 

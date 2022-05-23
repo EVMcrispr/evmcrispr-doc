@@ -7,26 +7,47 @@ The Token Manager app, as the name implies, is for managing tokens. Usually this
 
 ## Installing the app
 
-You usually want to create a new token along with the installation of the new token mananger. You'll need a couple parameters:
+You usually want to create a new token along with the installation of the new token mananger.
 
-- `token-symbol` 
-    - The symbol you wish to set for the token. 
-- `token-name`
-    - The name of the token you wish to create.
-- `token-manager` 
-    - The associated token-manage app which will have mint and burn priveleges for the token.
-- `token-decimals` 
-    - The number of decimal precision you wish to set for the token. The most common decimal precision is 18.
-- `token`
-    - The address of the token you wish to associate with the new token.
-- `transferable`
-    - Whether or not the token should be transferable 
-- `max-per-account`
-    - The maximum account of tokens a single address can hold. Setting this parameter to 0 means this amount is unlimited. This number is also related to the decimal precision. For example if the token decimal precision is 18 and you want the `max-per-account` to be 1 then this parameter input would be `1e18`
-    
 ```
-new token:<token-symbol> <token-name> <token-manager> [token-decimals]
-install token-manager:new <token> <transferable> <max-per-account>
+new token <tokenName> <tokenSymbol> <tokenController> [tokenDecimals=18] [transferable=true]
+install <tokenManagerIdentifier> <tokenAddress> <transferable> <maxPerAccount>
+```
+
+You'll need a couple parameters for the `new token` command:
+
+- `tokenName`
+    - The name of the token you wish to create.
+- `tokenSymbol`
+    - The symbol you wish to set for the token. 
+- `tokenController`
+    - The associated token-manager app which will have mint and burn priveleges for the token.
+- `tokenDecimals`
+    - The number of decimal precision you wish to set for the token. The default decimal precision is 18.
+- `transferable`
+    - Whether or not the token should be transferable. Defaults to true.
+
+And these are the parameters for the `install` command:
+- `tokenManagerIdentifier`
+    - Usually The application we are willing to install, in this case a `token-manager`, labelled as `token-manager:new`.
+- `tokenAddress`
+    - The address of the token you wish to associate with the new token manager. You can 
+- `transferable`
+    - It overrides the transferablility property of the token.
+- `maxPerAccount`
+    - The maximum account of tokens a single address can hold. Setting this parameter to 0 means this amount is unlimited. This number is also related to the decimal precision. For example if the token decimal precision is 18 and you want the `maxPerAccount` to be 1 then this parameter input would be `1e18`.
+
+### Common use example
+
+The following script creates a transferable Test Token (TEST) within the Test DAO, grants minting and burning permsisions to voting, and mints 100 tokens to the creator of the vote.
+
+```
+connect test-dao token-manager voting 
+new token "Test Token" TEST token-manager:new
+install token-manager:new token:TEST true 0
+grant voting token-manager:new MINT_ROLE voting
+grant voting token-manager:new BURN_ROLE voting
+exec token-manager:new mint @me 100e18
 ```
 
 ## Granting Permissions

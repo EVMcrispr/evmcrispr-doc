@@ -15,6 +15,23 @@ There are no parameters needed to install a new agent to your DAO, however the a
 install agent:new
 ```
 
+### Common use example
+
+When installing an Agent, we recommend grating the voting app with the `TRANSFER_ROLE`, `EXECUTE_ROLE`, and `RUN_SCRIPT_ROLE` so `exec agent` and `act agent` commands can be used.
+
+```
+install agent:new
+grant voting agent:new TRANSFER_ROLE voting
+grant voting agent:new EXECUTE_ROLE voting
+grant voting agent:new RUN_SCRIPT_ROLE voting
+```
+
+An agent is basically a vault on steroids, so after filling the agent with some tokens, we can create a vote like this (transfer 1 ANT to my address):
+
+```
+exec agent transfer @token(ANT) @me 1e18
+```
+
 ## Granting Permissions
 
 :::warning
@@ -25,11 +42,15 @@ The agent is made to carry out the requests from other apps or DAO members, take
 
 To grant permissions you'll use the following syntax:
 
-`grant <entity> <app> <roleName> [defaultPermissionManager]`
+```
+grant <entity> <app> <roleName> [defaultPermissionManager]
+```
 
 In practice this would look like:
 
-`grant voting agent EXECUTE_ROLE voting`
+```
+grant voting agent EXECUTE_ROLE voting
+```
 
 Which would give the voting app permission to carry out interactions with external contracts or addresses using the agent app.
 
@@ -68,22 +89,30 @@ There are four eligible entities you can choose from: **App**, **Anyone**, **Tok
 
 To remove a permission from an entity follow this syntax:
 
-`revoke <entity> <app> <roleName> [removePermissionManager?]`
+```
+revoke <entity> <app> <roleName> [removePermissionManager=false]
+```
 
 in practice this could look like:
 
-`revoke voting agent TRANSFER_ROLE false`
+```
+revoke voting agent TRANSFER_ROLE
+```
 
 This would remove the ability for the voting app to transfer funds held by the agent, while keeping the Permission Manager in place should this permission need to be modified in the future.
 
 ## Internal Actions
 The agent can also perform actions to other apps within the DAO, however the syntax is a bit different:
 
-`exec <app> <methodName> [parameters]`
+```
+exec <app> <methodName> [...parameters]
+```
 
 For example:
 
-`exec agent transfer 0xa117000000f279d81a1d3cc75430faa017fa5a2e agent:1 100e18`
+```
+exec agent transfer @token(ANT) agent:1 100e18
+```
 
 This would transfer 100 ANT tokens from the first agent to the second agent, given a second agent is installed.
 
@@ -209,16 +238,24 @@ The entity executing the action via the agent will need the `TRANSFER_ROLE` role
 The agent uses the `act` command to interact with external entities such as smart contracts. The entity wishing to execute an external action will need the role `EXECUTE_ROLE`.
  The syntax is as follows:
 
-`act <agent> <targetEthereumAddress> <function> [inputParameters]`
+```
+act <agent> <targetEthereumAddress> <function> [inputParameters]
+```
 
-The functions for a given *verified* smart contract can be found on the `write` or `write proxy` page in the network's block explorer. For example here is the [contract for the Aragon token `ANT`](https://etherscan.io/token/0xa117000000f279d81a1d3cc75430faa017fa5a2e#writeContract). We can use the basic task of sending ANT to another address to showcase the syntax for `act`:
+The functions for a given *verified* smart contract can be found on the `write` or `write proxy` page in the network's block explorer. For example here is the [contract for the DAI Stablecoin](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f#writeContract). We can use the basic task of sending DAI to another address to showcase the syntax for `act`:
 
-`act agent 0xa117000000f279d81a1d3cc75430faa017fa5a2e approve(address,unint256) 0x123456789abcdef123456789abcdef0123456789 10e18`
+```
+act agent @token(DAI) transfer(address,uint256) @me 100e18
+```
 
-To approve sending 10 ANT tokens from the agent, and then:
+As you can see, we make use of the helpers @token and @me to retreive the required addresses.
 
-`act agent 0xa117000000f279d81a1d3cc75430faa017fa5a2e transfer(address,unint256) 0x62Bb362d63f14449398B79EBC46574F859A6045D 10e18`
 
-This would transfer 10 ANT from the agent's wallet to the specified ETH address `0x62Bb362d63f14449398B79EBC46574F859A6045D`
+A more complete example could be to approve and deposit 1,000 DAI from the agent to the Agave Pool V2 ([`0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9`](https://etherscan.io/address/0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9#writeProxyContract)).
+
+```
+act agent @token(DAI) approve(address,unint256) 0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9 1000e18
+act agent 0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9 deposit(address,uint256,address,uint16) @token(DAI) 1000e18 agent 0
+```
 
 For an exhaustive list of functions that agent can perform, check out the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/agent/contracts/Agent.sol)

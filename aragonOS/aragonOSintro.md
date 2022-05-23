@@ -6,7 +6,7 @@ slug: /
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
 
-AragonOS is the main framework that EVMcrispr has been tailored to interact with. Aragon DAOs are easily deployable and highly customizable governance platforms that can be launched using the [Aragon Client](https://aragon.org/aragon-client) on Mainnet or on Gnosis Chain via [1hive's Aragon Deployment](https://aragon.1hive.org/#/)
+AragonOS is the main framework that EVMcrispr has been tailored to interact with. Aragon DAOs are easily deployable and highly customizable governance platforms that can be launched using the [Aragon Client](https://aragon.org/aragon-client) on Mainnet or on Gnosis Chain via [1hive's Aragon Deployment](https://aragon.1hive.org/#/).
 
 <img alt='create an aragon DAO homepage' src={useBaseUrl('img/aragonOS/createAragonDAO.png')} />
 
@@ -33,7 +33,7 @@ This is relevant to the `grant` and `revoke` commands which are detailed in each
 
 The articles in this section will break down all of the most common apps found in an Aragon DAO. We'll show you the all the actions that can be done via EVM crispr to modify the DNA of your Aaragon DAO.
 
-If you want to go deep and learn more technicals of Aragon DAOs you can check out the [Aragon Developer documentation](https://hack.aragon.org/docs/getting-started)
+If you want to go deep and learn more technicals of Aragon DAOs you can check out the [Aragon Developer documentation](https://hack.aragon.org/docs/getting-started).
 
 
 ## Finding DAO information
@@ -49,19 +49,21 @@ Interacting with any Aragon DAO will require you to preface your script with the
 
 By default an Aragon DAO will route EVM scripts through the voting app, creating a vote to execute your script. Depending on your permissions you'll need to pass through the token-manager, making sure you have DAO tokens and permission to create a vote. Let's take a look at this example:  
 
-`connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618`
+```
+connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618
+```
 
-Referencing the addresses in the example Organization above we can see we're routing our script in this manner:  
+Referencing the addresses in the example Organization above we can see we're routing our script in this manner: `Organization Address -> Token-manager App -> Voting App`.
 
-`connect Organization Address -> Token-manager App -> Voting App`
+We can also make our lives a heck of a lot easier with a bit of in-house syntax sugar.
 
- We can also make our lives a heck of a lot easier with a bit of in-house syntax sugar.
+```
+connect mitchcorp token-manager voting
+```
 
- `connect mitchcorp token-manager voting`
+This will connect us using the aragonID ENS name associated with the DAO. This can be found usually in the top left of the Aragon DAO navbar.
 
- This will connect us using the aragonID ENS name associated with the DAO. This can be found usually in the top left of the Aragon DAO navbar.
-
-  More on syntax-sugar in the <a href={useBaseUrl('getStarted/syntaxSugar/')} target='_blank'>Syntatic Sugar Article</a>
+More on syntax-sugar in the [Syntatic Sugar Article](/getStarted/syntaxSugar/).
 
 
 ## Aliasing Multiple Apps in Aragon DAOs
@@ -77,10 +79,12 @@ This command upgrades the kernel’s base contracts of the defined apps, so thos
 
 You can use this syntax to upgrade your app:
 
-`upgrade <app> [contract]`
+```
+upgrade <app> [contract]
+```
 
 A few examples to clarify:
 
 - Upgrading all voting instances to the latest implementation contract can be encoded as `upgrade voting`.
 - Upgrading all agent instances to a specific implementation contract (that should be previously registered as a repo version in APM): 
-`upgrade agent 0x123456789abcdef123456789abcdef0123456789`
+`upgrade agent 0x123456789abcdef123456789abcdef0123456789`.

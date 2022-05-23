@@ -10,17 +10,28 @@ The Finance App will allow you to keep track of your DAO's finances, each app ca
 
 ## Installing the App
 
+
+The syntax is as follows to install the app:
+
+```
+install finance:new <vaultAddress> <periodDuration>
+```
+
 To Install the Voting App you'll need to include two parameters:
  - `vault`
     - This is the address of the installed Vault or Agent where the finance app will manage funds.
  - `periodDuration`
     - This is the budgeting period duration. This parameter is required but only relevant if you plan to make use of the budgeting feature (currently not on the UI).
 
-The syntax is as follows to install the app:
 
+### Common use example
+
+You can install a vault (or an agent) alongside with the finance app, and set up these permissions.
 ```
-install finance:new <vaultAddress> <periodDuration> 
-// add any permissions you want to grant here.
+install vault:new
+install finance:new vault:new 30d
+grant finance:new vault:new TRANSFER_ROLE voting
+grant voting finance:new CREATE_PAYMENTS_ROLE voting
 ```
 
 ## Granting Permissions
@@ -31,11 +42,15 @@ This command can potentially burn a permission manager if it is set to the wrong
 
 To grant permissions you'll use the following syntax:
 
-`grant <entity> <app> <roleName> [defaultPermissionManager]`
+```
+grant <entity> <app> <roleName> [defaultPermissionManager]
+```
 
 In practice this would look like:
 
-`grant voting finance CREATE_PAYMENTS_ROLE voting`
+```
+grant voting finance CREATE_PAYMENTS_ROLE voting
+````
 
 Which would give the voting app permission to create payments on the finance app.
 
@@ -63,24 +78,21 @@ There are four eligible entities you can choose from: **App**, **Anyone**, **Tok
 
 </details>
 
-
-:::info
-Some Functionalities have been added to the contract that has not yet been added to the UI, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance)
-:::
+Some Functionalities have been added to the contract that has not yet been added to the UI, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance).
 
 ## Revoking Permissions
 
-:::warning
- This command can potentially remove a permission that is needed for the DAO to work. Be careful to not remove the permissions to create votes in voting, create permissions in ACL, or manage apps in the Kernel.
-:::
-
 To remove a permission from an entity follow this syntax:
 
-`revoke <entity> <app> <roleName> [removePermissionManager?]`
+```
+revoke <entity> <app> <roleName> [removePermissionManager=false]
+```
 
 in practice this could look like:
 
-`revoke voting finance EXECUTE_PAYMENTS_ROLE false`
+```
+revoke voting finance EXECUTE_PAYMENTS_ROLE
+```
 
 This would remove the ability for the voting app to execute a payment, while keeping the Permission Manager in place should this permission need to be modified in the future.
 
@@ -97,7 +109,7 @@ exec finance[:<id>] newImmediatePayment <token> <to> <amount> <description>
 i.e:
 
 ```
-exec finance newImmediatePayment 0xa117000000f279d81a1d3cc75430faa017fa5a2e 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"
+exec finance newImmediatePayment @token(ANT) 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"
 ```
 
 This would request to send 100 ANT tokens to 0x62Bb362d63f14449398B79EBC46574F859A6045D with the context of "payment for documentation work", which would show up on a DAO vote.

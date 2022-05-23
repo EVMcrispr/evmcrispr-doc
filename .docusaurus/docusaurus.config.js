@@ -61,10 +61,6 @@ export default {
               "href": "https://forum.1hive.org"
             },
             {
-              "label": "Discord",
-              "href": "https://discordapp.com/invite/docusaurus"
-            },
-            {
               "label": "Twitter",
               "href": "https://twitter.com/blossom_labs"
             }
