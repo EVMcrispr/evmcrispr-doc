@@ -7,7 +7,55 @@ import styles from '../src/css/articles.css'
 
 The Voting App will allow your DAO members to create votes that will usually execute internal DAO actions or external interactions with other Ethereum Addresses, including smart contracts. 
 
-## App Roles
+
+## Installing the App
+
+
+To install this app the syntax is as follows:
+
+```
+install voting:new <votingTokenAddress> <supportRequiredPercent> <miniumApproval> <voteDuration> 
+```
+
+You'll need the following parameters to install a new Voting App to your DAO:
+
+- `votingTokenAddress`
+    - This is the token your DAO recognizes to give voting power to your members, you should by default have already a Minime Token associated with your DAO from setup in the `Tokens` App. To learn how to configure a new token for your app, check out the `Tokens` section (ADD LINK)
+- `supportRequiredPercent`
+    - This is the percent of YES votes vs. NO votes needed to pass a proposal. This parameter is expressed in WEI. i.e. for a Support Required of 51% this is 0.51 which in WEI equals *51e16* (51000000000000000000)
+- `miniumApproval`
+    - This is the amount of YES votes needed from the total token supply. This parameter is expressed in WEI similar to the example above in Support Required
+- `voteDuration` 
+    - This is the amount of time each vote remains open for, be aware that currently this parameter cannot be changed once it is set, so choose wisely. This parameter is expressed in seconds, although you can append the letters "s", "m", "h", "w", "mo", and "y" at the end of the number.
+
+### Common use example
+
+After installing a new voting app, one of the most important permissions to set up is the `CREATE_VOTES_ROLE`. Without it, the app is useless.
+
+```
+install voting:new @token(HNY) 50e16 10e16 3d
+grant ANY_ADDRESS voting:new CREATE_VOTES_ROLE voting:new
+```
+
+## Granting Permissions
+
+:::warning
+This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
+:::
+
+To grant permissions you'll use the following syntax:
+
+```
+grant <entity> <app> <roleName> [defaultPermissionManager]
+```
+
+which in practice could look something like:
+
+```
+grant ANY_ENTITY voting CREATE_VOTES_ROLE voting
+```
+
+This would grant any entity the permission to create votes on the voting app, and the permission itself is managed by the voting app.
 
 Before installing an app you should consider any permissions it will need to fit your purposes. Here is an exhaustive list of roles for the voting app:
 
@@ -18,83 +66,44 @@ Before installing an app you should consider any permissions it will need to fit
 - `MODIFY_QUORUM_ROLE`
     - Which entity can change the Minimum Approval Percent
 
-### Types of Entities
+<details>
+<summary>Types of Entities</summary>
 
-There are three eligible entities you can choose from, Anyone, Token Holders, Specified Eth Address.
-
+There are four eligible entities you can choose from: **App**, **Anyone**, **Token Holders**, **Specified Eth Address**.
 - Anyone is expressed as `ANY_ENTITY` and can be any user visiting your DAO with a web wallet.
-- Token Holders is expressed as token-manager and is affiliated with your token-managers token. Anyone holding the token-manager's token is inside of this entity
+- Token Holders is expressed as token-manager and is affiliated with your token-managers token. Anyone holding the token-manager's token is inside of this entity.
 - Specified Eth Address is expressed as the ETH address starting with `0x`, only this address will be the specified entity.
+- App is the internal name of the internal Aragon App installed on your DAO, such as `voting`, `token-manager`, or `agent`.
 
-## Granting Permissions
-
-:::warning
-This command can potentially remove a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
-
-The most critical permissions are argumentably the ones on the Kernel (DAO main contract) and the ACL (permission management contract), so be careful who we grant them to.
-:::
-
-To grant permissions you'll use the following syntax:
-
-`grant <entity> <app> <roleName> [defaultPermissionManager]`
-
-which in practice could look something like:
-
-`grant ANY_ENTITY voting CREATE_VOTES_ROLE voting`
-
-This would grant any entity the permission to create votes on the voting app, and the permission itself is managed by the voting app.
-
-
-## Installing the App
-
-You'll need the following parameters to install a new Voting App to your DAO:
-
-- Voting Token Address
-    - This is the token your DAO recognizes to give voting power to your members, you should by default have already a Minime Token associated with your DAO from setup in the `Tokens` App. To learn how to configure a new token for your app, check out the `Tokens` section (ADD LINK)
-- Support Required Percent
-    - This is the percent of YES votes vs. NO votes needed to pass a proposal. This parameter is expressed in WEI. i.e. for a Support Required of 51% this is 0.51 which in WEI equals *51e16* (51000000000000000000)
-- Minimum Approval Percent
-    - This is the amount of YES votes needed from the total token supply. This parameter is expressed in WEI similar to the example above in Support Required
-- Vote Duration 
-    - This is the amount of time each vote remains open for, be aware that currently this parameter cannot be changed once it is set, so choose wisely. This parameter is normally expressed in seconds*.
-
-::: info
-    *We can leverage a bit of syntax-sugar to make calculating time easier with EVMcrispr. Time can also be expressed by appending s, m, h, d, w, and y at the end of the number for defining them as seconds, minutes, hours, days, weeks, and years respectively. For example 2d would get converted to 172,800 seconds, which is usually the format solidity smart contracts expect time periods to be passed in as.
-:::
-
-to install this app the syntax is as follows:
-
-```
-install voting:new <votingTokenAddress> <supportRequiredPercent> <miniumApproval> <voteDuration> 
-// add any permissions you want to grant here.
-```
-You should also consider what permissions you'll need to integrate your new voting app. You can append these directly to your installation scripts. Learn more in the grants command documentaion.(ADD LINK)
+</details>
 
 
 ## Revoking Permissions
 
 :::warning
- This command can potentially remove a permission that is needed for the DAO to work. Be careful to not remove the permissions to create votes in voting, create permissions in ACL, or manage apps in the Kernel.
+ This command can potentially remove a permission that is needed for the DAO to work. Be careful if you remove the CREATE_VOTES_ROLE, it may break the DAO.
 :::
 
 To remove a permission from an entity follow this syntax:
 
-`revoke <entity> <app> <roleName> [removePermissionManager?]`
+```
+revoke <entity> <app> <roleName> [removePermissionManager]
+```
 
 in practice this could look like:
 
-`revoke ANY_ENTITY voting CREATE_VOTES_ROLE false`
+```
+revoke ANY_ENTITY voting CREATE_VOTES_ROLE false
+```
 
 This would remove the ability for anyone to create votes in the voting app, while keeping the Permission Manager in place should this perission need to be modified in the future.
 
 
-## Modifying the App
+## Internal Actions
 
 Using the `exec` command we can create internal actions that will modify the settings of our DAO.
 
-An exhaustive list of actions that can be performed on the voting app can be found in the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/voting/contracts/Voting.sol)
-
-However we'll use the two most common modifications `changeMinAcceptQuorumPct` and `changeSupportRequiredPct` to showcase the `exec` command. We use the following base syntax:
+We'll use the two most common modifications `changeMinAcceptQuorumPct` and `changeSupportRequiredPct` to showcase the `exec` command. We use the following base syntax:
 
 `exec <app> <methodName> [parameters]`
 
@@ -105,11 +114,9 @@ i.e.
 `exec voting changeSupportRequiredPct 50e16`
 - This would change the Support Required to 50%
 
-## Contract Functions 
-
 Below is an exhaustive list of all possible actions you can perform with the voting app. we'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 
-### `changeSupportRequiredPct`
+<details><summary>changeSupportRequiredPct</summary>
 
 This function will change the Support Required Percentage needed to pass votes on the voting app.
 
@@ -126,7 +133,9 @@ The entity creating the action will need the `MODIFY_SUPPORT_ROLE` role.
 `exec voting changeSupportRequiredPct <supportRequiredPct>`
 i.e `exec voting changeSupportRequiredPct 51e16` would change the Support Required to 51%
 
-### `changeMinAcceptQuorumPct`
+</details>
+
+<details><summary>changeMinAcceptQuorumPct</summary>
 
 This function will change the Minimum Approval percentage needed to pass votes on the voting app.
 
@@ -143,7 +152,9 @@ The entity creating the action will need the `MODIFY_QUORUM_ROLE` role.
 `exec voting changeMinAcceptQuorumPct <minAcceptQuorumPct>`
 i.e `exec voting changeMinAcceptQuorumPct 10e16` would change the Minium Quorum to 10%
 
-### `newVote`
+</details>
+
+<details><summary>newVote</summary>
 
 This function will create new vote on the voting app.
 
@@ -162,7 +173,9 @@ The entity creating the action will need the `CREATE_VOTES_ROLE` role.
 
 `exec voting newVote <exectuionScript> <metadata> <castVote> <executesIfDecided>`
 
-### `vote`
+</details>
+
+<details><summary>vote</summary>
 
 This function will cast your vote if eligible on the specified vote on the voting app.
 
@@ -180,7 +193,9 @@ No additional permissions are needed to perform this function.
 
 `exec voting vote <voteId> <supports> <executesIfDecided>`
 
-### `executeVote`
+</details>
+
+<details><summary>executeVote</summary>
 
 This function will execute, if possible, an existing vote that has already passed.
 
@@ -195,3 +210,5 @@ No additional permissions are needed to perform this function.
 #### Syntax
 
 `exec voting executeVote <voteId>`
+
+</details>

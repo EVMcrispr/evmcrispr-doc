@@ -1,3 +1,10 @@
 module.exports = {
-  aragonOS: ['aragonOSintro','voting','finance','token-manager','vault','agent']
+  aragonOS: [
+    'aragonOSintro',
+    {
+      type: "category",
+      label: "Aragon Apps",
+      items: ['token-manager', 'voting', 'finance', 'vault', 'agent']
+    }
+  ]
 }

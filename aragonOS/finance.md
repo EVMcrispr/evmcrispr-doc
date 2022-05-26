@@ -7,7 +7,52 @@ import styles from '../src/css/articles.css'
 
 The Finance App will allow you to keep track of your DAO's finances, each app can only interact with funds held in one Ethereum Address. Having multiple Finance Apps will allow you to manage multiple treasuries.
 
-## App Roles
+
+## Installing the App
+
+
+The syntax is as follows to install the app:
+
+```
+install finance:new <vaultAddress> <periodDuration>
+```
+
+To Install the Voting App you'll need to include two parameters:
+ - `vault`
+    - This is the address of the installed Vault or Agent where the finance app will manage funds.
+ - `periodDuration`
+    - This is the budgeting period duration. This parameter is required but only relevant if you plan to make use of the budgeting feature (currently not on the UI).
+
+
+### Common use example
+
+You can install a vault (or an agent) alongside with the finance app, and set up these permissions.
+```
+install vault:new
+install finance:new vault:new 30d
+grant finance:new vault:new TRANSFER_ROLE voting
+grant voting finance:new CREATE_PAYMENTS_ROLE voting
+```
+
+## Granting Permissions
+
+:::warning
+This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
+:::
+
+To grant permissions you'll use the following syntax:
+
+```
+grant <entity> <app> <roleName> [defaultPermissionManager]
+```
+
+In practice this would look like:
+
+```
+grant voting finance CREATE_PAYMENTS_ROLE voting
+````
+
+Which would give the voting app permission to create payments on the finance app.
 
 Before installing an app you should consider any permissions it will need to fit your purposes. Here is an exhaustive list of roles for the voting app:
 
@@ -22,65 +67,32 @@ Before installing an app you should consider any permissions it will need to fit
 - `MANAGE_PAYMENTS_ROLE`
     - Allows an entity to manage payments
 
-### Types of Entities
+<details>
+<summary>Types of Entities</summary>
 
-There are four eligible entities you can choose from: App, Anyone, Token Holders, Specified Eth Address.
-
+There are four eligible entities you can choose from: **App**, **Anyone**, **Token Holders**, **Specified Eth Address**.
 - Anyone is expressed as `ANY_ENTITY` and can be any user visiting your DAO with a web wallet.
-- Token Holders is expressed as token-manager and is affiliated with your token-managers token. Anyone holding the token-manager's token is inside of this entity
+- Token Holders is expressed as token-manager and is affiliated with your token-managers token. Anyone holding the token-manager's token is inside of this entity.
 - Specified Eth Address is expressed as the ETH address starting with `0x`, only this address will be the specified entity.
-- App is the internal name of the internal Aragon App installed on your DAO, such as `voting`, `token-manager`, or `agent`
+- App is the internal name of the internal Aragon App installed on your DAO, such as `voting`, `token-manager`, or `agent`.
 
-## Granting Permissions
+</details>
 
-:::warning
-This command can potentially remove a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
-
-The most critical permissions are argumentably the ones on the Kernel (DAO main contract) and the ACL (permission management contract), so be careful who we grant them to.
-:::
-
-To grant permissions you'll use the following syntax:
-
-`grant <entity> <app> <roleName> [defaultPermissionManager]`
-
-In practice this would look like:
-
-`grant voting finance CREATE_PAYMENTS_ROLE voting`
-
-Which would give the voting app permission to create payments on the finance app
-
-:::info
-Some Functionalities have been added to the contract that has not yet been added to the UI, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance)
-:::
-
-## Installing the App
-
-To Install the Voting App you'll need to include two parameters:
- - Vault Address
-    - This is the address of the installed Vault or Agent where the finance app will manage funds.
- - Period duration
-    - This is the budgeting period duration. This parameter is required but only relevant if you plan to make use of the budgeting feature (currently not on the UI).
-
-The syntax is as follows to install the app:
-
-```
-install finance:new <vaultAddress> <periodDuration> 
-// add any permissions you want to grant here.
-```
+Some Functionalities have been added to the contract that has not yet been added to the UI, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance).
 
 ## Revoking Permissions
 
-:::warning
- This command can potentially remove a permission that is needed for the DAO to work. Be careful to not remove the permissions to create votes in voting, create permissions in ACL, or manage apps in the Kernel.
-:::
-
 To remove a permission from an entity follow this syntax:
 
-`revoke <entity> <app> <roleName> [removePermissionManager?]`
+```
+revoke <entity> <app> <roleName> [removePermissionManager=false]
+```
 
 in practice this could look like:
 
-`revoke voting finance EXECUTE_PAYMENTS_ROLE false`
+```
+revoke voting finance EXECUTE_PAYMENTS_ROLE
+```
 
 This would remove the ability for the voting app to execute a payment, while keeping the Permission Manager in place should this permission need to be modified in the future.
 
@@ -88,21 +100,23 @@ This would remove the ability for the voting app to execute a payment, while kee
 
 Using the `exec` command we can create internal actions.
 
-An exhaustive list of actions that can be performed with the finance app can be found on the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/finance/contracts/Finance.sol)
-
 We'll use the `newImmediatePayment` function to show the syntax of the `exec` command. This is the base syntax:
 
-`exec <app> <methodName> [parameters]`
+```
+exec finance[:<id>] newImmediatePayment <token> <to> <amount> <description>
+```
 
-i.e
-`exec finance newImmediatePayment 0xa117000000f279d81a1d3cc75430faa017fa5a2e 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"`
+i.e:
+
+```
+exec finance newImmediatePayment @token(ANT) 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"
+```
+
 This would request to send 100 ANT tokens to 0x62Bb362d63f14449398B79EBC46574F859A6045D with the context of "payment for documentation work", which would show up on a DAO vote.
-
-## Contract Functions 
 
 Below is an exhaustive list of all possible actions you can perform with the finance app. we'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 
-### `deposit`
+<details><summary>deposit</summary>
 
 This will deposit approved ERC20 or ETH tokens into the vault managed by the finance app.
 
@@ -120,7 +134,9 @@ No additional permissions are needed to perform this function.
 
 `exec finance deposit <token> <amount> <reference>`
 
-### `newImmediatePayment`
+</details>
+
+<details><summary>newImmediatePayment</summary>
 
 This will create a new payment submission, requesting tokens held in the finance app's specified vault.
 
@@ -139,7 +155,10 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 `exec finance newImmediatePayment <token> <receiver> <amount> <reference>`
 
-### `newScheduledPayment`
+
+</details>
+
+<details><summary>newScheduledPayment</summary>
 
 Sets up a recurring payment scheduled for a specified amount of time, at set intervals with a specified token. 
 
@@ -161,7 +180,10 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 `exec finance newImmediatePayment <token> <receiver> <amount> <initialPaymentTime> <interval> <maxExecutions> <reference>`
 
-### `setPeriodDuration`
+
+</details>
+
+<details><summary>setPeriodDuration</summary>
 
 Changes the accounting period duration, used for establishing periodic budgets. 
 
@@ -169,7 +191,7 @@ Changes the accounting period duration, used for establishing periodic budgets.
 
 - `periodDuration` - The amount of time you want to change the budget duration to. (uint64)
 
-### Permissions
+#### Permissions
 
 The entity creating the action will need the `CHANGE_PERIOD_ROLE` role.
 
@@ -177,7 +199,10 @@ The entity creating the action will need the `CHANGE_PERIOD_ROLE` role.
 
 `exec finance setPeriodDuration <periodDuration>`
 
-### `setBudget`
+
+</details>
+
+<details><summary>setBudget</summary>
 
 This will establish a budget, setting a cap on the amount of a specified token that can be paid out in each period.
 
@@ -186,15 +211,18 @@ This will establish a budget, setting a cap on the amount of a specified token t
 - `token` - The address of the token you wish to set a budget for. 
 - `amount` - The maximum amount of specified tokens that can be paid out within the budget. 
 
-### Permissions
+#### Permissions
 
 The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
-### Syntax 
+#### Syntax 
 
 `exec finance setBudget <token> <amount>`
 
-### `removeBudget`
+
+</details>
+
+<details><summary>removeBudget</summary>
 
 Removes any set budget for the specified token.
 
@@ -202,15 +230,18 @@ Removes any set budget for the specified token.
 
 - `token` - The address of the token you wish to remove a budget for. 
 
-### Permissions
+#### Permissions
 
 The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
-### Syntax 
+#### Syntax 
 
 `exec finance removeBudget <token> <amount>`
 
-### `executePayment`
+
+</details>
+
+<details><summary>executePayment</summary>
 
 Execute a pending payment.
 
@@ -226,7 +257,10 @@ The entity that will execute the payment needs the `EXECUTE_PAYMENTS_ROLE` role.
 
 `exec finance executePayment <paymentId>`
 
-### `receiverExecutePayment`
+
+</details>
+
+<details><summary>receiverExecutePayment</summary>
 
 This allows the receipient of the payment to execute it without needing the `EXECUTE_PAYMENTS_ROLE`.
 
@@ -242,7 +276,10 @@ There are no permissions needed to execute this function, except that the caller
 
 `exec finance receiverExecutePayment <paymentId>`
 
-### `setPaymentStatus`
+
+</details>
+
+<details><summary>setPaymentStatus</summary>
 
 Can activate or disable an established payment. 
 
@@ -259,7 +296,10 @@ The entity that wishes to change the status of a payment will need the `MANAGE_P
 
 `exec finance setPaymentStatus <paymentId> <active>`
 
-#### `recoverToVault`
+
+</details>
+
+<details><summary>recoverToVault</summary>
 
 Sends the full holdings of a specified token that is held by this contract the vault/agent. This is in case tokens are mistakenly sent to this contract.
 
@@ -275,5 +315,4 @@ No permissions are needed to perform this function.
 
 `exec finance recoverToVault <token>`
 
-
-
+</details>

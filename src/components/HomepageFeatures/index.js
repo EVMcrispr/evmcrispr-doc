@@ -5,8 +5,8 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'AragonOS Ready',
-    Svg: require('@site/static/img/Aragon_Logo1.svg').default,
+    title: 'Tokens',
+    img: '/img/token.png',
     description: (
       <>
         Optimize your Aragon DAO operations. EVMcrispr is tailor made to be used with AragonOS Apps.
@@ -14,8 +14,8 @@ const FeatureList = [
     ),
   },
   {
-    title: 'Evolve your DAO tooling',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Voting',
+    img: '/img/voting.png',
     description: (
       <>
         Install and modify apps, streamline your governance and unlock the full potential of DeGov.
@@ -23,8 +23,8 @@ const FeatureList = [
     ),
   },
   {
-    title: 'Accessible for all',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Treasury',
+    img: '/img/treasury.png',
     description: (
       <>
         Create powerful and complex EVM scripts without needing to be a developer. EVMcrispr is open-source and easy to use.
@@ -33,11 +33,11 @@ const FeatureList = [
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({img, title, description}) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+        <img src={img} className={styles.featureSvg} />
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
