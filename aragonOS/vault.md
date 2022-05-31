@@ -3,7 +3,7 @@ id: vault
 title: Vault
 ---
 
-The Vault is a simple app intended to store funds. It doesn't have a user interface so it is typically installed in tandem with the `finance` app to manage the funds inside of it. 
+The Vault is a simple app intended to store funds. It doesn't have a user interface so it is typically installed in tandem with the `finance` app to manage the funds inside of it.
 
 
 ## Installing the App
@@ -16,11 +16,12 @@ install vault:new
 
 There are no parameters needed to install a new vault to your DAO.
 
-### Common use example
+### Common Usage Example
 
-The vault is usually used alongisde with the Finance app, although it can be used alone. You can install it and grant voting with the `TRANSFER_ROLE`.
+The vault is usually used alongside with the Finance app, although it can be used alone. You can install it and grant voting with the `TRANSFER_ROLE`.
 
 ```
+connect exampleDAO token-manager voting
 install vault:new
 grant voting vault:new TRANSFER_ROLE voting
 ```
@@ -48,7 +49,7 @@ grant <entity> <app> <roleName> [defaultPermissionManager]
 Here is an exhaustive list of roles for the vault app:
 
 - `TRANSFER_ROLE`
-  - Allows an entity to transfer tokens from the vault's address
+  - Allows an entity to transfer tokens from the vault's address.
 
 <details>
 <summary>Types of Entities</summary>
@@ -83,13 +84,13 @@ This would remove the ability for the finance app to transfer funds held by the 
 
 ## Internal Actions
 
-If we wanted to create an interaction between the vault inside of our DAO we can use the following syntax: 
+If we wanted to create an interaction between the vault inside of our DAO we can use the following syntax:
 
 ```
 exec <app> <methodName> [parameters]
 ```
 
-i.e 
+For example:
 
 ```
 exec vault transfer @token(ANT) vault:1 10e18
@@ -106,7 +107,7 @@ Transfers tokens from the vault to a specified ETH adress.
 
 #### Parameters
 
-- `token` - The token contract address of the token you wish to transfer. (ETHaddress) 
+- `token` - The token contract address of the token you wish to transfer. (ETHaddress)
 - `to` - The ETH address to send tokens to. (ETHaddress)
 - `value` - The amount of tokens you wish to send, taking into consideration the decimal precision. (uint256)
 
@@ -114,7 +115,7 @@ Transfers tokens from the vault to a specified ETH adress.
 
 The entity executing the action via the vault will need the `TRANSFER_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec vault transfer <token> <to> <value>`
 

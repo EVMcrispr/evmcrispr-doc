@@ -7,11 +7,11 @@ The Token Manager app, as the name implies, is for managing tokens. Usually this
 
 ## Installing the app
 
-You usually want to create a new token along with the installation of the new token mananger.
+You usually want to create a new token along with the installation of the new token-manager.
 
 ```
 new token <tokenName> <tokenSymbol> <tokenController> [tokenDecimals=18] [transferable=true]
-install <tokenManagerIdentifier> <tokenAddress> <transferable> <maxPerAccount>
+install token-manager:new <tokenAddress> <transferable> <maxPerAccount>
 ```
 
 You'll need a couple parameters for the `new token` command:
@@ -19,30 +19,28 @@ You'll need a couple parameters for the `new token` command:
 - `tokenName`
     - The name of the token you wish to create.
 - `tokenSymbol`
-    - The symbol you wish to set for the token. 
+    - The symbol you wish to set for the token.
 - `tokenController`
-    - The associated token-manager app which will have mint and burn priveleges for the token.
+    - The associated token-manager app which will have mint and burn privileges for the token.
 - `tokenDecimals`
     - The number of decimal precision you wish to set for the token. The default decimal precision is 18.
 - `transferable`
     - Whether or not the token should be transferable. Defaults to true.
 
 And these are the parameters for the `install` command:
-- `tokenManagerIdentifier`
-    - Usually The application we are willing to install, in this case a `token-manager`, labelled as `token-manager:new`.
 - `tokenAddress`
-    - The address of the token you wish to associate with the new token manager. You can 
+    - The address of the token you wish to associate with the new token manager. You can
 - `transferable`
     - It overrides the transferablility property of the token.
 - `maxPerAccount`
     - The maximum account of tokens a single address can hold. Setting this parameter to 0 means this amount is unlimited. This number is also related to the decimal precision. For example if the token decimal precision is 18 and you want the `maxPerAccount` to be 1 then this parameter input would be `1e18`.
 
-### Common use example
+### Common Usage Example
 
-The following script creates a transferable Test Token (TEST) within the Test DAO, grants minting and burning permsisions to voting, and mints 100 tokens to the creator of the vote.
+The following script creates a transferable Test Token (TEST) within the "exampleDAO", granting minting and burning permissions to voting, and minting 100 tokens to the creator of the vote.
 
 ```
-connect test-dao token-manager voting 
+connect exampleDAO token-manager voting
 new token "Test Token" TEST token-manager:new
 install token-manager:new token:TEST true 0
 grant voting token-manager:new MINT_ROLE voting
@@ -102,7 +100,7 @@ To remove a permission from an entity follow this syntax:
 revoke <entity> <app> <roleName> [removePermissionManager]
 ```
 
-in practice this could look like:
+In practice this could look like:
 
 ```
 revoke 0x62Bb362d63f14449398B79EBC46574F859A6045D token-manager BURN_ROLE false
@@ -118,13 +116,13 @@ To create an interaction between different apps within your DAO we use this synt
 exec <app> <methodName> [parameters]
 ```
 
-For example: 
+For example:
 
 ```
 exec token-manager mint agent 100e18
 ```
 
-This would mint 100 DAO tokens from the token manager to the agent, given the tokens decimal precision is set to 18.
+This would mint 100 DAO tokens from the token-manager to the agent, given the tokens decimal precision is set to 18.
 
 Below is an exhaustive list of all possible actions you can perform with the token-manager app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 
@@ -133,12 +131,12 @@ Below is an exhaustive list of all possible actions you can perform with the tok
 
 This function will mint more of the tokens that are associated with the token-manager app.
 
-#### Parameters 
+#### Parameters
 
 - `receiver` - The address of the entity that will receive the minted tokens. (address)
 - `amount` - The amount of tokens you wish to mint. **Take note of the token's decimal precision**. (uint256)
 
-#### Permissions 
+#### Permissions
 
 The entity that wishes to mint more tokens will need the `MINT_ROLE` role.
 
@@ -152,22 +150,22 @@ The entity that wishes to mint more tokens will need the `MINT_ROLE` role.
 
 This will mint a specified amount of tokens that will be held by the token-manager app.
 
-#### Parameters 
+#### Parameters
 
 - `amount` - The amount of tokens you wish to mint. **Take note of the token's decimal precision**. (uint256)
 
-#### Permissions 
+#### Permissions
 
 The entity that wishes to mint more tokens to the token-manager app will need the `ISSUE_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec token-manager issue <amount>`
 </details>
 <details>
-<summary>assign</summary> 
+<summary>assign</summary>
 
-Sends a specified amount of the assoiacted token-manager tokens that are currently held by the token-manager to a specified address.
+Sends a specified amount of the associated token-manager tokens that are currently held by the token-manager to a specified address.
 
 #### Parameters
 - `receiver` - The address of the entity that will receive the assigned tokens. (address)
@@ -201,7 +199,7 @@ The entity that wishes to burn tokens must have the `BURN_ROLE` role.
 </details>
 
 <details>
-<summary>assignVested</summary> 
+<summary>assignVested</summary>
 
 Creates a revokable vesting schedule. Assigning tokens held by the token-manager to a specified address according to a specified vesting schedule. (NEEDS MORE INFO)
 
@@ -210,8 +208,8 @@ Creates a revokable vesting schedule. Assigning tokens held by the token-manager
 - `receiver` - The address of the entity that will receive the vested tokens. (address)
 - `amount` - The amount of tokens you wish to vest. **Take note of the token's decimal precision**. (uint256)
 - `start` - (UNCLEAR FORMAT DATE IS COMPOSED HOW?)
-- `cliff` - 
-- `vested` - 
+- `cliff` -
+- `vested` -
 - `revokable` - Whether the vesting can be revoked by the token-manager. (boolean)
 
 ```
@@ -234,11 +232,11 @@ Creates a revokable vesting schedule. Assigning tokens held by the token-manager
     )
 ```
 
-#### Permissions 
+#### Permissions
 
 The entity wishing to assign a vesting schedule will need the `ASSIGN_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec token-manager assignVested <receiver> <amount> <start> <cliff> <vested> <revokable>`
 </details>
@@ -247,18 +245,17 @@ The entity wishing to assign a vesting schedule will need the `ASSIGN_ROLE` role
 
 Revoke the specified vesting from a specified token holder.
 
-#### Parameters 
+#### Parameters
 
 - `holder` - The address of the recipient of the vested tokens. (address)
 - `vestingId` - The numerical identifier of the vesting schedule. (uint256)
 
-#### Permissions 
+#### Permissions
 
-The entity that wishes to revoke a vesting schedule will need the `REVOKE_VESTINGS_ROLE` role. 
+The entity that wishes to revoke a vesting schedule will need the `REVOKE_VESTINGS_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec token-manager revokeVesting <holder> <vestingId>`
 
 </details>
-

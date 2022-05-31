@@ -24,10 +24,11 @@ To Install the Voting App you'll need to include two parameters:
     - This is the budgeting period duration. This parameter is required but only relevant if you plan to make use of the budgeting feature (currently not on the UI).
 
 
-### Common use example
+### Common Usage Example
 
 You can install a vault (or an agent) alongside with the finance app, and set up these permissions.
 ```
+connect exampleDAO token-manager voting
 install vault:new
 install finance:new vault:new 30d
 grant finance:new vault:new TRANSFER_ROLE voting
@@ -78,7 +79,7 @@ There are four eligible entities you can choose from: **App**, **Anyone**, **Tok
 
 </details>
 
-Some Functionalities have been added to the contract that has not yet been added to the UI, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance).
+Some functionalities have been added to the contract that have not yet been added to the UI, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance).
 
 ## Revoking Permissions
 
@@ -106,9 +107,10 @@ We'll use the `newImmediatePayment` function to show the syntax of the `exec` co
 exec finance[:<id>] newImmediatePayment <token> <to> <amount> <description>
 ```
 
-i.e:
+For example:
 
 ```
+connect exampleDAO token-manager voting
 exec finance newImmediatePayment @token(ANT) 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"
 ```
 
@@ -140,18 +142,18 @@ No additional permissions are needed to perform this function.
 
 This will create a new payment submission, requesting tokens held in the finance app's specified vault.
 
-#### Parameters 
+#### Parameters
 
 - `token` - The address of the token you are requesting payment of. (address)
 - `receiver` - The address of the entity that will receive the tokens. (address)
 - `amount` - The amount of tokens being requested. **Take note of the token's decimal precision**. (uint256)
 - `reference` - The reason for the deposit. (string)
 
-#### Permissions 
+#### Permissions
 
 The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec finance newImmediatePayment <token> <receiver> <amount> <reference>`
 
@@ -160,7 +162,7 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 <details><summary>newScheduledPayment</summary>
 
-Sets up a recurring payment scheduled for a specified amount of time, at set intervals with a specified token. 
+Sets up a recurring payment scheduled for a specified amount of time, at set intervals with a specified token.
 
 #### Parameters
 
@@ -172,11 +174,11 @@ Sets up a recurring payment scheduled for a specified amount of time, at set int
 - `maxExecutions` - The maximum instances a payment can be executed. (uint64)
 - `reference` - The reason for the deposit. (string)
 
-#### Permissions 
+#### Permissions
 
 The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec finance newImmediatePayment <token> <receiver> <amount> <initialPaymentTime> <interval> <maxExecutions> <reference>`
 
@@ -185,7 +187,7 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 <details><summary>setPeriodDuration</summary>
 
-Changes the accounting period duration, used for establishing periodic budgets. 
+Changes the accounting period duration, used for establishing periodic budgets.
 
 #### Parameters
 
@@ -195,7 +197,7 @@ Changes the accounting period duration, used for establishing periodic budgets.
 
 The entity creating the action will need the `CHANGE_PERIOD_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec finance setPeriodDuration <periodDuration>`
 
@@ -206,16 +208,16 @@ The entity creating the action will need the `CHANGE_PERIOD_ROLE` role.
 
 This will establish a budget, setting a cap on the amount of a specified token that can be paid out in each period.
 
-#### Parameters 
+#### Parameters
 
-- `token` - The address of the token you wish to set a budget for. 
-- `amount` - The maximum amount of specified tokens that can be paid out within the budget. 
+- `token` - The address of the token you wish to set a budget for.
+- `amount` - The maximum amount of specified tokens that can be paid out within the budget.
 
 #### Permissions
 
 The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec finance setBudget <token> <amount>`
 
@@ -226,15 +228,15 @@ The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
 Removes any set budget for the specified token.
 
-#### Parameters 
+#### Parameters
 
-- `token` - The address of the token you wish to remove a budget for. 
+- `token` - The address of the token you wish to remove a budget for.
 
 #### Permissions
 
 The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec finance removeBudget <token> <amount>`
 
@@ -264,11 +266,11 @@ The entity that will execute the payment needs the `EXECUTE_PAYMENTS_ROLE` role.
 
 This allows the receipient of the payment to execute it without needing the `EXECUTE_PAYMENTS_ROLE`.
 
-#### Parameters 
+#### Parameters
 
 - `paymentId` - The numerical identifier of the pending payment. (uint256)
 
-#### Permissions 
+#### Permissions
 
 There are no permissions needed to execute this function, except that the caller must be the payment recipient address.
 
@@ -281,14 +283,14 @@ There are no permissions needed to execute this function, except that the caller
 
 <details><summary>setPaymentStatus</summary>
 
-Can activate or disable an established payment. 
+Can activate or disable an established payment.
 
 #### Parameters
 
 - `paymentId` - The numerical identifier of the payment you wish to change the status of. (uint256)
 - `active` - Whether to change the payment status to active (true) or disabled (false). (boolean)
 
-#### Permissions 
+#### Permissions
 
 The entity that wishes to change the status of a payment will need the `MANAGE_PAYMENTS_ROLE` role.
 
@@ -303,15 +305,15 @@ The entity that wishes to change the status of a payment will need the `MANAGE_P
 
 Sends the full holdings of a specified token that is held by this contract the vault/agent. This is in case tokens are mistakenly sent to this contract.
 
-#### Parameters 
+#### Parameters
 
-- `token` - The address of the token you wish to recover to the vault. 
+- `token` - The address of the token you wish to recover to the vault.
 
-#### Permissions 
+#### Permissions
 
 No permissions are needed to perform this function.
 
-#### Syntax 
+#### Syntax
 
 `exec finance recoverToVault <token>`
 
