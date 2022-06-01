@@ -33,7 +33,7 @@ And these are the parameters for the `install` command:
 - `tokenAddress`
     - The address of the token you wish to associate with the new token manager. You can
 - `transferable`
-    - It overrides the transferablility property of the token.
+    - It overrides the transferability property of the token.
 - `maxPerAccount`
     - The maximum account of tokens a single address can hold. Setting this parameter to 0 means this amount is unlimited. This number is also related to the decimal precision. For example if the token decimal precision is 18 and you want the `maxPerAccount` to be 1 then this parameter input would be `1e18`.
 
