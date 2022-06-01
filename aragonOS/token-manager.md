@@ -2,6 +2,8 @@
 id: token-manager
 title: Token Manager
 ---
+import useBaseUrl from '@docusaurus/useBaseUrl'
+import styles from '../src/css/articles.css'
 
 The Token Manager app, as the name implies, is for managing tokens. Usually this app is complemented by a unique token minted for each instance of the Token Manager app, however any token can be added given the token contract has given the right privileges to the Token Manager contract.
 
@@ -200,37 +202,20 @@ The entity that wishes to burn tokens must have the `BURN_ROLE` role.
 
 <details>
 <summary>assignVested</summary>
+<div id='warning'><h3>WARNING!</h3>
+<p>There is a known issue in the Aragon Client that will cause the UI to hang and crash when calling this function to the DAO, rendering the Aragon interface unusable. At this point we do not advise using this function. You can track the issue here:
+<u>https://github.com/aragon/client/issues/1543</u></p>
+</div>
 
-Creates a revokable vesting schedule. Assigning tokens held by the token-manager to a specified address according to a specified vesting schedule. (NEEDS MORE INFO)
-
+Creates a revokable vesting schedule. Assigning tokens held by the token-manager to a specified address according to a specified vesting schedule. This vesting schedule linearly releases tokens issued to the token-manager to the recipient. You'll have to make sure the token-manager has enough tokens issued to itself using the `issue` function before assigning the vesting schedule. the schedule begins at the `start` date but funds are only sent from after the specified `cliff` date until the specified end date, or `vested` date.
 #### Parameters
 
 - `receiver` - The address of the entity that will receive the vested tokens. (address)
 - `amount` - The amount of tokens you wish to vest. **Take note of the token's decimal precision**. (uint256)
-- `start` - (UNCLEAR FORMAT DATE IS COMPOSED HOW?)
-- `cliff` -
-- `vested` -
+- `start` - The start date of when the vesting begins. This is formatted as a UNIX timestamp. (uint64)
+- `cliff` - The date of when tokens begin to be released. (uint64)
+- `vested` - The date when 100% of the tokens are vested to the specified address. (uint64)
 - `revokable` - Whether the vesting can be revoked by the token-manager. (boolean)
-
-```
-/**
-    * @notice Assign `@tokenAmount(self.token(): address, _amount, false)` tokens to `_receiver` from the Token Manager's holdings with a `_revokable : 'revokable' : ''` vesting starting at `@formatDate(_start)`, cliff at `@formatDate(_cliff)` (first portion of tokens transferable), and completed vesting at `@formatDate(_vested)` (all tokens transferable)
-    * @param _receiver The address receiving the tokens, cannot be Token Manager itself
-    * @param _amount Number of tokens vested
-    * @param _start Date the vesting calculations start
-    * @param _cliff Date when the initial portion of tokens are transferable
-    * @param _vested Date when all tokens are transferable
-    * @param _revokable Whether the vesting can be revoked by the Token Manager
-    */
-    function assignVested(
-        address _receiver,
-        uint256 _amount,
-        uint64 _start,
-        uint64 _cliff,
-        uint64 _vested,
-        bool _revokable
-    )
-```
 
 #### Permissions
 
@@ -239,7 +224,26 @@ The entity wishing to assign a vesting schedule will need the `ASSIGN_ROLE` role
 #### Syntax
 
 `exec token-manager assignVested <receiver> <amount> <start> <cliff> <vested> <revokable>`
+
+### Usage Example
+
+Here's an example:
+
+We create a vesting schedule to send 100 tokens over 10 days to DAO member, Mitch, with a cliff on day 4. This means 10% of the tokens are vested per day. The recipient receives no tokens until the cliff date then would receive 40% of the tokens immediately then a further 10% per day. The vesting schedule can be revoked by the token-manager (called by `revokeVesting`).
+
+- Our `start` date is the 1st of June, 2030 and end date is the 10th of June, 2030 (Timestamps 1909116061 and 1909893661 respectively).
+- On the 4th of June we reach the `cliff`, 40 tokens in the vesting schedule are sent to the Mitch  (Timestamp 1909375261).
+- The 5th of June he would have 50 tokens. The 6th, 60 tokens and so on...
+- By the 10th of June we hit our `vested` date and Mitch will have the total of 100 tokens vested(received) to his address.
+
+To create this vesting schedule our final EVMcrispr script could then look like:
+```
+connect exampleDAO token-manager voting
+exec token-manager assignVested 0x123456789abcdef123456789abcdef0123456789 100e18 1909116061 1909375261 1909893661 true
+```
 </details>
+
+
 <details>
 <summary>revokeVesting</summary>
 
