@@ -9,11 +9,11 @@ import styles from '../src/css/articles.css'
 
 [**EVMcrispr**](https://evm-crispr.blossom.software/) is a powerful tool that combines a command line interface with a Javascript library to interact with Aragon DAOs. With it, you can bundle many DAO operations into just one script, generating a singular transaction/vote.
 
-In it's current state EVMcrispr is geared towards management of DAO's using the AaragonOS framework, including [Garden DAOs](https://gardens.1hive.org/#/home). It currently supports AragonOS v4 and v5, allowing for a wealth of possible DAO actions, including:
+In it's current state, EVMcrispr is geared towards management of DAO's using the AaragonOS framework, including [Garden DAOs](https://gardens.1hive.org/#/home). It currently supports AragonOS v4 and v5, allowing for a wealth of possible DAO actions, including:
 
-- Installing new native and custom aragon apps
-- Granting or Revoking permissions
-- Modifying the settings of apps
+- Installing new native and custom aragon apps.
+- Granting or Revoking permissions.
+- Modifying the settings of apps.
 - Creating internal actions with installed apps or interacting with external contracts on the blockchain.
 
 The true beauty of EVMcrispr is that you don't need to be a pro developer in order to create complex and powerful EVMscripts for DAOs. There are in fact only two requirements to start using this tool:
@@ -34,7 +34,7 @@ The most typical applications of EVMcrispr will be to create mutli-action script
 The EVMcrispr terminal is where you will make your scripts. This is where the magic happpens. Simply connect with your web wallet and switch to the same EVM compatible chain of the DAO that you want to interact with (i.e Mainnet, Matic, Gnosis Chain etc..). When writing a script each line on the terminal is used to define another action that will be bundled into the same script.
 
 
-## Who uses EVMcrispr? 
+## Who uses EVMcrispr?
 
 Some notable DAOs have already found great success using EVMcrispr, check out some of the use cases these formidable DAOs have found:
 
@@ -49,4 +49,3 @@ Some notable DAOs have already found great success using EVMcrispr, check out so
 ## Who made EVMcrispr?
 
 EVMcrispr is a product of Blossom Labs, a duo of two top-notch smart contract developers, Sem and Elessar. You can check out all of the open-source products they have built on their [Github Organization](https://github.com/BlossomLabs).
-

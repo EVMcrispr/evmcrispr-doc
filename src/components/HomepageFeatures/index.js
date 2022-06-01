@@ -7,37 +7,40 @@ const FeatureList = [
   {
     title: 'Tokens',
     img: '/img/token.png',
+    link: './aragonOS/token-manager',
     description: (
       <>
-        Optimize your Aragon DAO operations. EVMcrispr is tailor made to be used with AragonOS Apps.
+      Create and manage tokens; distributing reputation, granting membership or augmenting governance rights using the Token-Manager.
       </>
     ),
   },
   {
     title: 'Voting',
     img: '/img/voting.png',
+    link: './aragonOS/voting',
     description: (
       <>
-        Install and modify apps, streamline your governance and unlock the full potential of DeGov.
+        Make decisions collectively via token-weighted voting. Streamline your governance and unlock the full potential of DeGov.
       </>
     ),
   },
   {
     title: 'Treasury',
     img: '/img/treasury.png',
+    link: './aragonOS/finance',
     description: (
       <>
-        Create powerful and complex EVM scripts without needing to be a developer. EVMcrispr is open-source and easy to use.
+      Manage your finances, create budgets, scheduled payments and disburse funds to your DAO members. EVMcrispr can help you get it all done.
       </>
     ),
   },
 ];
 
-function Feature({img, title, description}) {
+function Feature({img, title,link, description}) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
-        <img src={img} className={styles.featureSvg} />
+        <a href={link}><img src={img} className={styles.featureSvg} /></a>
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>

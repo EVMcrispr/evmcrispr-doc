@@ -5,7 +5,7 @@ title: Agent
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
 
-The Agent App executes interactions with external ethereum addresses, including smart contracts. Along with the Vault contract, the Agent can also hold it's own Treasury which can be managed by a Finance App. Having multiple Agents can be useful for a variety of reasons, including maintaining multiple treasuries and scoping permissions to external smart contracts related to your DAO or protocol (by making the Agent an owner or admin).
+The Agent App executes interactions with external Ethereum addresses, including smart contracts. Along with the Vault contract, the Agent can also hold it's own Treasury which can be managed by a Finance App. Having multiple Agents can be useful for a variety of reasons such as, maintaining multiple treasuries or scoping permissions to external smart contracts related to your DAO or protocol (by making the Agent an owner or admin).
 
 ## Installing the App
 
@@ -15,11 +15,12 @@ There are no parameters needed to install a new agent to your DAO, however the a
 install agent:new
 ```
 
-### Common use example
+### Common Usage Example
 
 When installing an Agent, we recommend grating the voting app with the `TRANSFER_ROLE`, `EXECUTE_ROLE`, and `RUN_SCRIPT_ROLE` so `exec agent` and `act agent` commands can be used.
 
 ```
+connect <organizationAddress> token-manager voting
 install agent:new
 grant voting agent:new TRANSFER_ROLE voting
 grant voting agent:new EXECUTE_ROLE voting
@@ -56,22 +57,22 @@ Which would give the voting app permission to carry out interactions with extern
 
 Here is an exhaustive list of roles for the agent app:
 
-- `EXECUTE_ROLE` 
-  - Allows an entity to execute an external transaction through the agent
+- `EXECUTE_ROLE`
+  - Allows an entity to execute an external transaction through the agent.
 - `SAFE_EXECUTE_ROLE`
-  - Allows the given entity to perform the `safeExecute` function through the agent
+  - Allows the given entity to perform the `safeExecute` function through the agent.
 - `TRANSFER_ROLE`
-  - Allows an entity to transfer tokens from the agent's wallet
+  - Allows an entity to transfer tokens from the agent's wallet.
 - `ADD_PROTECTED_TOKEN_ROLE`
   - Allows this entity to add tokens to a list of tokens that cannot be spent or transferred while held by the agent.
 - `REMOVE_PROTECTED_TOKEN_ROLE`
   - Allows this entity to remove tokens from a list of tokens that cannot be spent or transferred while held by the agent.
 - `ADD_PRESIGNED_HASH_ROLE`
-  - Allows this entity to add a presigned hash to the agent. [Learn more](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275) 
+  - Allows this entity to add a presigned hash to the agent. [Learn more.](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275)
 - `DESIGNATE_SIGNER_ROLE`
-  - Designates this entity as a signer for the agent. [Learn more](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275).
+  - Designates this entity as a signer for the agent. [Learn more.](https://forum.aragon.org/t/agent-app-arbitrary-actions-from-daos/275).
 - `RUN_SCRIPT_ROLE`
-  - Allows this entity to run an EVM script on the agent
+  - Allows this entity to run an EVM script on the agent.
 
 <details>
 <summary>Types of Entities</summary>
@@ -140,10 +141,10 @@ The entity executing the action via the agent will need the `SAFE_EXECUTE_ROLE` 
 
 <summary>addProtectedToken</summary>
 
-This will add a specified token address, to a list of tokens that cannot be spent or trasnferred while held by the agent.
+This will add a specified token address, to a list of tokens that cannot be spent or transferred while held by the agent.
 
 #### Parameters
-- `token` - The token address of the token you want to protect
+- `token` - The token address of the token you want to protect.
 
 #### Permissions
 
@@ -158,7 +159,7 @@ The entity executing the action via the agent will need the `ADD_PROTECTED_TOKEN
 <details>
 <summary>removeProtectedToken</summary>
 
-This will remove a specified token address, to a list of tokens that cannot be spent or trasnferred while held by the agent.
+This will remove a specified token address, to a list of tokens that cannot be spent or transferred while held by the agent.
 
 #### Parameters
 - `token` - The token address of the token you want to remove from the protected tokens list. (ETHaddress)
@@ -177,7 +178,7 @@ The entity executing the action via the agent will need the `REMOVE_PROTECTED_TO
 
 <summary>presignHash</summary>
 
-Identifies a hash that will automatically be considered signed
+Identifies a hash that will automatically be considered signed.
 
 #### Parameters
 
@@ -196,7 +197,7 @@ The entity executing the action via the agent will need the `ADD_PRESIGNED_HASH_
 
 <summary>setDesignatedSigner</summary>
 
-Sets an ETH address as the designated signer of the app, which then can sign messages on behalf of the app. 
+Sets an ETH address as the designated signer of the app, which then can sign messages on behalf of the app.
 
 #### Parameters
 
@@ -219,7 +220,7 @@ Transfers tokens from the agent to a specified ETH adress.
 
 #### Parameters
 
-- `token` - The token contract address of the token you wish to transfer. (ETHaddress) 
+- `token` - The token contract address of the token you wish to transfer. (ETHaddress)
 - `to` - The ETH address to send tokens to. (ETHaddress)
 - `value` - The amount of tokens you wish to send, taking into consideration the decimal precision. (uint256)
 
@@ -227,7 +228,7 @@ Transfers tokens from the agent to a specified ETH adress.
 
 The entity executing the action via the agent will need the `TRANSFER_ROLE` role.
 
-#### Syntax 
+#### Syntax
 
 `exec agent transfer <token> <to> <value>`
 
@@ -245,17 +246,19 @@ act <agent> <targetEthereumAddress> <function> [inputParameters]
 The functions for a given *verified* smart contract can be found on the `write` or `write proxy` page in the network's block explorer. For example here is the [contract for the DAI Stablecoin](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f#writeContract). We can use the basic task of sending DAI to another address to showcase the syntax for `act`:
 
 ```
+connect exampleDAO token-manager voting
 act agent @token(DAI) transfer(address,uint256) @me 100e18
 ```
 
-As you can see, we make use of the helpers @token and @me to retreive the required addresses.
+As you can see, we make use of the helpers @token and @me to retrieve the required addresses.
 
 
-A more complete example could be to approve and deposit 1,000 DAI from the agent to the Agave Pool V2 ([`0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9`](https://etherscan.io/address/0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9#writeProxyContract)).
+A more complete example could be to approve and deposit 1,000 DAI from the agent to the Agave Pool V2: ([`0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9`](https://etherscan.io/address/0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9#writeProxyContract)).
 
 ```
+connect exampleDAO token-manager voting
 act agent @token(DAI) approve(address,unint256) 0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9 1000e18
 act agent 0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9 deposit(address,uint256,address,uint16) @token(DAI) 1000e18 agent 0
 ```
 
-For an exhaustive list of functions that agent can perform, check out the [contract's code on Github](https://github.com/aragon/aragon-apps/blob/master/apps/agent/contracts/Agent.sol)
+For an exhaustive list of functions that agent can perform, check out the [contract's code on Github.](https://github.com/aragon/aragon-apps/blob/master/apps/agent/contracts/Agent.sol)

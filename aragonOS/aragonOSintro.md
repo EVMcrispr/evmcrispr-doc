@@ -8,7 +8,7 @@ import styles from '../src/css/articles.css'
 
 AragonOS is the main framework that EVMcrispr has been tailored to interact with. Aragon DAOs are easily deployable and highly customizable governance platforms that can be launched using the [Aragon Client](https://aragon.org/aragon-client) on Mainnet or on Gnosis Chain via [1hive's Aragon Deployment](https://aragon.1hive.org/#/).
 
-<img alt='create an aragon DAO homepage' src={useBaseUrl('img/aragonOS/createAragonDAO.png')} />
+<img id='border' alt='create an aragon DAO homepage' src={useBaseUrl('img/aragonOS/createAragonDAO.png')} />
 
 This DAO structure allows a variety of native and custom apps to be plugged into the DAO using the system's `Kernel` and each apps permissions in relation to other apps is dictated by the `ACL`.
 
@@ -57,9 +57,7 @@ Referencing the addresses in the example Organization above we can see we're rou
 
 We can also make our lives a heck of a lot easier with a bit of in-house syntax sugar.
 
-```
-connect mitchcorp token-manager voting
-```
+`connect mitchcorp token-manager voting`
 
 This will connect us using the aragonID ENS name associated with the DAO. This can be found usually in the top left of the Aragon DAO navbar.
 
@@ -71,7 +69,7 @@ More on syntax-sugar in the [Syntatic Sugar Article](/getStarted/syntaxSugar/).
 If you have multiple instances of the same app installed you can specify which app you want to interact with by a simple numbering nomenclature. The first app installed on your DAO can always be referenced by `<appName>:0`, as in `agent:0`, `finance:0` or `token-manager:0`. Any additional apps installed will have the next number appended to their name. For example if you have 1 agent installed and you install another, the second agent can be referenced by `agent:1`, the third by `agent:2` and so on.
 
 ## Upgrading apps
-:::warning 
+:::warning
 This command can potentially break the app we are upgrading, so be especially careful to check that the new implementation contract is compatible with the previous one.
 :::
 
@@ -79,12 +77,10 @@ This command upgrades the kernel’s base contracts of the defined apps, so thos
 
 You can use this syntax to upgrade your app:
 
-```
-upgrade <app> [contract]
-```
+`upgrade <app> [contract]`
 
 A few examples to clarify:
 
 - Upgrading all voting instances to the latest implementation contract can be encoded as `upgrade voting`.
-- Upgrading all agent instances to a specific implementation contract (that should be previously registered as a repo version in APM): 
+- Upgrading all agent instances to a specific implementation contract (that should be previously registered as a repo version in APM):
 `upgrade agent 0x123456789abcdef123456789abcdef0123456789`.
