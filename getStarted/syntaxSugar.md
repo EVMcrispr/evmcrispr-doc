@@ -60,6 +60,10 @@ For example:
 - `set $token.tokenlist https://token-list.sushi.com/` - Use the token list provided by Sushiswap
 - `set $token.tokenlist https://tokens.honeyswap.org/` - Use the token list provided by Honeyswap
 
+:::note
+The `set` command is used to define variables in EVMcrispr. The `$` symbol identifies a string as a variable name.
+:::
+
 #### Querying token balances
 Using the token list and `@token` you can query the balance of a given token held in a specified entity, this command is `@token.balance` and accepts two parameters `tokenSymbol` and `entity`. The full syntax looks like:
 `@token.balance(<tokenSymbol>,<entity>)`
