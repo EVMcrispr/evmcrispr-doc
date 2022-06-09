@@ -68,16 +68,9 @@ Before installing an app you should consider any permissions it will need to fit
 - `MANAGE_PAYMENTS_ROLE`
     - Allows an entity to manage payments
 
-<details>
-<summary>Types of Entities</summary>
+import TypesOfEntities from '../partials/_typesOfEntities.mdx';
 
-There are four eligible entities you can choose from: **App**, **Anyone**, **Token Holders**, **Specified Eth Address**.
-- Anyone is expressed as `ANY_ENTITY` and can be any user visiting your DAO with a web wallet.
-- Token Holders is expressed as token-manager and is affiliated with your token-managers token. Anyone holding the token-manager's token is inside of this entity.
-- Specified Eth Address is expressed as the ETH address starting with `0x`, only this address will be the specified entity.
-- App is the internal name of the internal Aragon App installed on your DAO, such as `voting`, `token-manager`, or `agent`.
-
-</details>
+<TypesOfEntities />
 
 Some functionalities have been added to the contract that have not yet been added to the UI, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance).
 
