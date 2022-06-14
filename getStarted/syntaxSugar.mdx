@@ -140,6 +140,24 @@ exec vault:0 transfer @token(DAI) agent:0 @token.balance(DAI,vault:0)
 
 Which would request to transfer the entire balance of DAI held by the 1st vault to the 1st agent. 
 
+### @id
+The `@id` helper can be used to reference the hash associated with a string or variable inside of a specified smart contract. It takes only one parameter and does not require any envirionment variables.
+
+#### Parameters
+- `content`: The string or variable you want to fetch the hash for.
+
+#### Syntax
+`@id(<content>)`
+
+NEEDS SOME EXAMPLES
+
+### @now
+This helper will reference the current time using a UNIX timestamp of when the script is ran. The `@now` helper does not require any parameters nor any environment variables.
+
+#### Syntax
+`@now`
+
+
 ### Common Usage Example
 
 A common usage example to showcase the `@token` and `@me` helpers and the $token.tokenlist variable and could look like:
