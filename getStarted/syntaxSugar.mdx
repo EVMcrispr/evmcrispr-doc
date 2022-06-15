@@ -147,16 +147,38 @@ The `@id` helper can be used to reference the hash associated with a string or v
 - `content`: The string or variable you want to fetch the hash for.
 
 #### Syntax
-`@id(<content>)`
+```
+@id(<content>)
+```
 
-NEEDS SOME EXAMPLES
+The `@id` helper is extremely useful when working with contracts using [OpenZeppelin standards for Access Control](https://docs.openzeppelin.com/contracts/4.x/access-control#using-access-control). You could use the following syntax as an example:
+
+```
+act agent <contract> grantRole(bytes32,address) @id(MINTER_ROLE) @me
+```
+
+Assuming your agent has the right roles for the target contract then this would grant the minter role to the address currently connected to the terminal, with `@id` getting the MINTER_ROLE hash from the contract.
 
 ### @now
 This helper will reference the current time using a UNIX timestamp of when the script is ran. The `@now` helper does not require any parameters nor any environment variables.
 
 #### Syntax
-`@now`
+```
+@now
+```
 
+A common example of using the @now helper would be to create a vesting schedule using [Aragon's Token Manager App](/aragonOS/token-manager#internal-actions)
+
+```
+exec token-manager assignVested @me 1000e18 @now @calc(@now + 10d) @calc(@now + 30d) false
+```
+
+This requests to create a vesting schedule to vest 1000 tokens to the connected address, starting from when the scripts executes, with the cliff ending in 10 days from then, and all of the tokens vested to `@me` after a total of 30 days from execution. Also we define the vesting schedule is also non-revokable.
+
+:::warning
+There is a known issue in the Aragon Client that will cause the UI to hang and crash when calling this function to the DAO, rendering the Aragon interface unusable. At this point we do not advise using this function. You can track the issue here:
+https://github.com/aragon/client/issues/1543
+:::
 
 ### Common Usage Example
 
