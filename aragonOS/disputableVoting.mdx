@@ -1,7 +1,11 @@
 ---
 id: disputableVoting
-title: Disputable voting
+title: Disputable Voting
 ---
+import useBaseUrl from '@docusaurus/useBaseUrl'
+import styles from '../src/css/articles.css'
+import TypesOfEntities from '../partials/_typesOfEntities.mdx'
+
 
 Disputable Voting (Also referred to as Tao Voting or Decision Voting) is an app developed by [1Hive](https://1hive.org/), it has no UI and should be accessed by a deployed instance of [Gardens](https://gardens.1hive.org/#/home). Gardens is a tool for DAOs that utlisizes Aragon OS with a custom UI on top. Learn more about [Disputable Voting in the Gardens Documentation](https://1hive.gitbook.io/gardens/on-chain-governance/garden-framework/decision-voting).
 
@@ -80,14 +84,15 @@ install disputable-voting.open:new <tokenAddress> <voteTime> <supportRequiredPct
 
 To remove a permission from an entity follow this syntax:
 
-```revoke <entity> <app> <roleName> [removePermissionManager?]
+```
+revoke <entity> <app> <roleName> [removePermissionManager?]
 ```
 
 in practice this could look like:
 
 ```
 revoke disputable-voting.open:0 disputable-voting.open:1 CHANGE_VOTE_TIME_ROLE false
-``
+```
 
 This would remove the ability of the first disputable voting app to change the voting time of the second disputable voting app
 
@@ -100,6 +105,7 @@ exec <app> <methodName> [parameters]
 ```
 
 For example:
+
 ```
 exec disputable-voting.open changeQuietEndingConfiguration 1d 3d
 ```
@@ -296,7 +302,63 @@ exec disputable-voting.open newVote <executionScript> <context>
 
 For example:
 ```
-exec disputable-voting.open newVote 0x00000001552522d43ca199512fe4c6c04870449fecfe74dc00000024c2e687f50000000000000000000000000000000000000000000000000000000000069780552522d43ca199512fe4c6c04870449fecfe74dc000000247c1d0b870000000000000000000000000000000000000000000000000c3663566a580000552522d43ca199512fe4c6c04870449fecfe74dc000000245eb24332000000000000000000000000000000000000000000000000016345785d8a0000552522d43ca199512fe4c6c04870449fecfe74dc00000024b2deae83000000000000000000000000000000000000000000000000000000000003f480552522d43ca199512fe4c6c04870449fecfe74dc000000445049ece9000000000000000000000000000000000000000000000000000000000003f480000000000000000000000000000000000000000000000000000000000002a300552522d43ca199512fe4c6c04870449fecfe74dc000000246ecc064e0000000000000000000000000000000000000000000000000000000000015180 "This is a test vote"`
+exec disputable-voting.open newVote 0x00000001552522d43ca199512fe4c6c04870449fecfe74dc00000024c2e687f50000000000000000000000000000000000000000000000000000000000069780552522d43ca199512fe4c6c04870449fecfe74dc000000247c1d0b870000000000000000000000000000000000000000000000000c3663566a580000552522d43ca199512fe4c6c04870449fecfe74dc000000245eb24332000000000000000000000000000000000000000000000000016345785d8a0000552522d43ca199512fe4c6c04870449fecfe74dc00000024b2deae83000000000000000000000000000000000000000000000000000000000003f480552522d43ca199512fe4c6c04870449fecfe74dc000000445049ece9000000000000000000000000000000000000000000000000000000000003f480000000000000000000000000000000000000000000000000000000000002a300552522d43ca199512fe4c6c04870449fecfe74dc000000246ecc064e0000000000000000000000000000000000000000000000000000000000015180 "This is a test vote"
+```
+</details>
+
+<details><summary>vote</summary>
+
+This function will cast a vote on an active Tao Vote from the currently connected address.
+
+#### Parameters
+
+- `voteId` - The ID of the active vote you wish to vote on. (uint256)
+- `supports` - A boolean representing if you support the actions proposed by the vote. True is Yes, False is No. (boolean)
+
+#### Permissions
+
+This function does not require any permissions, however you will need to check on the Gardens UI of the DAO you want to interact with if you have signed the covenant and deposited any required collateral to create a vote on the app.
+
+#### Syntax
 
 ```
+exec disputable-voting.open <voteId> <supports>
+```
+
+For example:
+
+```
+exec disputable-voting.open vote 6 true
+```
+
+Which would cast a 'Yes' vote in favour of vote #6.
+
+</details>
+
+<details><summary>executeVote</summary>
+
+This function will execute a vote that has already passed and pending execution.
+
+#### Parameters
+
+- `voteId` - The ID of the pending vote you wish to execute. (uint256)
+- `executionScript` - The encoded actions that the vote is proposing to execute. This is expressed in byte data.
+
+
+#### Permissions
+
+There are no permissions required to execute this function.
+
+#### Syntax
+
+```
+exec disputable-voting.open executeVote <voteId> <executionScript>
+```
+
+For example:
+
+```
+exec disputable-voting.open executeVote 6 0x00000001552522d43ca199512fe4c6c04870449fecfe74dc00000024c2e687f50000000000000000000000000000000000000000000000000000000000069780552522d43ca199512fe4c6c04870449fecfe74dc000000247c1d0b870000000000000000000000000000000000000000000000000c3663566a580000552522d43ca199512fe4c6c04870449fecfe74dc000000245eb24332000000000000000000000000000000000000000000000000016345785d8a0000552522d43ca199512fe4c6c04870449fecfe74dc00000024b2deae83000000000000000000000000000000000000000000000000000000000003f480552522d43ca199512fe4c6c04870449fecfe74dc000000445049ece9000000000000000000000000000000000000000000000000000000000003f480000000000000000000000000000000000000000000000000000000000002a300552522d43ca199512fe4c6c04870449fecfe74dc000000246ecc064e0000000000000000000000000000000000000000000000000000000000015180
+```
+
 </details>
