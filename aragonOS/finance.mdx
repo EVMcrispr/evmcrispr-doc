@@ -147,7 +147,9 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance newImmediatePayment <token> <receiver> <amount> <reference>`
+```
+exec finance newImmediatePayment <token> <receiver> <amount> <reference>
+````
 
 
 </details>
@@ -172,7 +174,9 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance newImmediatePayment <token> <receiver> <amount> <initialPaymentTime> <interval> <maxExecutions> <reference>`
+```
+exec finance newImmediatePayment <token> <receiver> <amount> <initialPaymentTime> <interval> <maxExecutions> <reference>
+````
 
 
 </details>
@@ -191,7 +195,9 @@ The entity creating the action will need the `CHANGE_PERIOD_ROLE` role.
 
 #### Syntax
 
-`exec finance setPeriodDuration <periodDuration>`
+```
+exec finance setPeriodDuration <periodDuration>
+```
 
 
 </details>
@@ -211,7 +217,9 @@ The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
 #### Syntax
 
-`exec finance setBudget <token> <amount>`
+```
+exec finance setBudget <token> <amount>
+```
 
 
 </details>
@@ -230,7 +238,9 @@ The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
 #### Syntax
 
-`exec finance removeBudget <token> <amount>`
+```
+exec finance removeBudget <token> <amount>
+```
 
 
 </details>
@@ -249,7 +259,9 @@ The entity that will execute the payment needs the `EXECUTE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance executePayment <paymentId>`
+```
+exec finance executePayment <paymentId>
+```
 
 
 </details>
@@ -268,7 +280,9 @@ There are no permissions needed to execute this function, except that the caller
 
 #### Syntax
 
-`exec finance receiverExecutePayment <paymentId>`
+```
+exec finance receiverExecutePayment <paymentId>
+```
 
 
 </details>
@@ -288,7 +302,9 @@ The entity that wishes to change the status of a payment will need the `MANAGE_P
 
 #### Syntax
 
-`exec finance setPaymentStatus <paymentId> <active>`
+```
+exec finance setPaymentStatus <paymentId> <active>
+```
 
 
 </details>
@@ -307,6 +323,8 @@ No permissions are needed to perform this function.
 
 #### Syntax
 
-`exec finance recoverToVault <token>`
+```
+exec finance recoverToVault <token>
+```
 
 </details>
