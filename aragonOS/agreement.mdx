@@ -210,7 +210,7 @@ This function will sign the agreement for the currently connected address. You w
 
 #### Parameters 
 
-- `settingId` - The latest setting ID that you are agreeing with.
+- `settingId` - The latest setting ID that you are agreeing with. (uint256)
 
 #### Permissions
 
@@ -219,6 +219,119 @@ This function does not require any permissions.
 #### Syntax 
 ```
 exec agreement.open sign <settingId>
+```
+
+</details>
+
+<details><summary>challengeAction</summary>
+This function will challenge a disputable action on a disputable-voting app.
+
+#### Parameters
+
+- `actionId` - The unique ID of the action that you wish to dispute. (uint256)
+- `settlementOffer` - The amount of collateral tokens the challenger will accept to resolve the dispute without escalating it to the arbitrator. (uint256)
+- `finishedEvidence` - This indicates whether or not the challenger has finished submitting evidence for the context of the challenge. (boolean)
+- `context` - IPFS hash link to the context of why the action was challenged. (bytes)
+
+#### Permissions
+
+The entity creating the action will need the `CHALLENGE_ROLE` role.
+
+#### Syntax
+
+```
+exec agreement.open challengeAction <actionId> <settlementOffer> <finishedEvidence> <context>
+```
+
+</details>
+
+<details><summary>settleAction</summary>
+This functions settles a challenged action, closing it and sending the settlement offer from the action submitter's collateral to the challenger's wallet. 
+
+#### Parameters
+
+- `actionId` - The ID of the challenged, disputable action that you wish to settle. (uint256)
+
+#### Permissions
+
+There are no explicit permissions that need to be granted to call this function however, this can only be called at any time by the action submitter or by any entity after the settlement period has elapsed.
+
+#### Syntax
+
+```
+exec agreement.open settleAction <actionId>
+```
+
+</details>
+
+<details><summary>disputeAction</summary>
+This function will dispute a challenged action, raising it to the arbitrator.
+
+#### Parameters
+
+- `actionId` - The ID of the challenged, disputable action that you wish to dispute. (uint256)
+- `submitterFinishedEvidence` - Whether the submitter has finished submitting evidence with the context of their action. (boolean)
+
+#### Permissions
+There are no explicit permissions that need to be granted to call this function however,only the action submitter can call this function.
+
+#### Syntax
+
+```
+exec agreement.open disputeAction <actionId> <submitterFinishedEvidence>
+```
+
+</details>
+
+<details><summary>submitEvidence</summary>
+This function will submit evidence for a disputed action on behalf of the challenger or action submitter. This can be called as many times as needed until the dispute is resolved
+
+#### Parameters
+
+- `disputeId` - The ID number of the dispute on the arbitrator contract. (uint256)
+- `evidence` - The evidence to be submitted. (bytes)
+- `finished` - Whether the evidence submitter has finished submitting evidence. (boolean)
+
+#### Permissions
+There are no explicit permissions that need to be granted to call this function however, only the action submitter or the challenger can call this function.
+
+#### Syntax 
+
+```
+exec agreement.open <disputeId> <evidence> <finished>
+```
+</details>
+
+<details><summary>closeEvidencePeriod</summary>
+This function closes the evidence period for a dispute.
+
+#### Parameters
+
+- `disputeId` - The ID number of the dispute on the arbitrator contract. (uint256)
+
+#### Permissions
+There are no permissions needed to call this function and it can be called by any entity.
+
+#### Syntax
+
+```
+exec agreement.open closeEvidencePeriod <disputeId>
+```
+
+</details>
+
+<details><summary>resolve</summary>
+This function will resolve the speicifed dispute with the ruling from the arbitrator.
+
+#### Parameters
+- `disputeId` - The ID number of the dispute on the arbitrator contract. (uint256)
+
+#### Permissions
+There are no permissions needed to call this function, however it can be called only once by any entity once the arbitrator has finalized the ruling.
+
+#### Syntax
+```
+exec agreement.open resolve <disputeId>
 ```
 
 </details>
