@@ -5,8 +5,6 @@ title: Agreement
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
 
-
-
 The agreement app is used to define and manage an agreement or set of rules that participants of your DAO should adhere to. This contract also manages settling or escalating potential infractions of the aforementioned DAO agreement. It has no UI and is usually interacted with by an instance of [Gardens](https://gardens.1hive.org/#/home) which is developed by [1Hive](https://1hive.org/). 
 
 ## Installing the App
@@ -31,22 +29,13 @@ install agreement.open:new <arbitratorAddress> <setAppFeesCashier?> <titleString
 
 In practice this could look like:
 
-`install agreement.open:new 0x44e4fcfed14e1285c9e0f6eae77d5fdd0f196f85 false "NASCAR DAO Community Covenant" 0x516d6657707071433535586337505534387665693258765641754837367a32724e4646374a4d55686a564d357856`
-
-## App Roles
-
-Before installing the agreement app you should understand a few important pieces of the pie, including app roles defined within the contract, they are:
-
-- `CHALLENGE_ROLE`
-    - Allows the specified entity to challenge a proposal
-- `CHANGE_AGREEMENT_ROLE`
-    - Allows the specified entity to change the DAO's agreement
-- `MANAGE_DISPUTABLE_ROLE`
-    - Allows the specified entity to change the related settings of a conviction-voting or disputable-voting app, such as Challenge Duration, Action Amount, Challenge Amount and the token used as collateral for a dispute in the respective app.
-
-import TypesOfEntities from '../partials/_typesOfEntities.mdx';
-
-<TypesOfEntities />
+```
+connect exampleDAO disputable-voting.open
+install agreement.open:new 0x44e4fcfed14e1285c9e0f6eae77d5fdd0f196f85 false "NASCAR DAO Community Covenant" 0x516d6657707071433535586337505534387665693258765641754837367a32724e4646374a4d55686a564d357856
+grant disputable-voting.open:0 agreement.open:new CHANGE_AGREEMENT_ROLE disputable-voting.open:0
+grant disputable-voting.open:0 agreement.open:new MANAGE_DISPUTABLE_ROLE disputable-voting.open:0
+```
+This would install a new agreement app and grant all the necessary permissions to manage the settings to the installed disputable-voting app
 
 ## Granting Permissions
 
@@ -67,8 +56,21 @@ In practice this would look like:
 ```
 grant disputable-voting.open agreement.open MANAGE_DISPUTABLE_ROLE disputable-voting.open
 ```
-
 Which would grant the installed disputable-voting app the permission to change the dispute settings of any eligible app inside the DAO. This permission itself would also be managed by the disputable-voting app.
+
+Before installing the agreement app you should understand a few important pieces of the pie, including app roles defined within the contract, they are:
+
+- `CHALLENGE_ROLE`
+    - Allows the specified entity to challenge a proposal
+- `CHANGE_AGREEMENT_ROLE`
+    - Allows the specified entity to change the DAO's agreement
+- `MANAGE_DISPUTABLE_ROLE`
+    - Allows the specified entity to change the related settings of a conviction-voting or disputable-voting app, such as Challenge Duration, Action Amount, Challenge Amount and the token used as collateral for a dispute in the respective app.
+
+import TypesOfEntities from '../partials/_typesOfEntities.mdx';
+
+<TypesOfEntities />
+
 
 ## Revoking Permissions
 
