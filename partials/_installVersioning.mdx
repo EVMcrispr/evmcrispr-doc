@@ -1,0 +1,14 @@
+<details><summary>Installing Different App Versions</summary>
+If you want to install a different version of an aragon app other than the default you can use this syntax:
+
+<pre>
+install &lt;appName&gt; [parameters...] --version &lt;versionNumber&gt;
+</pre>
+
+For example:
+
+```
+install voting:new @token(HNY) 90e16 20e16 3d --version 1.0.0
+```
+would install a new voting app, using version 1.0.0, with HNY as the voting token, 90% support required, 20% quorum and 3 days vote duration.
+</details>

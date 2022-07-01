@@ -35,6 +35,10 @@ grant finance:new vault:new TRANSFER_ROLE voting
 grant voting finance:new CREATE_PAYMENTS_ROLE voting
 ```
 
+import InstallVersioning from '../partials/_installVersioning.mdx'
+
+<InstallVersioning />
+
 ## Granting Permissions
 
 :::warning
@@ -71,6 +75,11 @@ Before installing an app you should consider any permissions it will need to fit
 import TypesOfEntities from '../partials/_typesOfEntities.mdx';
 
 <TypesOfEntities />
+
+
+import OracleGrant from '../partials/_oracleGrant.mdx';
+
+<OracleGrant />
 
 Some functionalities have been added to the contract that have not yet been added to the UI, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance).
 

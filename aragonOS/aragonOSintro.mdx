@@ -45,9 +45,9 @@ You should probably figure out where to send your scripts. Collecting key DAO in
 
 ## The `connect` Command
 
-Interacting with any Aragon DAO will require you to preface your script with the `connect` command. This will tell EVMcrispr which DAO to send the script to and also the forwarding path which specifies through which apps we need to ask permissions from.
+Interacting with any Aragon DAO will require you to preface your script with the `connect` command. This will tell EVMcrispr which DAO to send the script to. You can also specify a forwarding path which specifies through which apps we need to ask permissions from.
 
-By default an Aragon DAO will route EVM scripts through the voting app, creating a vote to execute your script. Depending on your permissions you'll need to pass through the token-manager, making sure you have DAO tokens and permission to create a vote. Let's take a look at this example:  
+By default an Aragon DAO will usually need to execute actions with permission from the voting app, creating a vote to execute your script. Depending on your permissions often you'll need to pass through the token-manager, making sure you have DAO tokens, the token-manager which typically has permissions to create votes would then forward to the voting app, creating a vote. Let's take a look at this example:  
 
 ```
 connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618
@@ -63,24 +63,75 @@ This will connect us using the aragonID ENS name associated with the DAO. This c
 
 More on syntax-sugar in the [Syntatic Sugar Article](/getStarted/syntaxSugar/).
 
+### Directly calling functions
+
+You don't always need to specfiy forwarding path. If any entity or the address connected to the EVMcrispr terminal has permissions to perform a certain function you can call it directly, the syntax looks like this:
+
+```
+connect <DAOaddress>
+[some actions that we want to perform and have permission for]
+```
+
+For example:
+
+```
+connect mitchcorp
+exec token-manager mint @me 100e18
+```
+
+Assuming `ANY_ENTITY` or my address already has the `MINT_ROLE` role then this would send 100 tokens from the token-manager to my connected address.
 
 ## Aliasing Multiple Apps in Aragon DAOs
 
 If you have multiple instances of the same app installed you can specify which app you want to interact with by a simple numbering nomenclature. The first app installed on your DAO can always be referenced by `<appName>:0`, as in `agent:0`, `finance:0` or `token-manager:0`. Any additional apps installed will have the next number appended to their name. For example if you have 1 agent installed and you install another, the second agent can be referenced by `agent:1`, the third by `agent:2` and so on.
 
 ## Upgrading apps
+
+This command upgrades the kernel’s base contracts of the defined apps, so those app proxies will point to a new implementation contract, or a different version of the same app.
+
+There's a few different ways to use this command:
+
+### Upgrade to Latest Version
+
+If you want to simply **upgrade all instances of an app** to the latest version use this syntax:
+```
+upgrade <appName>
+```
+For example:
+```
+upgrade finance
+```
+would upgrade the specified finance app to the latest version
+
+### Upgrade to Specific Version
+
+If you would like to upgrade ***or downgrade*** all instances of an app to a specific version you can use this syntax:
+```
+upgrade <appName> <version>
+```
+
+For example:
+```
+upgrade voting 1.0.0
+```
+
+which would upgrade (or downgrade, depending on your current version) the voting app to version 1.0.0.
+
+### Upgrade to Specific Contract
+
 :::warning
 This command can potentially break the app we are upgrading, so be especially careful to check that the new implementation contract is compatible with the previous one.
 :::
 
-This command upgrades the kernel’s base contracts of the defined apps, so those app proxies will point to a new implementation contract.
+To upgrade all instances of an app to a specified implementation contract you can use this syntax:
 
-You can use this syntax to upgrade your app:
+```
+upgrade <app> [contract]
+```
 
-`upgrade <app> [contract]`
+For example:
 
-A few examples to clarify:
-
-- Upgrading all voting instances to the latest implementation contract can be encoded as `upgrade voting`.
-- Upgrading all agent instances to a specific implementation contract (that should be previously registered as a repo version in APM):
-`upgrade agent 0x123456789abcdef123456789abcdef0123456789`.
+```
+upgrade agent 0x123456789abcdef123456789abcdef0123456789
+```
+which would change the proxy app's implementation contract to the specified contract address.
