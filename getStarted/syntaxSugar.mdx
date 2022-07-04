@@ -34,7 +34,7 @@ The `set` command is used to define variables in EVMcrispr. The `$` symbol ident
 
 Here's an example to show you a typical use case of setting and implementing variables in your script:
 
-```
+```bash
 connect exampleDAO token-manager voting
 
 set $aavePool 0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9
@@ -60,7 +60,7 @@ The `@me` helper will reference the Ethereum Address that is currently connected
 
 A usage example could look like this:
 
-```
+```bash
 connect exampleDAO token-manager voting:0
 exec token-manager mint @me 1337e18
 ```
@@ -87,7 +87,7 @@ For example:
 
 You can use a different token list to reference tokens, including on different chains, using the `set` command. To use a different token list you can follow this syntax:
 
-```
+```bash
 set $token.tokenlist <tokenListURL>
 ```
 
@@ -99,13 +99,13 @@ For example:
 
 #### Syntax
 
-```
+```bash
 @token(<tokenSymbol>)
 ```
 
 An example of using `@token` in your script could look like
 
-```
+```bash
 exec vault:0 transfer @token(DAI) vault:1 100e18
 ```
 
@@ -128,13 +128,13 @@ You'll need two parameters to use this helper:
 
 #### Syntax
 
-```
+```bash
 @token.balance(<tokenSymbol>,<entity>)
 ```
 
 An example of using `@token.balance` could look like:
 
-```
+```bash
 exec vault:0 transfer @token(DAI) agent:0 @token.balance(DAI,vault:0)
 ``` 
 
@@ -144,7 +144,7 @@ Which would request to transfer the entire balance of DAI held by the 1st vault 
 
 A common usage example to showcase the `@token` and `@me` helpers and the $token.tokenlist variable and could look like:
 
-```
+```bash
 connect exampleDAO token-manager voting
 set $token.tokenlist https://token-list.sushi.com/
 exec finance newImmediatePayment @token(WETH) @me @token.balance(WETH,agent) "Send all WETH"
@@ -162,13 +162,13 @@ The `@id` helper can be used to reference the hash associated with a string or v
 - `content`: The string or variable you want to fetch the hash for.
 
 #### Syntax
-```
+```bash
 @id(<content>)
 ```
 
 The `@id` helper is extremely useful when working with contracts using [OpenZeppelin standards for Access Control](https://docs.openzeppelin.com/contracts/4.x/access-control#using-access-control). You could use the following syntax as an example:
 
-```
+```bash
 act agent <contract> grantRole(bytes32,address) @id(MINTER_ROLE) @me
 ```
 
@@ -187,18 +187,18 @@ You can reference a specific calendar day using ISO 8601 format, by default this
 
 #### Syntax
 For a calendar date use this format:
-```
+```bash
 @date(<year>-<month>-<day>Z)
 ``` 
 
 For a calendar date with a specific time, use this syntax:
-```
+```bash
 @date(<year>-<month>-<day>T<hour>-<minute>-<second>Z)
 ``` 
 
 For example:
 
- ```
+ ```bash
  @date(2015-07-30Z)
  ``` 
  
@@ -206,7 +206,7 @@ For example:
 
  OR 
 
- ```
+ ```bash
  @date(2021-01-12T15:30:45)
  ```
 
@@ -218,20 +218,20 @@ The time helpers can be used inside of `@date` to specify a given time in the fu
 
 
 #### Syntax
-```
+```bash
 @date(<calendarDateOrNow>,[-/+]<timeToAddOrSubtract>)
 ```
 To make this more clear let's look at a few examples:
-```
+```bash
 @date(now,-2y-1m)
 ```
 would return as 2 years and 1 month in the past from now.
-```
+```bash
 @date(now,+2y+1m)
 ```
 would return as 2 years and 1 month in the future from now.
 
-```
+```bash
 @date(2000-01-01Z,+12y+6m+30d+5h+12m+21s)
 ```
 
@@ -239,7 +239,7 @@ would return as 12 years, 6 months, 30 days, 5 hours, 12 minutes and 21 seconds 
 
 A common example of using the `@date` helper would be to create a vesting schedule using [Aragon's Token Manager App](/aragonOS/token-manager#internal-actions)
 
-```
+```bash
 exec token-manager assignVested @me 1000e18 @date(now) @date(now,+10d) @date(now,+30d) false
 ```
 

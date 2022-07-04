@@ -45,38 +45,55 @@ You should probably figure out where to send your scripts. Collecting key DAO in
 
 ## The `connect` Command
 
-Interacting with any Aragon DAO will require you to preface your script with the `connect` command. This will tell EVMcrispr which DAO to send the script to. You can also specify a forwarding path which specifies through which apps we need to ask permissions from.
+Interacting with any Aragon DAO will require you to preface your script with the `connect` command. This will tell EVMcrispr which DAO to send the script to. You can also specify a forwarding path which specifies through which apps we need to ask permissions from, the actions that you want to execute in your script should be enclosed in parenthesis().
 
 By default an Aragon DAO will usually need to execute actions with permission from the voting app, creating a vote to execute your script. Depending on your permissions often you'll need to pass through the token-manager, making sure you have DAO tokens, the token-manager which typically has permissions to create votes would then forward to the voting app, creating a vote. Let's take a look at this example:  
 
 ```
-connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618
+connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618 (
+    // inside here add some actions you want your script to do
+)
 ```
 
 Referencing the addresses in the example Organization above we can see we're routing our script in this manner: `Organization Address -> Token-manager App -> Voting App`.
 
 We can also make our lives a heck of a lot easier with a bit of in-house syntax sugar.
 
-`connect mitchcorp token-manager voting`
+```
+connect mitchcorp token-manager voting (
+    // inside here add some actions you want your script to do
+)
+```
 
 This will connect us using the aragonID ENS name associated with the DAO. This can be found usually in the top left of the Aragon DAO navbar.
 
 More on syntax-sugar in the [Syntatic Sugar Article](/getStarted/syntaxSugar/).
 
-### Directly calling functions
+### Adding Context
+
+Some apps such as disputable-voting allow you to add context to your vote, which will be included in the publicly displayed information for the vote. you can add context to your script with this syntax:
+```
+connect <DAOaddress> <forwardingPath> --context "Your context goes here" (
+     [some actions that you want to perform]
+)
+```
+
+### Directly Calling Functions
 
 You don't always need to specfiy forwarding path. If any entity or the address connected to the EVMcrispr terminal has permissions to perform a certain function you can call it directly, the syntax looks like this:
 
 ```
-connect <DAOaddress>
+connect <DAOaddress> (
 [some actions that we want to perform and have permission for]
+)
 ```
 
 For example:
 
 ```
-connect mitchcorp
+connect mitchcorp (
 exec token-manager mint @me 100e18
+)
 ```
 
 Assuming `ANY_ENTITY` or my address already has the `MINT_ROLE` role then this would send 100 tokens from the token-manager to my connected address.
@@ -101,7 +118,7 @@ For example:
 ```
 upgrade finance
 ```
-would upgrade the specified finance app to the latest version
+would upgrade all instances of the finance app to the latest version
 
 ### Upgrade to Specific Version
 

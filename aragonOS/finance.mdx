@@ -28,11 +28,12 @@ To Install the Voting App you'll need to include two parameters:
 
 You can install a vault (or an agent) alongside with the finance app, and set up these permissions.
 ```
-connect exampleDAO token-manager voting
+connect exampleDAO token-manager voting (
 install vault:new
 install finance:new vault:new 30d
 grant finance:new vault:new TRANSFER_ROLE voting
 grant voting finance:new CREATE_PAYMENTS_ROLE voting
+)
 ```
 
 import InstallVersioning from '../partials/_installVersioning.mdx'
@@ -112,8 +113,9 @@ exec finance[:<id>] newImmediatePayment <token> <to> <amount> <description>
 For example:
 
 ```
-connect exampleDAO token-manager voting
+connect exampleDAO token-manager voting (
 exec finance newImmediatePayment @token(ANT) 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"
+)
 ```
 
 This would request to send 100 ANT tokens to 0x62Bb362d63f14449398B79EBC46574F859A6045D with the context of "payment for documentation work", which would show up on a DAO vote.

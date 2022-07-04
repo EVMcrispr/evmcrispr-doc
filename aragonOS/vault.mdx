@@ -21,9 +21,10 @@ There are no parameters needed to install a new vault to your DAO.
 The vault is usually used alongside with the Finance app, although it can be used alone. You can install it and grant voting with the `TRANSFER_ROLE`.
 
 ```
-connect exampleDAO token-manager voting
+connect exampleDAO token-manager voting (
 install vault:new
 grant voting vault:new TRANSFER_ROLE voting
+)
 ```
 
 After filling the vault with some tokens, we can send 1 ANT to our accout with:
