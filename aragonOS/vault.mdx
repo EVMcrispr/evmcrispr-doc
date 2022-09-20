@@ -21,9 +21,10 @@ There are no parameters needed to install a new vault to your DAO.
 The vault is usually used alongside with the Finance app, although it can be used alone. You can install it and grant voting with the `TRANSFER_ROLE`.
 
 ```
-connect exampleDAO token-manager voting
+connect exampleDAO token-manager voting (
 install vault:new
 grant voting vault:new TRANSFER_ROLE voting
+)
 ```
 
 After filling the vault with some tokens, we can send 1 ANT to our accout with:
@@ -31,6 +32,10 @@ After filling the vault with some tokens, we can send 1 ANT to our accout with:
 ```
 exec vault transfer @token(ANT) @me 1e18
 ```
+
+import InstallVersioning from '../partials/_installVersioning.mdx'
+
+<InstallVersioning />
 
 ## Granting Permissions
 
@@ -51,16 +56,14 @@ Here is an exhaustive list of roles for the vault app:
 - `TRANSFER_ROLE`
   - Allows an entity to transfer tokens from the vault's address.
 
-<details>
-<summary>Types of Entities</summary>
+import TypesOfEntities from '../partials/_typesOfEntities.mdx';
 
-There are four eligible entities you can choose from: **App**, **Anyone**, **Token Holders**, **Specified Eth Address**.
-- Anyone is expressed as `ANY_ENTITY` and can be any user visiting your DAO with a web wallet.
-- Token Holders is expressed as token-manager and is affiliated with your token-managers token. Anyone holding the token-manager's token is inside of this entity.
-- Specified Eth Address is expressed as the ETH address starting with `0x`, only this address will be the specified entity.
-- App is the internal name of the internal Aragon App installed on your DAO, such as `voting`, `token-manager`, or `agent`.
+<TypesOfEntities />
 
-</details>
+
+import OracleGrant from '../partials/_oracleGrant.mdx';
+
+<OracleGrant />
 
 ## Revoking Permissions
 

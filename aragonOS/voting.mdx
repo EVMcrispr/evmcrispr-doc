@@ -28,7 +28,7 @@ You'll need the following parameters to install a new Voting App to your DAO:
 - `voteDuration` 
     - This is the amount of time each vote remains open for, be aware that currently this parameter cannot be changed once it is set, so choose wisely. This parameter is expressed in seconds, although you can append the letters "s", "m", "h", "w", "mo", and "y" at the end of the number.
 
-### Common use example
+### Common Usage Example
 
 After installing a new voting app, one of the most important permissions to set up is the `CREATE_VOTES_ROLE`. Without it, the app is useless.
 
@@ -36,6 +36,10 @@ After installing a new voting app, one of the most important permissions to set 
 install voting:new @token(HNY) 50e16 10e16 3d
 grant ANY_ADDRESS voting:new CREATE_VOTES_ROLE voting:new
 ```
+
+import InstallVersioning from '../partials/_installVersioning.mdx'
+
+<InstallVersioning />
 
 ## Granting Permissions
 
@@ -70,6 +74,10 @@ Before installing an app you should consider any permissions it will need to fit
 import TypesOfEntities from '../partials/_typesOfEntities.mdx';
 
 <TypesOfEntities />
+
+import OracleGrant from '../partials/_oracleGrant.mdx';
+
+<OracleGrant />
 
 
 ## Revoking Permissions

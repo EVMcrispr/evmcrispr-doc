@@ -7,7 +7,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
 
 
-[**EVMcrispr**](https://evm-crispr.blossom.software/) is a powerful tool that combines a command line interface with a Javascript library to interact with Aragon DAOs. With it, you can bundle many DAO operations into just one script, generating a singular transaction/vote.
+[**EVMcrispr**](https://evm-crispr.blossom.software/) is a powerful tool that combines a command line interface with a Javascript library to create multi-action EVM scripts, including interacting with Aragon DAOs. With it, you can bundle many operations into just one script, generating a singular transaction.
 
 In it's current state, EVMcrispr is geared towards management of DAO's using the AaragonOS framework, including [Garden DAOs](https://gardens.1hive.org/#/home). It currently supports AragonOS v4 and v5, allowing for a wealth of possible DAO actions, including:
 
@@ -31,7 +31,46 @@ The most typical applications of EVMcrispr will be to create mutli-action script
 
 <img id="border" alt="example EVMcrispr terminal" src={useBaseUrl('img/getStarted/scriptExampleInstall.png')} />
 
-The EVMcrispr terminal is where you will make your scripts. This is where the magic happpens. Simply connect with your web wallet and switch to the same EVM compatible chain of the DAO that you want to interact with (i.e Mainnet, Matic, Gnosis Chain etc..). When writing a script each line on the terminal is used to define another action that will be bundled into the same script.
+The EVMcrispr terminal is where you will make your scripts. This is where the magic happpens. Simply connect with your web wallet and switch to the same EVM compatible chain of the DAO that you want to interact with (i.e Mainnet, Matic, Gnosis Chain etc..).
+
+### Sending Scripts
+
+ When writing a script each line on the terminal is used to define another action that will be bundled into the same script.
+
+Once you're ready to send your script hit `Forward` and EVMcrispr will generate the transaction for you to sign with your web wallet.
+
+If you want to send a script of multiple actions to a specific contract, or multiple contracts on the connected network you can do so using the `exec` command. Follow this syntax:
+
+```bash
+exec <contractAddress> <functionName>([argumentTypes]) [parameters...]
+```
+
+For example:
+
+```bash
+set $token.tokenlist https://tokens.honeyswap.org/
+exec 0xD93d3bDBa18ebcB3317a57119ea44ed2Cf41C2F2 getReward()
+exec 0x24F2d06446AF8D6E89fEbC205e7936a602a87b60 approve(address,uint256) @me @token.balance(GIV,@me)
+exec 0x24F2d06446AF8D6E89fEbC205e7936a602a87b60 wrap(uint256) @token.balance(GIV,@me)
+```
+
+Or If you're sending scripts to an AragonOS compatible DAO you'll need to preface your scripts with the `connect` command. More on that in the [AragonOS section](/aragonOS/#the-connect-command)
+
+### Sending Multiple Scripts
+
+If you want to send multiple scripts at once all you need to do is separate them with a blank row. Each separated script will produce a separate transaction that needs to be signed with your web wallet. Here's a basic idea of how this would look:
+
+```bash
+# script 1
+connect <myDAO> [forwardPath] (
+[some action we want the script to do]
+)
+
+# script 2
+connect <myOtherDAO> [forwardPath] (
+[some action we want the 2nd script to do]
+)
+```
 
 
 ## Who uses EVMcrispr?

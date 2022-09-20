@@ -4,6 +4,7 @@ title: Agent
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
+import InstallVersioning from '../partials/_installVersioning.mdx'
 
 The Agent App executes interactions with external Ethereum addresses, including smart contracts. Along with the Vault contract, the Agent can also hold it's own Treasury which can be managed by a Finance App. Having multiple Agents can be useful for a variety of reasons such as, maintaining multiple treasuries or scoping permissions to external smart contracts related to your DAO or protocol (by making the Agent an owner or admin).
 
@@ -32,6 +33,8 @@ An agent is basically a vault on steroids, so after filling the agent with some 
 ```
 exec agent transfer @token(ANT) @me 1e18
 ```
+
+<InstallVersioning />
 
 ## Granting Permissions
 
@@ -77,6 +80,10 @@ Here is an exhaustive list of roles for the agent app:
 import TypesOfEntities from '../partials/_typesOfEntities.mdx';
 
 <TypesOfEntities />
+
+import OracleGrant from '../partials/_oracleGrant.mdx';
+
+<OracleGrant />
 
 
 ## Revoking Permissions
@@ -239,8 +246,9 @@ act <agent> <targetEthereumAddress> <function> [inputParameters]
 The functions for a given *verified* smart contract can be found on the `write` or `write proxy` page in the network's block explorer. For example here is the [contract for the DAI Stablecoin](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f#writeContract). We can use the basic task of sending DAI to another address to showcase the syntax for `act`:
 
 ```
-connect exampleDAO token-manager voting
+connect exampleDAO token-manager voting (
 act agent @token(DAI) transfer(address,uint256) @me 100e18
+)
 ```
 
 As you can see, we make use of the helpers @token and @me to retrieve the required addresses.
@@ -249,9 +257,10 @@ As you can see, we make use of the helpers @token and @me to retrieve the requir
 A more complete example could be to approve and deposit 1,000 DAI from the agent to the Aave Lending Pool V2: ([`0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9`](https://etherscan.io/address/0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9#writeProxyContract)).
 
 ```
-connect exampleDAO token-manager voting
+connect exampleDAO token-manager voting (
 act agent @token(DAI) approve(address,unint256) 0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9 1000e18
 act agent 0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9 deposit(address,uint256,address,uint16) @token(DAI) 1000e18 agent 0
+)
 ```
 
 For an exhaustive list of functions that agent can perform, check out the [contract's code on Github.](https://github.com/aragon/aragon-apps/blob/master/apps/agent/contracts/Agent.sol)

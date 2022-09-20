@@ -8,11 +8,11 @@ import styles from '../src/css/articles.css'
 
 One of the real gems of EVMcrispr is the shorthand notations you can leverage to make code easier to understand and to write. We'll cover most of the basic syntax sugar you leverage while writing scripts with EVMcrispr
 
-## Exponents
+# Exponents
 
 Ethereum Tokens do not use decimals and instead identify their precision through exponentially large numbers, this is referenced as the *decimal precision* and typically is set to 18. This means that for example 1 token with a decimal precision of 18 is expressed in solidity as `1000000000000000000`. With EVMcrispr we can simply write this as `1e18` which equals 1 to the power of 18.
 
-It can also be used to define percentages in certain contracts. For instance 21% would become `0.21e18` or just `21e16`, and 0.56% would become `0.56e16`.
+It can also be used to define percentages in certain contracts. For instance 21% would become `0.21e18` or just `21e16`, and 0.56% would become `0.56e16` or `56e14`.
 
 :::info
 Some tokens use different decimal precision so it's good practice to check the token contract to verify the decimal precision. USDC for example uses 6.
@@ -20,11 +20,11 @@ Some tokens use different decimal precision so it's good practice to check the t
 i.e `1e6` would be 1 USDC, `1e18` would be 1,000,000,000,000 USDC - See the difference?
 :::
 
-## Time
+# Time
 
 Typically smart contracts express time in seconds. However with EVMcrispr time can also be expressed by appending s, m, h, d, w, and y at the end of the number for defining them as seconds, minutes, hours, days, weeks, and years respectively. For example 2d would get converted to 172,800 seconds.
 
-## Environment Variables
+# Environment Variables
 
 Environment variables let you reference information faster and also assign information to names that you can use inside of your scripts commands. You need two pieces of information to set a variable, the name you want to give the variable and the data you want to it to be equal to. You can use this syntax:
 
@@ -34,7 +34,7 @@ The `set` command is used to define variables in EVMcrispr. The `$` symbol ident
 
 Here's an example to show you a typical use case of setting and implementing variables in your script:
 
-```
+```bash
 connect exampleDAO token-manager voting
 
 set $aavePool 0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9
@@ -46,28 +46,28 @@ act agent $aavePool deposit(address,uint256,address,uint16) $dai $value agent 0
 ```
 
 In the above we define three variables: 
-- `$aavePool` - The address of the [Aave Lending Pool}(https://docs.aave.com/developers/v/2.0/deployed-contracts/deployed-contracts) on mainnet.
+- `$aavePool` - The address of the [Aave Lending Pool](https://docs.aave.com/developers/v/2.0/deployed-contracts/deployed-contracts) on mainnet.
 - `$dai` - The token address of DAI.
 - `$value` - A numerical value we want to use repeatedly, in this case it is 1000*10^18.
 
 Then we tell the agent to approve itself to spend 1000 DAI for the Aave Lending Pool and subsequently we request to make the transaction to deposit 1000 DAI into the Aave Lending Pool.
 
-## Helpers
+# Helpers
 
-### @me
+## @me
 
 The `@me` helper will reference the Ethereum Address that is currently connected to the EVMcrispr terminal.
 
 A usage example could look like this:
 
-```
+```bash
 connect exampleDAO token-manager voting:0
 exec token-manager mint @me 1337e18
 ```
 Which would ask the token-manager to mint the currently connected address 1337 of the associated token-manager's tokens.
 
 
-### @token
+## @token
 
 The `@token` helper fetches the address of the token contract using the token symbol defined in a token list.
 
@@ -87,7 +87,7 @@ For example:
 
 You can use a different token list to reference tokens, including on different chains, using the `set` command. To use a different token list you can follow this syntax:
 
-```
+```bash
 set $token.tokenlist <tokenListURL>
 ```
 
@@ -99,13 +99,13 @@ For example:
 
 #### Syntax
 
-```
+```bash
 @token(<tokenSymbol>)
 ```
 
 An example of using `@token` in your script could look like
 
-```
+```bash
 exec vault:0 transfer @token(DAI) vault:1 100e18
 ```
 
@@ -113,7 +113,7 @@ Which would request to transfer 100 DAI from the 1st vault to the 2nd vault.
 
 **_*As always, be aware of each token's decimal precision._**
 
-### @token.balance
+## @token.balance
 
 Using the token list and `@token` you can query the balance of a given token held in a specified entity, this command is `@token.balance`.
 
@@ -128,13 +128,13 @@ You'll need two parameters to use this helper:
 
 #### Syntax
 
-```
+```bash
 @token.balance(<tokenSymbol>,<entity>)
 ```
 
 An example of using `@token.balance` could look like:
 
-```
+```bash
 exec vault:0 transfer @token(DAI) agent:0 @token.balance(DAI,vault:0)
 ``` 
 
@@ -144,7 +144,7 @@ Which would request to transfer the entire balance of DAI held by the 1st vault 
 
 A common usage example to showcase the `@token` and `@me` helpers and the $token.tokenlist variable and could look like:
 
-```
+```bash
 connect exampleDAO token-manager voting
 set $token.tokenlist https://token-list.sushi.com/
 exec finance newImmediatePayment @token(WETH) @me @token.balance(WETH,agent) "Send all WETH"
@@ -153,3 +153,100 @@ exec finance newImmediatePayment @token(SUSHI) @me @token.balance(SUSHI,agent) "
 ```
 
 This would set the token list to Sushiswap's list and then create three immediate payment on the finance app to send the full balance of the agent's WETH, ANT, and SUSHI holdings to the address currently connected to the terminal.
+
+
+## @id
+The `@id` helper can be used to reference the hash associated with a string or variable inside of a specified smart contract. It takes only one parameter and does not require any envirionment variables.
+
+#### Parameters
+- `content`: The string or variable you want to fetch the hash for.
+
+#### Syntax
+```bash
+@id(<content>)
+```
+
+The `@id` helper is extremely useful when working with contracts using [OpenZeppelin standards for Access Control](https://docs.openzeppelin.com/contracts/4.x/access-control#using-access-control). You could use the following syntax as an example:
+
+```bash
+act agent <contract> grantRole(bytes32,address) @id(MINTER_ROLE) @me
+```
+
+Assuming your agent has the right roles for the target contract then this would grant the minter role to the address currently connected to the terminal, with `@id` getting the MINTER_ROLE hash from the contract.
+
+## @date
+This is a extremely versatile helper that can be used to reference dates and times in various ways. There are three basic functionalities to cover: now, calendar dates and reference dates.
+
+### now
+
+`@date(now)` can be used to reference the current date and time of when the script is ran. It requires no arguments or variables and returns the current UNIX timestamp.
+
+### Calendar Dates
+
+You can reference a specific calendar day using ISO 8601 format, by default this uses UTC time.
+
+#### Syntax
+For a calendar date use this format:
+```bash
+@date(<year>-<month>-<day>Z)
+``` 
+
+For a calendar date with a specific time, use this syntax:
+```bash
+@date(<year>-<month>-<day>T<hour>-<minute>-<second>Z)
+``` 
+
+For example:
+
+ ```bash
+ @date(2015-07-30Z)
+ ``` 
+ 
+ would return as July 30th, 2015 (The Ethereum genesis block date :smile:).
+
+ OR 
+
+ ```bash
+ @date(2021-01-12T15:30:45)
+ ```
+
+ would return as 3:30:45pm, January 12th, 2021.
+
+ ### Reference Dates
+
+The time helpers can be used inside of `@date` to specify a given time in the future or past of a given date. This take two arguments, first the reference date and the second is the amount of time in the future or past from this reference date. You can use the `now` variable or a calendar date (in the syntax defined above) as the first argument.
+
+
+#### Syntax
+```bash
+@date(<calendarDateOrNow>,[-/+]<timeToAddOrSubtract>)
+```
+To make this more clear let's look at a few examples:
+```bash
+@date(now,-2y-1m)
+```
+would return as 2 years and 1 month in the past from now.
+```bash
+@date(now,+2y+1m)
+```
+would return as 2 years and 1 month in the future from now.
+
+```bash
+@date(2000-01-01Z,+12y+6m+30d+5h+12m+21s)
+```
+
+would return as 12 years, 6 months, 30 days, 5 hours, 12 minutes and 21 seconds in the future from January 1st, 2000.
+
+A common example of using the `@date` helper would be to create a vesting schedule using [Aragon's Token Manager App](/aragonOS/token-manager#internal-actions)
+
+```bash
+exec token-manager assignVested @me 1000e18 @date(now) @date(now,+10d) @date(now,+30d) false
+```
+
+This requests to create a vesting schedule to vest 1000 tokens to the connected address, starting from when the scripts executes, with the cliff ending in 10 days from then, and all of the tokens vested to `@me` after a total of 30 days from execution. Also we define the vesting schedule is also non-revokable.
+
+:::warning
+There is a known issue in the Aragon Client that will cause the UI to hang and crash when calling this function to the DAO, rendering the Aragon interface unusable. At this point we do not advise using this function. You can track the issue here:
+https://github.com/aragon/client/issues/1543
+:::
+
