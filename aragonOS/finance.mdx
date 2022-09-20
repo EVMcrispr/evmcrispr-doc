@@ -4,6 +4,7 @@ title: Finance
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
+import TypesOfEntities from '../partials/_typesOfEntities.mdx'
 
 The Finance App will allow you to keep track of your DAO's finances, each app can only interact with funds held in one Ethereum Address. Having multiple Finance Apps will allow you to manage multiple treasuries.
 
@@ -72,8 +73,6 @@ Before installing an app you should consider any permissions it will need to fit
     - Allows an entity to execute payments
 - `MANAGE_PAYMENTS_ROLE`
     - Allows an entity to manage payments
-
-import TypesOfEntities from '../partials/_typesOfEntities.mdx';
 
 <TypesOfEntities />
 
@@ -159,7 +158,9 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance newImmediatePayment <token> <receiver> <amount> <reference>`
+```
+exec finance newImmediatePayment <token> <receiver> <amount> <reference>
+````
 
 
 </details>
@@ -184,7 +185,9 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance newImmediatePayment <token> <receiver> <amount> <initialPaymentTime> <interval> <maxExecutions> <reference>`
+```
+exec finance newImmediatePayment <token> <receiver> <amount> <initialPaymentTime> <interval> <maxExecutions> <reference>
+````
 
 
 </details>
@@ -203,7 +206,9 @@ The entity creating the action will need the `CHANGE_PERIOD_ROLE` role.
 
 #### Syntax
 
-`exec finance setPeriodDuration <periodDuration>`
+```
+exec finance setPeriodDuration <periodDuration>
+```
 
 
 </details>
@@ -223,7 +228,9 @@ The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
 #### Syntax
 
-`exec finance setBudget <token> <amount>`
+```
+exec finance setBudget <token> <amount>
+```
 
 
 </details>
@@ -242,7 +249,9 @@ The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
 #### Syntax
 
-`exec finance removeBudget <token> <amount>`
+```
+exec finance removeBudget <token> <amount>
+```
 
 
 </details>
@@ -261,7 +270,9 @@ The entity that will execute the payment needs the `EXECUTE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance executePayment <paymentId>`
+```
+exec finance executePayment <paymentId>
+```
 
 
 </details>
@@ -280,7 +291,9 @@ There are no permissions needed to execute this function, except that the caller
 
 #### Syntax
 
-`exec finance receiverExecutePayment <paymentId>`
+```
+exec finance receiverExecutePayment <paymentId>
+```
 
 
 </details>
@@ -300,7 +313,9 @@ The entity that wishes to change the status of a payment will need the `MANAGE_P
 
 #### Syntax
 
-`exec finance setPaymentStatus <paymentId> <active>`
+```
+exec finance setPaymentStatus <paymentId> <active>
+```
 
 
 </details>
@@ -319,6 +334,8 @@ No permissions are needed to perform this function.
 
 #### Syntax
 
-`exec finance recoverToVault <token>`
+```
+exec finance recoverToVault <token>
+```
 
 </details>
