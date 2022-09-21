@@ -42,7 +42,9 @@ And these are the parameters for the `install` command:
 The following script creates a transferable Test Token (TEST) within the "exampleDAO", granting minting and burning permissions to voting, and minting 100 tokens to the creator of the vote.
 
 ```
-connect exampleDAO token-manager voting (
+load aragonos as ar
+
+ar:connect exampleDAO token-manager voting (
 new token "Test Token" TEST token-manager:new
 install token-manager:new token:TEST true 0
 grant voting token-manager:new MINT_ROLE voting
@@ -241,7 +243,9 @@ We create a vesting schedule to send 100 tokens over 10 days to DAO member, Mitc
 
 To create this vesting schedule our final EVMcrispr script could then look like:
 ```
-connect exampleDAO token-manager voting (
+load aragonos as ar
+
+ar:connect exampleDAO token-manager voting (
 exec token-manager assignVested 0x123456789abcdef123456789abcdef0123456789 100e18 1909116061 1909375261 1909893661 true
 )
 ```
