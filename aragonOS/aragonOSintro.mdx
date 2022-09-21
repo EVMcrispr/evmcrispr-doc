@@ -42,6 +42,14 @@ You should probably figure out where to send your scripts. Collecting key DAO in
 
 <img id="border" alt="navigating the aragon DAO" src={useBaseUrl('img/getStarted/findingAddresses.png')} />
 
+## Loading the Module
+You'll need to load the module first to begin writing EVMcrispr scripts for Aragon DAOs
+
+import AragonModule from '../partials/_aragonModule.mdx'
+
+<AragonModule />
+
+[Learn more about modularity in EVMcrispr](/getStarted/modularity/)
 
 ## The `connect` Command
 
@@ -50,7 +58,9 @@ Interacting with any Aragon DAO will require you to preface your script with the
 By default an Aragon DAO will usually need to execute actions with permission from the voting app, creating a vote to execute your script. Depending on your permissions often you'll need to pass through the token-manager, making sure you have DAO tokens, the token-manager which typically has permissions to create votes would then forward to the voting app, creating a vote. Let's take a look at this example:  
 
 ```
-connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618 (
+load aragonos as ar
+
+ar:connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618 (
     // inside here add some actions you want your script to do
 )
 ```
@@ -60,7 +70,9 @@ Referencing the addresses in the example Organization above we can see we're rou
 We can also make our lives a heck of a lot easier with a bit of in-house syntax sugar.
 
 ```
-connect mitchcorp token-manager voting (
+load aragonos as ar
+
+ar:connect mitchcorp token-manager voting (
     // inside here add some actions you want your script to do
 )
 ```
@@ -69,21 +81,75 @@ This will connect us using the aragonID ENS name associated with the DAO. This c
 
 More on syntax-sugar in the [Syntatic Sugar Article](/getStarted/syntaxSugar/).
 
-### Adding Context
+### Nesting `connect`
+
+Nested `connect` commands allow you to define DAO-to-DAO operations scripts and have access to different organizations’ apps inside a scope. You can reference a different DAO’s app by their name, address or nesting index.
+
+#### Parameters
+- `daoAddress`: The organization address or Aragon ENS identifier of the DAO you wish to interact with.
+- `appName`: The name of the aragon app you wish to interact with.
+
+#### Syntax
+
+```
+<daoAddress>:<appName>
+```
+
+For example:
+
+```javascript
+load aragonos as ar
+ar:connect mainDAO (
+    ar:connect subDAO tollgate token-manager voting (
+   		 // It grants mainDAO's voting app permissions to create votes in the subDAO's voting app.
+   	 grant _mainDAO:voting voting CREATE_VOTES_ROLE 
+   		 // Here the nesting index "_1" is the same as "_myDAO".
+   	 grant _1:voting token-manager MINT_ROLE
+    )
+)
+```
+
+### `forward`
+
+The forward command allows you to customize the forward path by not having to define it in the `connect` command. This can be helpful when creating scripts that will be sent through a forwarding path composed of apps from different DAOs.
+
+#### Syntax
+
+```
+forward <...path> ( <...commands> )
+```
+
+For example:
+```javascript
+load aragonos as ar
+ar:connect mainDAO (
+   ar:connect committeeDAO (
+   	forward _mainDAO:token-manager token-manager (
+   		...
+   	)
+   )
+)
+```
+
+## Adding Context
 
 Some apps such as disputable-voting allow you to add context to your vote, which will be included in the publicly displayed information for the vote. you can add context to your script with this syntax:
 ```
-connect <DAOaddress> <forwardingPath> --context "Your context goes here" (
+load aragonos as ar
+
+ar:connect <DAOaddress> <forwardingPath> --context "Your context goes here" (
      [some actions that you want to perform]
 )
 ```
 
-### Directly Calling Functions
+## Directly Calling Functions
 
 You don't always need to specfiy forwarding path. If any entity or the address connected to the EVMcrispr terminal has permissions to perform a certain function you can call it directly, the syntax looks like this:
 
 ```
-connect <DAOaddress> (
+load aragonos as ar
+
+ar:connect <DAOaddress> (
 [some actions that we want to perform and have permission for]
 )
 ```
@@ -91,7 +157,9 @@ connect <DAOaddress> (
 For example:
 
 ```
-connect mitchcorp (
+load aragonos as ar
+
+ar:connect mitchcorp (
 exec token-manager mint @me 100e18
 )
 ```
@@ -152,3 +220,4 @@ For example:
 upgrade agent 0x123456789abcdef123456789abcdef0123456789
 ```
 which would change the proxy app's implementation contract to the specified contract address.
+
