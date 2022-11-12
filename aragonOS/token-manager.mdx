@@ -5,51 +5,51 @@ title: Token Manager
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
 
-The Token Manager app, as the name implies, is for managing tokens. Usually this app is complemented by a unique token minted for each instance of the Token Manager app, however any token can be added given the token contract has given the right privileges to the Token Manager contract.
+The Token Manager app, as the name implies, is for managing tokens. Usually, this app is complemented by a unique token contract for each instance of the Token Manager app.
 
 ## Installing the app
 
-You usually want to create a new token along with the installation of the new token-manager.
+You usually want to create a new token along with the installation of the new Token Manager.
 
 ```
-new token <tokenName> <tokenSymbol> <tokenController> [tokenDecimals=18] [transferable=true]
+new-token <tokenName> <tokenSymbol> <tokenController> [tokenDecimals=18] [transferable=true]
 install token-manager:new <tokenAddress> <transferable> <maxPerAccount>
 ```
 
-You'll need a couple parameters for the `new token` command:
+You'll need a couple of parameters for the `new-token` command:
 
 - `tokenName`
     - The name of the token you wish to create.
 - `tokenSymbol`
     - The symbol you wish to set for the token.
 - `tokenController`
-    - The associated token-manager app which will have mint and burn privileges for the token.
+    - The associated Token Manager app will have mint and burn privileges for the token.
 - `tokenDecimals`
     - The number of decimal precision you wish to set for the token. The default decimal precision is 18.
 - `transferable`
-    - Whether or not the token should be transferable. Defaults to true.
+    - Whether or not the token should be transferable. It defaults to true.
 
 And these are the parameters for the `install` command:
 - `tokenAddress`
-    - The address of the token you wish to associate with the new token manager. You can
+    - The address of the token you wish to associate with the new Token Manager.
 - `transferable`
     - It overrides the transferability property of the token.
 - `maxPerAccount`
-    - The maximum account of tokens a single address can hold. Setting this parameter to 0 means this amount is unlimited. This number is also related to the decimal precision. For example if the token decimal precision is 18 and you want the `maxPerAccount` to be 1 then this parameter input would be `1e18`.
+    - The maximum account of tokens a single address can hold. Setting this parameter to 0 means this amount is unlimited. This number is also related to decimal precision. For example, if the token decimal precision is 18 and you want the `maxPerAccount` to be 1, then this parameter input would be `1e18`.
 
 ### Common Usage Example
 
-The following script creates a transferable Test Token (TEST) within the "exampleDAO", granting minting and burning permissions to voting, and minting 100 tokens to the creator of the vote.
+The following script creates a transferable Test Token (TEST) within the "exampleDAO," granting minting and burning permissions to voting and minting 100 tokens to the creator of the vote.
 
 ```
 load aragonos as ar
 
 ar:connect exampleDAO token-manager voting (
-new token "Test Token" TEST token-manager:new
-install token-manager:new token:TEST true 0
-grant voting token-manager:new MINT_ROLE voting
-grant voting token-manager:new BURN_ROLE voting
-exec token-manager:new mint @me 100e18
+  new-token "Test Token" TEST token-manager:new
+  install token-manager:new token:TEST true 0
+  grant voting token-manager:new MINT_ROLE voting
+  grant voting token-manager:new BURN_ROLE voting
+  exec token-manager:new mint @me 100e18
 )
 ```
 
@@ -63,27 +63,27 @@ import InstallVersioning from '../partials/_installVersioning.mdx'
 This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
 :::
 
-To grant permissions you'll use the following syntax:
+To grant permissions, you'll use the following syntax:
 
 ```
 grant <entity> <app> <roleName> [defaultPermissionManager]
 ```
 
-In practice this would look like:
+In practice, this would look like this:
 
 ```
 grant voting token-manager MINT_ROLE voting
 ```
 
-This would allow the voting app to mint more tokens to a specified address from the token manager and that this permission is controlled by the voting app.
+It would allow the voting app to mint more tokens to a specified address from the Token Manager, and the Voting App controls this permission.
 
 These are the available roles:
 - `MINT_ROLE`
     - Allows the given entity to mint tokens to a specified address.
 - `ISSUE_ROLE`
-    - Allows the given entity to mint tokens that are held by the Token Manager.
+    - Allows the given entity to mint tokens that the Token Manager holds.
 - `ASSIGN_ROLE`
-    - Allows the given entity to assign an amount of issued tokens held by the Token Manager to a specified address. This role is also required to create a vesting stream for a specified address.
+    - Allows the given entity to assign some issued tokens held by the Token Manager to a specified address. This role is also required to create a vesting stream for a specified address.
 - `REVOKE_VESTINGS_ROLE`
     - Allows the given entity to revoke vested tokens of a specified address.
 - `BURN_ROLE`
@@ -101,47 +101,54 @@ import OracleGrant from '../partials/_oracleGrant.mdx';
 
 ## Revoking Permissions
 
-To remove a permission from an entity follow this syntax:
+To remove permission from an entity, follow this syntax:
 
 ```
 revoke <entity> <app> <roleName> [removePermissionManager]
 ```
 
-In practice this could look like:
+In practice, this could look like this:
 
 ```
 revoke 0x62Bb362d63f14449398B79EBC46574F859A6045D token-manager BURN_ROLE false
 ```
 
-This would revoke the address `0x62Bb362d63f14449398B79EBC46574F859A6045D` ability to burn tokens, while keeping the Permission Manager in place should this permission need to be modified in the future.
+It would revoke the address `0x62Bb362d63f14449398B79EBC46574F859A6045D` ability to burn tokens while keeping the Permission Manager in place should this permission need to be modified in the future.
 
 ## Internal Actions
 
-To create an interaction between different apps within your DAO we use this syntax:
+
+Using the `exec` command, we can create internal actions.
+
+We will use the `mint` function to show the syntax of the `exec` command. The base syntax looks like this:
 
 ```
-exec <app> <methodName> [parameters]
+exec token-manager[:<id>] mint <recipient> <amount>
 ```
 
 For example:
 
 ```
-exec token-manager mint agent 100e18
+load aragonos as ar
+
+ar:connect exampleDAO token-manager voting (
+  exec token-manager mint agent 100e18
+)
 ```
 
-This would mint 100 DAO tokens from the token-manager to the agent, given the tokens decimal precision is set to 18.
+It would create a vote to mint 100 DAO tokens from the Token Manager to the Agent, given the tokens decimal precision is set to 18.
 
-Below is an exhaustive list of all possible actions you can perform with the token-manager app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+Below is an exhaustive list of all possible internal actions you can perform with the Token Manager app. In addition, we will identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 
 <details>
 <summary>mint</summary>
 
-This function will mint more of the tokens that are associated with the token-manager app.
+This function will mint more of the tokens that are associated with the Token Manager app.
 
 #### Parameters
 
-- `receiver` - The address of the entity that will receive the minted tokens. (address)
-- `amount` - The amount of tokens you wish to mint. **Take note of the token's decimal precision**. (uint256)
+- `receiver` - The entity's address that will receive the minted tokens (address).
+- `amount` - The number of tokens you wish to mint. **Take note of the token's decimal precision**(uint256). 
 
 #### Permissions
 
@@ -149,52 +156,58 @@ The entity that wishes to mint more tokens will need the `MINT_ROLE` role.
 
 #### Syntax
 
-`exec token-manager mint <receiver> <amount>`
+```
+exec token-manager mint <receiver> <amount>
+```
 </details>
 
 <details>
 <summary>issue</summary>
 
-This will mint a specified amount of tokens that will be held by the token-manager app.
+It will mint a specified amount of tokens that the Token Manager app will hold.
 
 #### Parameters
 
-- `amount` - The amount of tokens you wish to mint. **Take note of the token's decimal precision**. (uint256)
+- `amount` - The number of tokens you wish to mint. **Take note of the token's decimal precision**. (uint256)
 
 #### Permissions
 
-The entity that wishes to mint more tokens to the token-manager app will need the `ISSUE_ROLE` role.
+The entity that wishes to mint more tokens to the Token Manager app will need the `ISSUE_ROLE` role.
 
 #### Syntax
 
-`exec token-manager issue <amount>`
+```
+exec token-manager issue <amount>
+```
 </details>
 <details>
 <summary>assign</summary>
 
-Sends a specified amount of the associated token-manager tokens that are currently held by the token-manager to a specified address.
+It sends a specified amount of the Token Manager tokens currently held by the Token Manager to a specified address.
 
 #### Parameters
-- `receiver` - The address of the entity that will receive the assigned tokens. (address)
-- `amount` - The amount of tokens you wish to assign. **Take note of the token's decimal precision**. (uint256)
+- `receiver` - The entity's address will receive the assigned tokens. (address)
+- `amount` - The number of tokens you wish to assign. **Take note of the token's decimal precision**. (uint256) 
 
 #### Permissions
 
 The entity that wishes to assign tokens to a specified address will require the `ASSIGN_ROLE` role.
 
 #### Syntax
-`exec token-manager assign <receiver> <amount>`
+```
+exec token-manager assign <receiver> <amount>
+```
 </details>
 
 <details>
 <summary>burn</summary>
 
-This function will burn a specified amount of the associated token-manager tokens from a specified address.
+This function will burn a specified amount of the associated Token Manager tokens from a specified address.
 
 #### Parameters
 
-- `holder` - The address of the current token holder of which you would like to burn tokens from.
-- `amount` - The amount of tokens you wish to burn. **Take note of the token's decimal precision**. (uint256)
+- `holder` - The address of the current token holder from which you would like to burn tokens.
+- `amount` - The number of tokens you wish to burn. **Take note of the token's decimal precision**. (uint256) 
 
 #### Permissions
 
@@ -202,25 +215,28 @@ The entity that wishes to burn tokens must have the `BURN_ROLE` role.
 
 #### Syntax
 
-`exec token-manager burn <holder> <amount>`
+```
+exec token-manager burn <holder> <amount>
+```
 </details>
 
 <details>
 <summary>assignVested</summary>
 <div id='warning'><h3>WARNING!</h3>
-<p>There is a known issue in the Aragon Client that will cause the UI to hang and crash when calling this function to the DAO, rendering the Aragon interface unusable. At this point we do not advise using this function. You can track the issue here:
+<p> A known issue in the Aragon Client will cause the UI to hang and crash when calling this function to the DAO, rendering the Aragon interface unusable. At this point, we do not advise using this function. You can track the issue here:
 <u>https://github.com/aragon/client/issues/1543</u></p>
 </div>
 
-Creates a revokable vesting schedule. Assigning tokens held by the token-manager to a specified address according to a specified vesting schedule. This vesting schedule linearly releases tokens issued to the token-manager to the recipient. You'll have to make sure the token-manager has enough tokens issued to itself using the `issue` function before assigning the vesting schedule. the schedule begins at the `start` date but funds are only sent from after the specified `cliff` date until the specified end date, or `vested` date.
+It creates a revokable vesting schedule. It assigns tokens the Token Manager holds to a specified address according to a specified vesting schedule. This vesting schedule linearly releases tokens issued to the Token Manager to the recipient. Therefore, you will have to ensure the Token Manager has enough tokens issued to itself using the `issue` function before assigning the vesting schedule. The schedule begins at the `start` date, but funds are only sent after the specified `cliff` date until the specified end date or `vested` date.
+
 #### Parameters
 
-- `receiver` - The address of the entity that will receive the vested tokens. (address)
-- `amount` - The amount of tokens you wish to vest. **Take note of the token's decimal precision**. (uint256)
+- `receiver` - The entity's address will receive the vested tokens. (address)
+- `amount` - The number of tokens you wish to vest. **Take note of the token's decimal precision**. (uint256)
 - `start` - The start date of when the vesting begins. This is formatted as a UNIX timestamp. (uint64)
-- `cliff` - The date of when tokens begin to be released. (uint64)
+- `cliff` - The date when tokens begin to be released. (uint64)
 - `vested` - The date when 100% of the tokens are vested to the specified address. (uint64)
-- `revokable` - Whether the vesting can be revoked by the token-manager. (boolean)
+- `revokable` - Whether the Token Manager can revoke the vesting. (boolean)
 
 #### Permissions
 
@@ -228,25 +244,25 @@ The entity wishing to assign a vesting schedule will need the `ASSIGN_ROLE` role
 
 #### Syntax
 
-`exec token-manager assignVested <receiver> <amount> <start> <cliff> <vested> <revokable>`
+```
+exec token-manager assignVested <receiver> <amount> <start> <cliff> <vested> <revokable>
+```
 
-### Usage Example
+#### Usage Example
 
-Here's an example:
+We create a vesting schedule to send 100 tokens over ten days to DAO member Mitch, with a cliff on day 4. This means 10% of the tokens are vested per day. The recipient receives no tokens until the cliff date, then receives 40% of the tokens immediately and a further 10% per day. The Token Manager can revoke the vesting schedule (calling the function `revokeVesting`).
 
-We create a vesting schedule to send 100 tokens over 10 days to DAO member, Mitch, with a cliff on day 4. This means 10% of the tokens are vested per day. The recipient receives no tokens until the cliff date then would receive 40% of the tokens immediately then a further 10% per day. The vesting schedule can be revoked by the token-manager (called by `revokeVesting`).
+- Our `start` date is the 1st of June, 2030, and the end date is the 10th of June, 2030 (at timestamps 1909116061 and 1909893661, respectively).
+- On the 4th of June, we reach the `cliff`, and 40 tokens in the vesting schedule are sent to Mitch (at timestamp 1909375261).
+- The 5th of June, he would have 50 tokens. The 6th, 60 tokens, and so on.
+- By the 10th of June, we hit our `vested` date, and Mitch will have 100 tokens vested(received) to his address.
 
-- Our `start` date is the 1st of June, 2030 and end date is the 10th of June, 2030 (Timestamps 1909116061 and 1909893661 respectively).
-- On the 4th of June we reach the `cliff`, 40 tokens in the vesting schedule are sent to the Mitch  (Timestamp 1909375261).
-- The 5th of June he would have 50 tokens. The 6th, 60 tokens and so on...
-- By the 10th of June we hit our `vested` date and Mitch will have the total of 100 tokens vested(received) to his address.
-
-To create this vesting schedule our final EVMcrispr script could then look like:
+Our final EVMcrispr script would look like this to create this vesting schedule:
 ```
 load aragonos as ar
 
 ar:connect exampleDAO token-manager voting (
-exec token-manager assignVested 0x123456789abcdef123456789abcdef0123456789 100e18 1909116061 1909375261 1909893661 true
+  exec token-manager assignVested 0x123456789abcdef123456789abcdef0123456789 100e18 1909116061 1909375261 1909893661 true
 )
 ```
 </details>
@@ -268,6 +284,8 @@ The entity that wishes to revoke a vesting schedule will need the `REVOKE_VESTIN
 
 #### Syntax
 
-`exec token-manager revokeVesting <holder> <vestingId>`
+```
+exec token-manager revokeVesting <holder> <vestingId>
+```
 
 </details>
