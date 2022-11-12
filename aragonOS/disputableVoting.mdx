@@ -7,119 +7,125 @@ import styles from '../src/css/articles.css'
 import TypesOfEntities from '../partials/_typesOfEntities.mdx'
 
 
-Disputable Voting (Also referred to as Tao Voting or Decision Voting) is an app developed by [1Hive](https://1hive.org/), it has no UI and should be accessed by a deployed instance of [Gardens](https://gardens.1hive.org/#/home). Gardens is a tool for DAOs that utlisizes Aragon OS with a custom UI on top. Learn more about [Disputable Voting in the Gardens Documentation](https://1hive.gitbook.io/gardens/on-chain-governance/garden-framework/decision-voting).
+Disputable Voting (also referred to as Tao Voting or Decision Voting) is an app developed initially by Aragon One and maintained by [1Hive](https://1hive.org/). It has no UI and should be accessed by a deployed instance of [Gardens](https://gardens.1hive.org/#/home). Gardens is a tool for DAOs that utilizes AragonOS with a custom UI on top. Learn more about Disputable Voting in the [Gardens Documentation](https://1hive.gitbook.io/gardens/on-chain-governance/garden-framework/decision-voting).
 
 ## Installing the App
 
-In order to install the Disputable voting app you'll need to define some parameters:
-
-- `token`
-    - This is the associated token address used to vote in disputable voting
-- `voteTime`
-    - The amount of time votes should be open and eligible to be voted on, this is usually expressed in seconds but can use EVM-crispr's syntatic sugar for [expressing time](/getStarted/syntaxSugar#time).
-- `supportRequiredPct`
-    - The percentage of YES votes vs. NO votes needed to pass a proposal. This is expressed as a decimal percent to the power of 18. i.e 75% = `75e16` (7500000000000000)
-- `minAcceptQuorumPct`
-    - The percentage of YES votes vs. the total token supply needed to pass a proposal. This is expressed as a decimal percent to the power of 18. i.e 25% = `25e16` (2500000000000000)
-- `delegatedVotingPeriod`
-    - The amount of time votes are eligible to be voted on by delegates, this is usually expressed in seconds but can use EVM-crispr's syntatic sugar for [expressing time](/getStarted/syntaxSugar#time).
-- `quietEndingPeriod`
-    - The amount of time where disputable voting will watch for a change of outcome, this is usually expressed in seconds but can use EVM-crispr's syntatic sugar for [expressing time](/getStarted/syntaxSugar#time).
-- `quietEndingExtension`
-    - The amount of time where disputable voting will extend the vote duration in case of a change of outcome during the quietEndingPeriod. This parameter is usually expressed in seconds but can use EVM-crispr's syntatic sugar for [expressing time](/getStarted/syntaxSugar#time).
-- `executionDelay`
-    - The amount of time from when a vote ends until the proposed execution will be executed, this is usually expressed in seconds but can use EVM-crispr's syntatic sugar for [expressing time](/getStarted/syntaxSugar#time).
 
 To install the app follow this syntax:
 
 ```
 install disputable-voting.open:new <tokenAddress> <voteTime> <supportRequiredPct> <minAcceptQuorumPct> <delegatedVotingPeriod> <quietEndingPeriod> <quietEndingExtension> <executionDelay>
-// add any permissions you want to grant here.
 ```
 
-For example this could look like:
+You'll need the following parameters to install a new Disputable Voting app to your DAO:
+
+- `token`
+    - This is the associated token address used to vote in Disputable Voting.
+- `voteTime`
+    - The period votes should be open and eligible to be voted on. This is expressed in seconds but can use EVMcrispr's syntactic sugar for [expressing time](/getStarted/syntaxSugar#time) in other units.
+- `supportRequiredPct`
+    - The percentage of YES votes vs. NO votes needed to pass a proposal. This parameter is expressed in WAD. i.e., for a Support Required of 51%, this is 0.51, which in WAD equals *51e16* (51000000000000000000).
+- `minAcceptQuorumPct`
+    - This is the YES votes needed from the total token supply. This parameter is expressed in WAD, similar to the example above in support required.
+- `delegatedVotingPeriod`
+    - The time votes are eligible to be voted on by delegates. It is expressed in seconds but can use EVMcrispr's syntactic sugar for [expressing time](/getStarted/syntaxSugar#time) in other units.
+- `quietEndingPeriod`
+    - The amount of time where Disputable Voting will watch for a change of outcome. It is expressed in seconds but can use EVMcrispr's syntactic sugar for [expressing time](/getStarted/syntaxSugar#time) in other units.
+- `quietEndingExtension`
+    - The time where Disputable Voting will extend the vote duration in case of a change of outcome during the quietEndingPeriod. This parameter is expressed in seconds but can use EVMcrispr's syntactic sugar for [expressing time](/getStarted/syntaxSugar#time) in other units.
+- `executionDelay`
+    - The amount of time from when a vote ends until the proposed execution will be executed. It is expressed in seconds but can use EVMcrispr's syntactic sugar for [expressing time](/getStarted/syntaxSugar#time) in other units.
+
+### Common Usage Example
+
+After installing a new Disputable Voting app, one of the most important permissions to set up is the `CREATE_VOTES_ROLE`. Without it, the app is useless.
 
 ```
-connect exampleDAO disputable-voting.open:0
-install disputable-voting.open:new @token(HNY) 7d 85e16 10e16 3d 2d 2d 12h
-grant disputable-voting.open:new disputable-voting.open:new CHANGE_VOTE_TIME_ROLE disputable-voting.open:0
-grant disputable-voting.open:new disputable-voting.open:new CHANGE_SUPPORT_ROLE disputable-voting.open:0
-grant disputable-voting.open:new disputable-voting.open:new CHANGE_QUORUM_ROLE disputable-voting.open:0
-grant disputable-voting.open:new disputable-voting.open:new CHANGE_DELEGATED_VOTING_PERIOD_ROLE disputable-voting.open:0
-grant disputable-voting.open:new disputable-voting.open:new CHANGE_QUIET_ENDING_ROLE disputable-voting.open:0
-grant disputable-voting.open:new disputable-voting.open:new CHANGE_EXECUTION_DELAY_ROLE disputable-voting.open:0
-exec agreement.open activate disputable-voting.open:new @token(HNY) 10e18 10e18 3d
+load aragonos as ar
+
+ar:connect exampleDAO disputable-voting.open:0 (
+  install disputable-voting.open:new @token(HNY) 7d 85e16 10e16 3d 2d 2d 12h
+  grant disputable-voting.open:new disputable-voting.open:new CREATE_VOTES_ROLE disputable-voting.open:0
+  grant disputable-voting.open:new disputable-voting.open:new CHANGE_VOTE_TIME_ROLE disputable-voting.open:0
+  grant disputable-voting.open:new disputable-voting.open:new CHANGE_SUPPORT_ROLE disputable-voting.open:0
+  grant disputable-voting.open:new disputable-voting.open:new CHANGE_QUORUM_ROLE disputable-voting.open:0
+  grant disputable-voting.open:new disputable-voting.open:new CHANGE_DELEGATED_VOTING_PERIOD_ROLE disputable-voting.open:0
+  grant disputable-voting.open:new disputable-voting.open:new CHANGE_QUIET_ENDING_ROLE disputable-voting.open:0
+  grant disputable-voting.open:new disputable-voting.open:new CHANGE_EXECUTION_DELAY_ROLE disputable-voting.open:0
+  exec agreement.open activate disputable-voting.open:new @token(HNY) 10e18 10e18 3d
+)
 ```
 
-This script will install a new disputable-voting app and grant it all the necessary permissions it needs to manage its own settngs, while allowing the first disputable-voting app to manage the permissions themselves. This also activates the disputable-voting app on the installed agreement app, connecting it with the agreement content and disputability settings.
+This script will install a new Disputable Voting app and grant it all the necessary permissions to manage its settings while allowing the first Diisputable Voting app to manage its permissions. It also activates the Disputable Voting app with the installed Agreement app, connecting it with the agreement content and settings.
 
-This example disputable-voting app would have a vote duration of 7 days,  require 85% support, 10% quorum with a delegatiing voting period of 3 days, a quiet ending of 2 days, quiet ending extension of 2 additional days and an exection delay of 12 hours.
-The agreement settings for this app would set the collateral token as HNY, requiring 10 HNY to be deposited for an action, 10 HNY to challenge and have a challenge duration of 3 days.
+In this example, the Disputable Voting app would have a vote duration of 7 days, require 85% support, 10% quorum with a delegated voting period of 3 days, a quiet ending of 2 days, a quiet ending extension of 2 additional days, and an execution delay of 12 hours.
 
-We take advantage of EVMcrispr's syntatic sugar to make writing this script easier, [learn more in this article](/getStarted/syntaxSugar).
+The agreement settings for this app would set the collateral token as HNY, requiring 10 HNY to be deposited for each action, 10 HNY to challenge, and a challenge duration of 3 days.
+
+We take advantage of EVMcrispr's syntactic sugar to make writing this script easier, [learn more in this article](/getStarted/syntaxSugar).
 
 
 ## Granting Permissions
 
 :::warning
-This command can potentially remove a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
+This command can potentially remove a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. This is because we usually want to set the main Disputable Voting app as the permission manager of all permissions.
 
-The most critical permissions are argumentably the ones on the Kernel (DAO main contract) and the ACL (permission management contract), so be careful who we grant them to.
+The most critical permissions are on the Kernel (DAO main contract) and the ACL (permission management contract), so be careful to who we grant them to.
 :::
 
-To grant permissions you'll use the following syntax:
+To grant permissions, you'll use the following syntax:
 
 `grant <entity> <app> <roleName> [defaultPermissionManager]`
 
-In practice this would look like:
+In practice, this would look like this:
 
-`grant token-manager disputable-voting CREATE_VOTES_ROLE disputable-voting`
+`grant token-manager disputable-voting.open CREATE_VOTES_ROLE disputable-voting.open`
 
-This would allow token holders of the associated token-manager to create votes on the disputable voting app.
+This command would allow token holders of the associated token manager to create votes on the Disputable Voting app.
 
-Before installing an app you should consider any permissions it will need to fit your purposes. Here is an exhaustive list of roles for the disputable voting app:
+Before installing an app, you should consider any permissions it will need to fit your purposes. Here is an exhaustive list of roles for the Disputable Voting app:
 
  - `CREATE_VOTES_ROLE`
-    - Allows a given entity to create votes in the disputable voting app
+    - Allows a given entity to create votes in the Disputable Voting app.
  - `CHANGE_VOTE_TIME_ROLE`
-    - Allows a given entity to change the voting time in the disputable voting app
+    - Allows a given entity to change the voting time in the Disputable Voting app.
  - `CHANGE_SUPPORT_ROLE`
-    - Allows a given entity to change the suppport required in the disputable voting app
+    - Allows a given entity to change the support required in the Disputable Voting app.
  - `CHANGE_QUORUM_ROLE`
-    - Allows a given entity to change the minimum approval in the disputable voting app
+    - Allows a given entity to change the minimum approval in the Disputable Voting app.
  - `CHANGE_DELEGATED_VOTING_PERIOD_ROLE`
-    - Allows a given entity to change the delegated voting period in the disputable voting app
+    - Allows a given entity to change the delegated voting period in the Disputable Voting app.
  - `CHANGE_EXECUTION_DELAY_ROLE`
-    - Allows a given entity to change the execution delay in the disputable voting app
+    - Allows a given entity to change the execution delay in the Disputable Voting app.
  - `CHANGE_QUIET_ENDING_ROLE`
-    - Allows a given entity to change the quiet ending period in the disputable voting app
+    - Allows a given entity to change the quiet ending period in the Disputable Voting app.
 
 <TypesOfEntities />
 
 
 ## Revoking Permissions
 
-:::warning
- This command can potentially remove a permission that is needed for the DAO to work. Be careful to not remove the permissions to create votes in voting, create permissions in ACL, or manage apps in the Kernel.
-:::
-
-To remove a permission from an entity follow this syntax:
+To remove permission from an entity, follow this syntax:
 
 ```
-revoke <entity> <app> <roleName> [removePermissionManager?]
+revoke <entity> <app> <roleName> [removePermissionManager=false]
 ```
 
-in practice this could look like:
+In practice, this could look like this:
 
 ```
 revoke disputable-voting.open:0 disputable-voting.open:1 CHANGE_VOTE_TIME_ROLE false
 ```
 
-This would remove the ability of the first disputable voting app to change the voting time of the second disputable voting app
+It would remove the ability of the first Disputable Voting app to change the voting time of the second Disputable Voting app.
 
-## Modifying the App
+## Internal Actions
 
-We can modify the settings of the disputable voting app using the `exec` command. This is the base syntax:
+Using the `exec` command, we can create internal actions that will modify the settings of our Disputable Voting app.
+
+We will modify the quiet ending configuration to showcase the `exec` command. We use the following base syntax:
+
 
 ```
 exec <app> <methodName> [parameters]
@@ -128,20 +134,24 @@ exec <app> <methodName> [parameters]
 For example:
 
 ```
-exec disputable-voting.open changeQuietEndingConfiguration 1d 3d
+load aragonos as ar
+
+ar:connect exampleDAO disputable-voting --context "Change quiet ending config" (
+  exec disputable-voting.open changeQuietEndingConfiguration 1d 3d
+)
 ```
 
-which would change the quiet ending period and quiet ending extension to 1 day and 3 days respectively.
+It would create a vote to change the quiet ending period and quiet ending extension to one and three days, respectively.
 
-You can find an exhaustive list of all functions applicable to disputable voting on the [contract's code on Github](https://github.com/1Hive/disputable-voting-app/blob/master/contracts/DisputableVoting.sol)
+You can find an exhaustive list of all functions applicable to Disputable Voting on the [contract's code on Github](https://github.com/1Hive/disputable-voting-app/blob/master/contracts/DisputableVoting.sol)
 
 <details><summary>changeVoteTime</summary>
 
-This will change the duration of the votes in Tao Voting.
+It will change the duration of the votes in Tao Voting.
 
 #### Parameters
 
-- `voteTime` - The desired duration of votes you want to implement. This is expressed in seconds by default. (uint64)
+- `voteTime` - The desired duration of votes you want to implement. It is expressed in seconds. (uint64)
 
 #### Permissions
 
@@ -153,22 +163,22 @@ The entity creating this action will need the `CHANGE_VOTE_TIME_ROLE` role.
 exec disputable-voting.open changeVoteTime <voteTime>
 ```
 
-We can leverage the time helpers to make this easier. For example:
+#### Usage example
+
+It would change the voting time to 3 days:
 
 ```
 exec disputable-voting.open changeVoteTime 3d
 ```
 
-This would change the voting time to 3 days.
-
 </details>
 
 <details><summary>changeSupportRequiredPct</summary>
-This will change the support required percentage of the Tao Voting app.
+It will change the support required percentage of the Tao Voting app.
 
 #### Parameters
 
-- `supportRequiredPct` - The percentage which you would wish to change your support required to. This is expressed in decimals with a precision of 18. (uint64)
+- `supportRequiredPct` - The percentage to which you would wish to change your support required to. It is expressed in decimals with a precision of 18. (uint64)
 
 #### Permissions
 
@@ -180,22 +190,23 @@ The entity creating this action will need the `CHANGE_SUPPORT_ROLE` role.
 exec disputable-voting.open changeSupportRequiredPct <supportRequiredPct>
 ```
 
-For example:
+#### Usage example
+
+It would change the support required percentage to 90%:
 
 ```
 exec disputable-voting.open changeSupportRequiredPct 90e16
 ```
 
-Which would change the support required percentage to 90%.
 </details>
 
 <details><summary>changeMinAcceptQuorumPct</summary>
 
-This function will change the minimum acceptance quourum percentage.
+This function will change the minimum acceptance quorum percentage.
 
 #### Parameters
 
-- `minAcceptQuorumPct` - The percentage which you would wish to change your minimum acceptance quorum to. This is expressed in decimals with a precision of 18. (uint64)
+- `minAcceptQuorumPct` - The percentage to which you would wish to change your minimum acceptance quorum to. It is expressed in decimals with a precision of 18. (uint64)
 
 #### Permissions
 
@@ -208,13 +219,15 @@ The entity creating this action will need the `CHANGE_QUORUM_ROLE` role.
 exec disputable-voting.open changeMinAcceptQuorumPct <minAcceptQuorumPct>
 ```
 
-For example:
+#### Usage example
+
+
+It would change the support required percentage to 25%:
 
 ```
 exec disputable-voting.open changeMinAcceptQuorumPct 25e16
 ```
 
-Which would change the support required percentage to 25%.
 </details>
 
 <details><summary>changeDelegatedVotingPeriod</summary>
@@ -223,7 +236,7 @@ This function will change the duration of the Delegated Voting Period.
 
 #### Parameters
 
-- `delegatedVotingPeriod` - The desired duration of votes you want to implement. This is expressed in seconds by default. (uint64)
+- `delegatedVotingPeriod` - The desired duration of votes you want to implement. It is expressed in seconds. (uint64)
 
 #### Permissions
 
@@ -235,13 +248,13 @@ The entity creating this action will need the `CHANGE_SUPPORT_ROLE` role.
 exec disputable-voting.open changeDelegatedVotingPeriod <delegatedVotingPeriod>
 ```
 
-We can leverage the time helpers to make this easier. For example:
+#### Usage example
+
+It would change the delegated voting period to 2 days:
 
 ```
 exec disputable-voting.open changeDelegatedVotingPeriod 2d
 ```
-
-Which would change the delegated voting period to 2 days.
 
 </details>
 
@@ -251,8 +264,8 @@ This function will change the duration of the quiet ending period and the quiet 
 
 #### Parameters
 
-- `quietEndingPeriod` - The desired duration of the quiet ending period you wish to change to. This is expressed in seconds by default. (uint64)
-- `quietEndingExtension` - The desired duration of the quiet ending extension period you wish to change to. This is expressed in seconds by default. (uint64)
+- `quietEndingPeriod` - The desired duration of the quiet ending period you wish to change to. It is expressed in seconds. (uint64)
+- `quietEndingExtension` - The desired duration of the quiet ending extension period you wish to change to. It is expressed in seconds. (uint64)
 
 
 #### Permissions
@@ -265,13 +278,13 @@ The entity creating this action will need the `CHANGE_QUIET_ENDING_ROLE` role.
 exec disputable-voting.open changeQuietEndingConfiguration <quietEndingPeriod> <quietEndingExtension>
 ```
 
-We can leverage the time helpers to make this easier. For example:
+#### Usage example
+
+It would change the quiet ending period to 2 days and the quiet ending extension period to 1 day:
 
 ```
 exec disputable-voting.open changeQuietEndingConfiguration 2d 1d
 ```
-
-Which would change the quiet ending period to 2 days and the quiet ending extension period to 1 day.
 
 </details>
 
@@ -281,7 +294,7 @@ This function will change the duration of the execution delay.
 
 #### Parameters
 
-- `executionDelay` - The desired duration of the execution delay you wish to change to. This is expressed in seconds by default. (uint64)
+- `executionDelay` - The desired duration of the execution delay you wish to change to. It is expressed in seconds. (uint64)
 
 #### Permissions
 
@@ -293,23 +306,24 @@ The entity creating this action will need the `CHANGE_EXECUTION_DELAY_ROLE` role
 exec disputable-voting.open changeExecutionDelay <executionDelay>
 ```
 
-We can leverage the time helpers to make this easier. For example:
+#### Usage example
+
+It would change the execution delay to 1 day:
 
 ```
 exec disputable-voting.open changeExecutionDelay 1d
 ```
 
-Which would change the execution delay to 1 day.
 
 </details>
 
 <details><summary>newVote</summary>
 
-This function will create a new vote on the Tao Voting app
+This function will create a new vote on the Tao Voting app.
 
 #### Parameters
 
-- `executionScript` - The encoded actions that the vote is proposing to execute. This is expressed in byte data.
+`executionScript` - The encoded actions the vote proposes to execute. It is expressed in byte data.
 - `context` - The text that should explain the context of what the vote is for. This information appears on your vote in the Gardens UI. (bytes)
 
 #### Permissions
@@ -321,7 +335,8 @@ The entity creating this action will need the `CREATE_VOTES_ROLE` role.
 exec disputable-voting.open newVote <executionScript> <context>
 ```
 
-For example:
+#### Usage example
+
 ```
 exec disputable-voting.open newVote 0x00000001552522d43ca199512fe4c6c04870449fecfe74dc00000024c2e687f50000000000000000000000000000000000000000000000000000000000069780552522d43ca199512fe4c6c04870449fecfe74dc000000247c1d0b870000000000000000000000000000000000000000000000000c3663566a580000552522d43ca199512fe4c6c04870449fecfe74dc000000245eb24332000000000000000000000000000000000000000000000000016345785d8a0000552522d43ca199512fe4c6c04870449fecfe74dc00000024b2deae83000000000000000000000000000000000000000000000000000000000003f480552522d43ca199512fe4c6c04870449fecfe74dc000000445049ece9000000000000000000000000000000000000000000000000000000000003f480000000000000000000000000000000000000000000000000000000000002a300552522d43ca199512fe4c6c04870449fecfe74dc000000246ecc064e0000000000000000000000000000000000000000000000000000000000015180 "This is a test vote"
 ```
@@ -334,11 +349,11 @@ This function will cast a vote on an active Tao Vote from the currently connecte
 #### Parameters
 
 - `voteId` - The ID of the active vote you wish to vote on. (uint256)
-- `supports` - A boolean representing if you support the actions proposed by the vote. True is Yes, False is No. (boolean)
+- `supports` - A boolean representing if you support the actions proposed by the vote. True is Yes, and False is No. (boolean)
 
 #### Permissions
 
-This function does not require any permissions, however you will need to check on the Gardens UI of the DAO you want to interact with if you have signed the covenant and deposited any required collateral to create a vote on the app.
+This function does not require any permissions. However, you will need to check on the Gardens UI of the DAO you want to interact with if you have signed the covenant and deposited any required collateral to create a vote on the app.
 
 #### Syntax
 
@@ -346,24 +361,25 @@ This function does not require any permissions, however you will need to check o
 exec disputable-voting.open <voteId> <supports>
 ```
 
-For example:
+#### Usage example
+
+It would cast a 'Yes' vote in favor of vote #6:
 
 ```
 exec disputable-voting.open vote 6 true
 ```
 
-Which would cast a 'Yes' vote in favour of vote #6.
 
 </details>
 
 <details><summary>executeVote</summary>
 
-This function will execute a vote that has already passed and pending execution.
+This function will execute a vote that has already passed and is pending execution.
 
 #### Parameters
 
 - `voteId` - The ID of the pending vote you wish to execute. (uint256)
-- `executionScript` - The encoded actions that the vote is proposing to execute. This is expressed in byte data.
+`executionScript` - The encoded actions the vote proposes to execute. It is expressed in byte data.
 
 
 #### Permissions
@@ -376,7 +392,7 @@ There are no permissions required to execute this function.
 exec disputable-voting.open executeVote <voteId> <executionScript>
 ```
 
-For example:
+#### Usage example
 
 ```
 exec disputable-voting.open executeVote 6 0x00000001552522d43ca199512fe4c6c04870449fecfe74dc00000024c2e687f50000000000000000000000000000000000000000000000000000000000069780552522d43ca199512fe4c6c04870449fecfe74dc000000247c1d0b870000000000000000000000000000000000000000000000000c3663566a580000552522d43ca199512fe4c6c04870449fecfe74dc000000245eb24332000000000000000000000000000000000000000000000000016345785d8a0000552522d43ca199512fe4c6c04870449fecfe74dc00000024b2deae83000000000000000000000000000000000000000000000000000000000003f480552522d43ca199512fe4c6c04870449fecfe74dc000000445049ece9000000000000000000000000000000000000000000000000000000000003f480000000000000000000000000000000000000000000000000000000000002a300552522d43ca199512fe4c6c04870449fecfe74dc000000246ecc064e0000000000000000000000000000000000000000000000000000000000015180
