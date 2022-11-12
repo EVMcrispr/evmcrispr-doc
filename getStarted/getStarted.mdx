@@ -9,80 +9,83 @@ import styles from '../src/css/articles.css'
 
 [**EVMcrispr**](https://evm-crispr.blossom.software/) is a powerful tool that combines a command line interface with a Javascript library to create multi-action EVM scripts, including interacting with Aragon DAOs. With it, you can bundle many operations into just one script, generating a singular transaction, or create multiple transactions using a single script.
 
-In it's current state, EVMcrispr is exceptionally proficient at managing DAO's using the AaragonOS framework, including [Garden DAOs](https://gardens.1hive.org/#/home). It currently supports AragonOS v4 and v5, allowing for a wealth of possible DAO actions, including:
+In its current state, EVMcrispr is proficient at managing DAOs using the AaragonOS framework, including [Garden DAOs](https://gardens.1hive.org/#/home). It currently supports AragonOS v4 and v5, allowing for a wealth of possible DAO actions, including:
 
-- Installing new native and custom aragon apps.
-- Granting or Revoking permissions.
+- Installing new native and custom Aragon apps.
+- Granting or revoking permissions.
 - Modifying the settings of apps.
 - Creating internal actions with installed apps or interacting with external contracts on the blockchain.
 
-However EVMcrispr is much more, the true beauty of this tool is that you don't need to be a pro developer in order to create complex and powerful EVMscripts that can interact with multiple smart contracts and can create multiple actions. There are in fact only two requirements to start using this tool:
+However, EVMcrispr is much more; the true beauty of this tool is that you don't need to be a pro developer to create complex and powerful EVMscripts that can interact with multiple smart contracts and create multiple actions. There are only two requirements to start using this tool:
 
-1. A modern web browser installed. (We recommend Brave)
-2. A crypto web wallet extension installed on said modern browser. (like MetaMask)
+1. A modern web browser installed (we recommend Firefox or Brave).
+2. A crypto web wallet extension installed on a said modern browser (like MetaMask).
 
-That being said in order to fully grasp the utilities of EVMcrispr you should have some intermediate knowledge of Ethereum, Javascript and navigating Block Explorers such as [Etherscan](https://etherscan.io) for example.
+That being said, to fully grasp the utilities of EVMcrispr, you should have some intermediate knowledge of Ethereum, Javascript, and navigating Block Explorers such as [Etherscan](https://etherscan.io), for example.
 
 
 ## Using EVMcrispr
 
-The most typical applications of EVMcrispr will be to create mutli-action scripts that can be sent to DAOs to be voted on. As mentioned, EVMcrispr in it's current form is tailor made to work within the AragonOS framework, navigating it's library of native and custom apps and system of permissions.
+The most typical application of EVMcrispr will be to create multi-action scripts that can be sent to DAOs to be voted on. As mentioned, EVMcrispr, in its current form, is tailor-made to work within the AragonOS framework, navigating its library of native and custom apps and system of permissions.
 
 
 <img id="border" alt="example EVMcrispr terminal" src={useBaseUrl('img/getStarted/scriptExampleInstall.png')} />
 
-The EVMcrispr terminal is where you will make your scripts. This is where the magic happpens. Simply connect with your web wallet and switch to the same EVM compatible chain of the DAO that you want to interact with (i.e Mainnet, Matic, Gnosis Chain etc..).
+The EVMcrispr terminal is where you will make your scripts. This is where the magic happens. Simply connect with your web wallet and switch to the same EVM-compatible chain of the DAO that you want to interact with (i.e., Mainnet, Matic, Gnosis Chain, etc.).
 
 ### Sending Scripts
 
- When writing a script each line on the terminal is used to define another action that will be bundled into the same script.
+ When writing a script, each line on the terminal defines another action that will be bundled into the same script.
 
-Once you're ready to send your script hit `Forward` and EVMcrispr will generate the transaction for you to sign with your web wallet.
+Once you're ready to send your script, hit `Forward`, and EVMcrispr will generate the transaction for you to sign with your web wallet.
 
-If you want to send a script of multiple actions to a specific contract, or multiple contracts on the connected network you can do so using the `exec` command. Follow this syntax:
+You can use the' exec' command to send a script of multiple actions to a specific contract or multiple contracts on the connected network. Follow this syntax:
 
 ```bash
-exec <contractAddress> <functionName>([argumentTypes]) [parameters...]
+exec <contractAddress> <functionName>([...argumentTypes]) [...parameters]
 ```
 
 For example:
 
 ```bash
 set $token.tokenlist https://tokens.honeyswap.org/
-exec 0xD93d3bDBa18ebcB3317a57119ea44ed2Cf41C2F2 getReward()
-exec 0x24F2d06446AF8D6E89fEbC205e7936a602a87b60 approve(address,uint256) @me @token.balance(GIV,@me)
-exec 0x24F2d06446AF8D6E89fEbC205e7936a602a87b60 wrap(uint256) @token.balance(GIV,@me)
+set $farm 0xD93d3bDBa18ebcB3317a57119ea44ed2Cf41C2F2
+set $token-manager 0x24F2d06446AF8D6E89fEbC205e7936a602a87b60
+
+exec $farm getReward()
+exec @token(GIV) approve(address,uint256) $token-manager @token.balance(GIV,@me)
+exec $token-manager wrap(uint256) @token.balance(GIV,@me)
 ```
 
-Or If you're sending scripts to an AragonOS compatible DAO you'll need to preface your scripts with the `connect` command. More on that in the [AragonOS section](/aragonOS/#the-connect-command)
+Or, if you're sending scripts to an AragonOS-compatible DAO, you'll need to preface your scripts with the `connect` command. More on that in the [AragonOS section](/aragonOS/#the-connect-command)
 
 ### Sending Multiple Scripts
 
-If you want to send multiple scripts at once all you need to do is separate them with a blank row. Each separated script will produce a separate transaction that needs to be signed with your web wallet. Here's a basic idea of how this would look:
+If you want to send multiple scripts at once, you must separate them with a blank row. Each separated script will produce a separate transaction that needs to be signed with your web wallet. Here's a basic idea of how this would look:
 
 ```bash
 # script 1
-connect <myDAO> [forwardPath] (
-[some action we want the script to do]
+connect <myDAO> [...forwardPath] (
+  [...actions]
 )
 
 # script 2
-connect <myOtherDAO> [forwardPath] (
-[some action we want the 2nd script to do]
+connect <myOtherDAO> [...forwardPath] (
+  [...actions]
 )
 ```
 
 
 ## Who uses EVMcrispr?
 
-Some notable DAOs have already found great success using EVMcrispr, check out some of the use cases these formidable DAOs have found:
+Some notable DAOs have already found great success using EVMcrispr. Check out some of the use cases these formidable DAOs have found:
 
 - [**CurveDAO**](https://curve.fi/) used it to [upgrade it’s voting app](https://gov.curve.fi/t/allowing-for-fractional-votes-by-curve-dao/2456) implementation contract.
-- [**1Hive**](https://1hive.org/) used it to claim it’s ENS airdrop and transfer the funds of it’s mainnet DAO.
+- [**1Hive**](https://1hive.org/) used it to claim its ENS airdrop and transfer the funds of its mainnet DAO.
 - [**Giveth**](https://giveth.io/) used it to replace the Unipool contract for another one in their gardens DAO and currently uses it to [distribute GIVbacks](https://giveth.io/givbacks).
 - [**TECommons**](https://tecommons.org/) used it for [minting and burning tokens](https://forum.tecommons.org/t/one-time-change-of-tech-addresses-as-requested-by-owner-because-access-was-lost-or-another-reason/571) and also for migrating to a [gardens DAO and installing a bonding curve](https://forum.tecommons.org/t/commons-upgrade-demo-part-2/723).
-- [**BrightId**](https://brightid.org/) is using it to change the [parameters on their garden’s conviction voting app](https://forum.brightid.org/t/revisiting-the-brightdao-parameters-with-general-magic-support/355), and will use it to install the [BrightId Gatekeeper](https://forum.brightid.org/t/brightid-gatekeeper-for-aragon-permissions/131) as an ACL oracle.
-- [**Agave**](https://agave.finance/) used it to remove the vesting of some of their seeds and transfer funds from their agent to many contributors.
+- [**BrightId**](https://brightid.org/) is using it to change the [parameters on their garden's conviction voting app](https://forum.brightid.org/t/revisiting-the-brightdao-parameters-with-general-magic-support/355) and will use it to install the [BrightId Gatekeeper](https://forum.brightid.org/t/brightid-gatekeeper-for-aragon-permissions/131) as an ACL oracle.
+- [**Agave**](https://agave.finance/) used it to revoke the vesting of their founders and transfer funds from their agent to many contributors.
 
 
 ## Who made EVMcrispr?

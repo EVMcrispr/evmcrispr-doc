@@ -4,7 +4,7 @@ title: Modularity
 ---
 
 
-EVMcrispr has been designed as a tool which can support a wide variety of platforms and protocols. Specialized commands and helpers have been broken down into modules that can be loaded separately by users. This allows EVMcrispr to scale and become modular.
+EVMcrispr has been designed as a tool that can support various platforms and protocols. Specialized commands and helpers have been broken down into modules that users can load separately. This allows EVMcrispr to scale and become modular.
 
 ## Loading Modules
 
@@ -14,7 +14,7 @@ Modules can be loaded using the following syntax:
 load <moduleName> as <alias>
 ```
 
-The `moduleName` is the name of the module, an exhaustive list of modules can be found further down in this article. The `alias` is any string you want to set to quickly call this module at the beginning of each action you create.
+The `moduleName` is the name of the module. We can find an exhaustive list of modules further down in this article. The `alias` is any string you want to set to quickly call this module at the beginning of each action you create.
 
 For example: 
 ```
@@ -38,4 +38,4 @@ import AragonModule from '../partials/_aragonModule.mdx'
 
 <AragonModule />
 
-[Learn more about using Aragon OS with EVMcrispr](/aragonOS/)
+Learn more about [using Aragon OS with EVMcrispr](/aragonOS/).

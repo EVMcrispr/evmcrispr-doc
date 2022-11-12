@@ -1,16 +1,16 @@
 <details><summary>Grant via an Oracle</summary>
-You can create a condition for a grant command to be issued by specifying an oracle app to check certain parameters, such as token ownership for example. Only if the oracle returns <code>true</code> then is the permission request approved.
+You can create a condition for a grant command to be issued by specifying an oracle app to check specific parameters, such as token ownership. Only if the oracle returns <code>true</code> then is the permission request approved.
 Here's the syntax of how to implement this:
 <pre>
 grant &lt;entity&gt; &lt;app&gt; &lt;roleName&gt; [defaultPermissionManager] --oracle &lt;oracleAppName&gt;
 </pre>
 
-An excellent example of that is the [1hive token oracle](https://github.com/1Hive/token-oracle#readme) Aragon app, which is an [ACL oracle](https://hack.aragon.org/docs/aragonos-ref#parameter-interpretation) that returns true when the address that acts has a specific token. Take a look at this example:
+An excellent example of that is the [1hive token oracle](https://github.com/1Hive/token-oracle#readme) Aragon app, which is an [ACL oracle](https://hack.aragon.org/docs/aragonos-ref#parameter-interpretation) that returns true when the address that acts has a specific token. So take a look at this example:
 
 ```
 grant ANY_ENTITY voting CREATE_VOTES_ROLE voting --oracle token-oracle.open
 ```
  
-This action would grant any entity permission to create votes if they have a specific token. The token and minimum amount of tokens needed to hold would be specified when the app is installed to the DAO.
+This action would grant any entity permission to create votes if they have a specific token. The token and minimum amount of tokens needed to hold would be specified when the app is installed on the DAO.
 
 </details>
