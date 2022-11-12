@@ -12,11 +12,21 @@ The Transactions app is a custom Aragon app built by [1Hive](https://1hive.org/)
 You can install the Transactions app with the following syntax:
 
 ```
-install transactions:new
-grant ANY_ENTITY transactions:new DUMMY_ROLE ANY_ENTITY
+install transactions.open:new
 ```
 
-You must use this full script to install the Transactions app properly, do not change any variables, such as the role and the entity permissions.
+### Common Usage Example
+
+For the application frontend to appear in Aragon Client, you need to grant at least one role (hence, the DUMMY_ROLE):
+
+```
+load aragonos as ar
+
+ar:connect exampleDAO token-manager voting (
+  install transactions.open:new
+  grant ANY_ENTITY transactions.open:new DUMMY_ROLE ANY_ENTITY
+)
+```
 
 No unique functions or permissions can be called or granted for the Transactions app. Use the UI interface. 
 
