@@ -24,6 +24,7 @@ export default {
     ]
   ],
   "themeConfig": {
+    "image": "img/card.png",
     "colorMode": {
       "defaultMode": "dark",
       "disableSwitch": true,
