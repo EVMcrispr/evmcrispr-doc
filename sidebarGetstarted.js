@@ -1,3 +1,3 @@
 module.exports = {
-  getStarted: ['getStarted']
+  getStarted: ['getStarted','modularity','syntaxsugar']
 }

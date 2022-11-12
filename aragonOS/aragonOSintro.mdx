@@ -10,107 +10,175 @@ AragonOS is the main framework that EVMcrispr has been tailored to interact with
 
 <img id='border' alt='create an aragon DAO homepage' src={useBaseUrl('img/aragonOS/createAragonDAO.png')} />
 
-This DAO structure allows a variety of native and custom apps to be plugged into the DAO using the system's `Kernel` and each apps permissions in relation to other apps is dictated by the `ACL`.
+This DAO structure allows a variety of native and custom apps to be plugged into the DAO using the system's `Kernel`, and each app's permissions in relation to other apps are dictated by the `ACL`.
 
 ### Understanding Permissions
 
-Permissions in the AragonOS are a bit of a concept to wrap your head around but they are incredibly important for the security of your DAO. Let's take a look at the `Permissions` tab in an [existing aragon DAO](https://xdai.aragon.blossom.software/#/evmcrisprexampledao/permissions/):
+Permissions in the AragonOS may seem complicated, but they are essential for the security of your DAO. Let's take a look at the `Permissions` tab in an [existing Aragon DAO](https://xdai.aragon.blossom.software/#/evmcrisprexampledao/permissions/):
 <img alt='permissions manager page' id="border" src={useBaseUrl('img/permissionsManager.png')} />
 
-You can see for each permission we have 4 parameters to be aware of:
+You can see for each permission, and we have four parameters to be aware of:
 - **Action:** The action that this permission is allowing to perform.
 - **On App:** The associated app that performs the action.
-- **Assigned to Entity:** The entity that has the permission to make the app perform the specified action.
-- **Managed By:** The entity that can control changing the parameters of the permission itself (Usually a voting app).
+- **Assigned to Entity:** The entity that has permission to make the app perform the specified action.
+- **Managed By:** The entity that can grant and revoke this permission to other addresses (usually assigned to a voting app) in the future.
 
-There are four eligible entities in AragonOS that you can choose from: **App**, **Anyone**, **Token Holders**, **Specified Eth Address**.
-- Anyone is expressed as `ANY_ENTITY` and can be any user visiting your DAO with a web wallet.
-- Token Holders is expressed as token-manager and is affiliated with your token-managers token. Anyone holding the token-manager's token is inside of this entity.
-- Specified Eth Address is expressed as the ETH address starting with `0x`, only this address will be the specified entity.
-- App is the internal name of the internal Aragon App installed on your DAO, such as `voting`, `token-manager`, or `agent`.
+import TypesOfEntities from '../partials/_typesOfEntities.mdx';
 
-This is relevant to the `grant` and `revoke` commands which are detailed in each app's documentation.
+<TypesOfEntities />
 
-The articles in this section will break down all of the most common apps found in an Aragon DAO. We'll show you the all the actions that can be done via EVM crispr to modify the DNA of your Aaragon DAO.
 
-If you want to go deep and learn more technicals of Aragon DAOs you can check out the [Aragon Developer documentation](https://hack.aragon.org/docs/getting-started).
+This is relevant to the `grant` and `revoke` commands detailed in each app's documentation.
+
+The articles in this section will break down all the most common apps found in an Aragon DAO. Then, we'll show you all the actions that can be done via EVMcrispr to modify the DNA of your Aragon DAO.
+
+If you want to go deep and learn more technicals of Aragon DAOs, you can check out the [Aragon Developer documentation](https://hack.aragon.org/docs/getting-started).
 
 
 ## Finding DAO information
 
-You should probably figure out where to send your scripts. Collecting key DAO information such as the Organization Address and Application Addresses can be found in a typical Aragon DAO from the `Organization` page.
+You should probably figure out where to send your scripts. Collecting essential DAO information such as the Organization Address and Application Addresses can be found in a typical Aragon DAO from the `Organization` page.
 
 <img id="border" alt="navigating the aragon DAO" src={useBaseUrl('img/getStarted/findingAddresses.png')} />
 
+## Loading the Module
+You'll need to load the module to write EVMcrispr scripts for Aragon DAOs.
+
+import AragonModule from '../partials/_aragonModule.mdx'
+
+<AragonModule />
+
+[Learn more about modularity in EVMcrispr](/getStarted/modularity/)
 
 ## The `connect` Command
 
-Interacting with any Aragon DAO will require you to preface your script with the `connect` command. This will tell EVMcrispr which DAO to send the script to. You can also specify a forwarding path which specifies through which apps we need to ask permissions from, the actions that you want to execute in your script should be enclosed in parenthesis().
+Interacting with any Aragon DAO will require you to preface your script with the `connect` command. This will tell EVMcrispr which DAO to send the script to. You can also specify a forwarding path that defines through which apps we need to ask permission. The actions you want to execute in your script should be enclosed in parentheses ().
 
-By default an Aragon DAO will usually need to execute actions with permission from the voting app, creating a vote to execute your script. Depending on your permissions often you'll need to pass through the token-manager, making sure you have DAO tokens, the token-manager which typically has permissions to create votes would then forward to the voting app, creating a vote. Let's take a look at this example:  
+By default, an Aragon DAO will usually need to execute actions with permission from the voting app, creating a vote to execute your script. However, depending on your permissions, often you'll need to pass through the Token Manager, making sure you have DAO tokens, the Token Manager, which typically has permissions to create votes, would then forward to the voting app, creating a vote. Let's take a look at this example:  
 
 ```
-connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618 (
-    // inside here add some actions you want your script to do
+load aragonos as ar
+
+ar:connect 0xaF810FaC58eD1B06A336cbc1f273fb0eBfB8a1EE 0x43acbd385e5d474330022635700ce0c706ad0ede 0x8e8ea49256421cf7f28d2f1170666da81e22e618 (
+    # inside here, add some actions you want your script to do
 )
 ```
 
-Referencing the addresses in the example Organization above we can see we're routing our script in this manner: `Organization Address -> Token-manager App -> Voting App`.
+Referencing the addresses in the example Organization above, we're routing our script in this manner: `Organization Address -> Token-manager App -> Voting App`.
 
-We can also make our lives a heck of a lot easier with a bit of in-house syntax sugar.
+We can also make our lives much easier with some in-house syntax sugar.
 
 ```
-connect mitchcorp token-manager voting (
-    // inside here add some actions you want your script to do
+load aragonos as ar
+
+ar:connect mitchcorp token-manager voting (
+    # inside here, add some actions you want your script to do
 )
 ```
 
-This will connect us using the aragonID ENS name associated with the DAO. This can be found usually in the top left of the Aragon DAO navbar.
+It will connect us using the aragonID ENS name associated with the DAO. This can usually be found in the top left of the Aragon DAO navbar.
 
-More on syntax-sugar in the [Syntatic Sugar Article](/getStarted/syntaxSugar/).
+More on syntax-sugar in the [Syntactic Sugar Article](/getStarted/syntaxSugar/).
 
-### Adding Context
+### Nesting `connect`
 
-Some apps such as disputable-voting allow you to add context to your vote, which will be included in the publicly displayed information for the vote. you can add context to your script with this syntax:
+Nested `connect` commands allow you to define DAO-to-DAO operations scripts and have access to different organizations’ apps inside a scope. You can reference an extra DAO’s app by their name, address, or nesting index.
+
+#### Parameters
+- `daoAddress`: The organization address or Aragon ENS identifier of the DAO you wish to interact with.
+- `appName`: The name of the Aragon app you wish to interact with.
+
+#### Syntax
+
 ```
-connect <DAOaddress> <forwardingPath> --context "Your context goes here" (
-     [some actions that you want to perform]
+<daoAddress>:<appName>
+```
+
+For example:
+
+```
+load aragonos as ar
+ar:connect mainDAO (
+    ar:connect subDAO tollgate token-manager voting (
+   	  # It grants mainDAO's voting app permissions to create votes in the subDAO's voting app.
+   	  grant _mainDAO:voting voting CREATE_VOTES_ROLE 
+   	  # Here the nesting index "_1" is the same as "_myDAO".
+   	  grant _1:voting token-manager MINT_ROLE
+    )
 )
 ```
 
-### Directly Calling Functions
+### `forward`
 
-You don't always need to specfiy forwarding path. If any entity or the address connected to the EVMcrispr terminal has permissions to perform a certain function you can call it directly, the syntax looks like this:
+The forward command allows you to customize the forward path by not having to define it in the `connect` command. This can be helpful when creating scripts sent through a forwarding path composed of apps from different DAOs.
+
+#### Syntax
 
 ```
-connect <DAOaddress> (
-[some actions that we want to perform and have permission for]
+forward <...path> ( <...commands> )
+```
+
+For example:
+
+```
+load aragonos as ar
+ar:connect mainDAO (
+   ar:connect committeeDAO (
+   	forward _mainDAO:token-manager token-manager (
+   		# inside here, add some actions you want your script to do
+   	)
+   )
+)
+```
+
+## Adding Context
+
+Some apps using AragonOS v5, such as 1hive Disputable Voting, allow you to forward a set of actions with a context. In this app, the context will be included in the publicly displayed information for the vote. You can add context to your script with this syntax:
+```
+load aragonos as ar
+
+ar:connect <DAOaddress> <forwardingPath> --context "Your context goes here" (
+  # inside here, add some actions you want your script to do
+)
+```
+
+## Directly Calling Functions
+
+You can skip specifying the forwarding path. Instead, if any entity or the address connected to the EVMcrispr terminal has permission to perform a particular action, you can call it directly, and the syntax looks like this:
+
+```
+load aragonos as ar
+
+ar:connect <DAOaddress> (
+  # inside here, add some actions you want your script to do
 )
 ```
 
 For example:
 
 ```
-connect mitchcorp (
-exec token-manager mint @me 100e18
+load aragonos as ar
+
+ar:connect mitchcorp (
+  exec token-manager mint @me 100e18
 )
 ```
 
-Assuming `ANY_ENTITY` or my address already has the `MINT_ROLE` role then this would send 100 tokens from the token-manager to my connected address.
+Assuming `ANY_ENTITY` or my address already has the `MINT_ROLE` role, this would send 100 tokens from the Token Manager to my connected address.
 
 ## Aliasing Multiple Apps in Aragon DAOs
 
-If you have multiple instances of the same app installed you can specify which app you want to interact with by a simple numbering nomenclature. The first app installed on your DAO can always be referenced by `<appName>:0`, as in `agent:0`, `finance:0` or `token-manager:0`. Any additional apps installed will have the next number appended to their name. For example if you have 1 agent installed and you install another, the second agent can be referenced by `agent:1`, the third by `agent:2` and so on.
+If you have multiple instances of the same app installed, you can specify which app you want to interact with by a simple numbering nomenclature. For example, the first app installed on your DAO can always be referenced by `<appName>:0`, as in `agent:0`, `finance:0`, or `token-manager:0`. Any additional apps installed will have the following number appended to their name. So, if you install a second agent, it will be referenced by `agent:1`. If you install a third one, it will be referenced by `agent:2`, and so on.
 
 ## Upgrading apps
 
-This command upgrades the kernel’s base contracts of the defined apps, so those app proxies will point to a new implementation contract, or a different version of the same app.
+This command upgrades the kernel’s base contracts of the defined apps so that those app proxies will point to a new implementation contract or a different version of the same app.
 
-There's a few different ways to use this command:
+There are a few different ways to use this command:
 
 ### Upgrade to Latest Version
 
-If you want to simply **upgrade all instances of an app** to the latest version use this syntax:
+If you want **to upgrade all instances of an app** to the latest version, use this syntax:
 ```
 upgrade <appName>
 ```
@@ -122,7 +190,7 @@ would upgrade all instances of the finance app to the latest version
 
 ### Upgrade to Specific Version
 
-If you would like to upgrade ***or downgrade*** all instances of an app to a specific version you can use this syntax:
+If you would like to upgrade ***or downgrade*** all instances of an app to a specific version, you can use this syntax:
 ```
 upgrade <appName> <version>
 ```
@@ -132,15 +200,15 @@ For example:
 upgrade voting 1.0.0
 ```
 
-which would upgrade (or downgrade, depending on your current version) the voting app to version 1.0.0.
+It would upgrade (or downgrade, depending on your current version) the voting app to version 1.0.0.
 
 ### Upgrade to Specific Contract
 
 :::warning
-This command can potentially break the app we are upgrading, so be especially careful to check that the new implementation contract is compatible with the previous one.
+This command could break the app we are upgrading, so be careful to check that the new implementation contract is compatible with the previous one.
 :::
 
-To upgrade all instances of an app to a specified implementation contract you can use this syntax:
+To upgrade all instances of an app to a specified implementation contract, you can use this syntax:
 
 ```
 upgrade <app> [contract]
@@ -151,4 +219,4 @@ For example:
 ```
 upgrade agent 0x123456789abcdef123456789abcdef0123456789
 ```
-which would change the proxy app's implementation contract to the specified contract address.
+It would change the proxy app's implementation contract to the specified contract address.

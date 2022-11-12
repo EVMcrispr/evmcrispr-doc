@@ -1,0 +1,354 @@
+---
+id: agreement
+title: Agreement
+---
+import useBaseUrl from '@docusaurus/useBaseUrl'
+import styles from '../src/css/articles.css'
+
+The agreement app defines and manages an agreement or set of rules that participants of your DAO should adhere to. This contract also manages settling or escalating potential infractions of the aforementioned DAO agreement. It has no UI and is usually interacted with by an instance of [Gardens](https://gardens.1hive.org/#/home), which is developed by [1Hive](https://1hive.org/). 
+
+## Installing the App
+
+The syntax is as follows to install this app:
+
+```
+install agreement.open:new <arbitratorAddress> <setAppFeesCashier> <titleString> ipfs:<agreementIpfsLink>
+```
+
+To install the Agreement app, you'll need to figure out a few parameters:
+
+- `arbitrator`
+    - This is the Ethereum address decentralized court where escalated disputes are sent to be arbitrated.
+- `setAppFeesCashier`
+    - Whether to integrate with the arbitrator's fee cashier (true or false).
+- `title`
+    - The title of your agreement document.
+- `content` 
+    - An IPFS link to your agreement document in the format `ipfs:Qm...`. You can provide it as a string, and EVMcrispr will convert it automatically to bytes required by the contract.
+
+
+### Common Usage Example
+
+The following script would install a new Agreement app and grant all the necessary permissions to manage the settings to the installed Disputable Voting app:
+
+```
+load aragonos as ar
+
+ar:connect exampleDAO disputable-voting.open ()
+  install agreement.open:new 0x44e4fcfed14e1285c9e0f6eae77d5fdd0f196f85 false "NASCAR DAO Community Covenant" 0x516d6657707071433535586337505534387665693258765641754837367a32724e4646374a4d55686a564d357856
+  grant disputable-voting.open:0 agreement.open:new CHANGE_AGREEMENT_ROLE disputable-voting.open:0
+  grant disputable-voting.open:0 agreement.open:new MANAGE_DISPUTABLE_ROLE disputable-voting.open:0
+)
+```
+
+## Granting Permissions
+
+To grant permissions, you'll use the following syntax:
+
+```
+grant <entity> <app> <roleName> [defaultPermissionManager]
+```
+
+In practice, this would look like this:
+
+```
+grant disputable-voting.open agreement.open MANAGE_DISPUTABLE_ROLE disputable-voting.open
+```
+It would grant the installed Disputable Voting app permission to change the dispute settings of any eligible app inside the DAO. The Disputable Voting app would also manage this permission itself.
+
+Before installing the Agreement app you should understand a few important pieces of the pie, including app roles defined within the contract. They are:
+
+- `CHALLENGE_ROLE`
+    - Allows the specified entity to challenge a proposal.
+- `CHANGE_AGREEMENT_ROLE`
+    - Allows the specified entity to change the DAO's agreement.
+- `MANAGE_DISPUTABLE_ROLE`
+    - Allows the specified entity to change the related settings of any disputable app, such as Challenge Duration, Action Amount, Challenge Amount, and the token used as collateral for a dispute in the respective app.
+
+import TypesOfEntities from '../partials/_typesOfEntities.mdx';
+
+<TypesOfEntities />
+
+
+## Revoking Permissions
+
+To remove permission from an entity, follow this syntax:
+
+```
+revoke <entity> <app> <roleName> [removePermissionManager=false]
+```
+
+In practice, this could look like this:
+
+```
+revoke disputable-voting.open:0 agreement.open MANAGE_DISPUTABLE_ROLE
+```
+
+It would remove the ability of the first Disputable Voting app to manage the proposal collateral settings of the DAO.
+
+## Internal Actions
+
+Using the `exec` command, we can create internal actions that will modify the settings of our Voting app.
+
+To showcase the `exec` command, we'll use the `activate` function. We use the following base syntax:
+
+```
+exec <app> <methodName> [parameters]
+```
+
+For example:
+
+```
+exec agreement.open activate <disputableAddress> <collateralToken> <challengeDuration> <actionAmount> <challengeAmount>
+```
+
+In practice, this function could look like this:
+
+```
+load aragonos as ar
+
+ar:connect exampleDAO disputable-voting.open:0 (
+  exec agreement.open activate disputable-voting.open:1 @token(HNY) 3d 10e18 10e18
+)
+```
+
+It would activate the already installed Disputable Voting app, making Honey (HNY) the collateral token, with a challenge duration of 3 days, an action amount of 10 HNY, and a challenge amount of 10 HNY. To make our script easier to write, we take advantage of a few features of EVMcrispr that you can learn more about in the [Syntactic Sugar section](/getStarted/syntaxSugar).
+
+Below is an exhaustive list of all possible actions you can perform with the Agreement app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+
+
+<details><summary>changeSetting</summary>
+This function will change the settings of the agreement app, including the arbitrator settings and the covenant title and content.
+
+#### Parameters 
+
+- `arbitrator` - The address of the independent arbitrator that will be used to resolve disputes. (address)
+- `setAppFeesCashier` - Where to integrate the independent arbitrator's fee cashier. (boolean)
+- `title` - The title of the ruling covenant or agreement for the DAO. (string)
+- `content` - The IFPS hash, in hex format, of the covenant or agreement content. (bytes)
+
+#### Permissions 
+
+The entity creating the action will need the `CHANGE_AGREEMENT_ROLE` role.
+
+#### Syntax
+
+```
+exec agreement.open changeSetting <abritrator> <setAppFeesCashier> <title> <content>
+```
+
+#### Usage example
+
+```
+set $celeste 0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85
+exec agreement.open changeSetting $celeste false "Giveth Community Covenant" ipfs:QmSV5xkYRrsSNXr5kukx35dHMJTvnhDhcpnbTcq7Lxudz8
+```
+
+</details>
+
+<details><summary>syncAppFeesCashier</summary>
+This function would resynchronize the app fees cashier if the arbitrator changed it.
+
+This function does not need any parameters or permissions to run. You can call it with this syntax:
+
+```
+exec agreement.open syncAppFeesCashier
+```
+
+</details>
+
+<details><summary>activate</summary>
+This function will activate an installed disputable app.
+
+#### Parameters
+- `disputableAddress` - The address of the disputable app (such as Disputable Voting). (address)
+- `collateralToken` - The token address used as collateral to create actions. (address)
+- `challengeDuration` - The duration during which the action submitter can raise the dispute if an action is challenged. (uint64)
+- `actionAmount` - The number of collateral tokens that will be locked for every action submitted. (uint256)
+- `challengeAmount` - The number of collateral tokens that will be locked every time an action is challenged. (uint256)
+
+
+#### Permissions
+
+The entity creating the action will need the `MANAGE_DISPUTABLE_ROLE` role.
+
+#### Syntax
+
+```
+exec agreement.open activate <disputableAddress> <collateralToken> <actionAmount> <challengeAmount> <challengeDuration>
+```
+
+</details>
+
+<details><summary>deactivate</summary>
+It will deactivate a currently installed disputable app.
+
+#### Parameters
+
+- `disputableAddress` - The address of the currently installed disputable app you wish to deactivate. (address)
+
+#### Permissions
+
+The entity creating the action will need the `MANAGE_DISPUTABLE_ROLE` role.
+
+#### Syntax
+
+```
+exec agreement.open deactivate <disputableAddress>
+```
+
+</details>
+
+<details><summary>changeCollateralRequirement</summary>
+This function will change the collateral settings for a specified disputable app.
+
+#### Parameters
+
+- `disputableAddress` - The address of the disputable app. (address)
+- `collateralToken` - The token address used as collateral to create votes. (address)
+- `challengeDuration` - The duration during which the action submitter can raise the dispute if an action is challenged. (uint64)
+- `actionAmount` - The number of collateral tokens that will be locked for every action submitted.  (uint256)
+- `challengeAmount` - The number of collateral tokens that will be locked every time an action is challenged (uint256)
+
+#### Permissions
+
+The entity creating the action will need the `MANAGE_DISPUTABLE_ROLE` role.
+
+#### Syntax
+
+```
+exec agreement.open changeCollateralRequirement <disputableAddress> <collateralToken> <actionAmount> <challengeAmount> <challengeDuration>
+```
+
+</details>
+
+<details><summary>sign</summary>
+This function will sign the agreement for the currently connected address. You must sign the agreement's latest version before sending any actions to any disputable app.
+
+#### Parameters 
+
+- `settingId` - The latest setting ID you agree with. (uint256)
+
+#### Permissions
+
+This function does not require any permissions.
+
+#### Syntax 
+```
+exec agreement.open sign <settingId>
+```
+
+</details>
+
+<details><summary>challengeAction</summary>
+This function will challenge a disputable action on a disputable app (such as a vote on Disputable Voting).
+
+#### Parameters
+
+- `actionId` - The unique ID of the action you wish to dispute. (uint256)
+- `settlementOffer` - The number of collateral tokens the challenger will accept to resolve the dispute without escalating it to the arbitrator. (uint256)
+- `finishedEvidence` - This indicates whether or not the challenger has finished submitting evidence for the context of the challenge. (boolean)
+- `context` - IPFS hash link to the context of why the action was challenged. (bytes)
+
+#### Permissions
+
+The entity creating the action will need the `CHALLENGE_ROLE` role.
+
+#### Syntax
+
+```
+exec agreement.open challengeAction <actionId> <settlementOffer> <finishedEvidence> <context>
+```
+
+</details>
+
+<details><summary>settleAction</summary>
+This function settles a challenged action, closing it and sending the settlement offer from the action submitter's collateral to the challenger's wallet. 
+
+#### Parameters
+
+- `actionId` - The ID of the challenged, disputable action you wish to settle. (uint256)
+
+#### Permissions
+
+No explicit permissions need to be granted to call this function. However, any entity can call this anytime after the settlement period has elapsed.
+
+#### Syntax
+
+```
+exec agreement.open settleAction <actionId>
+```
+
+</details>
+
+<details><summary>disputeAction</summary>
+This function will dispute a challenged action, raising it to the arbitrator.
+
+#### Parameters
+
+- `actionId` - The ID of the challenged, disputable action you wish to dispute. (uint256)
+- `submitterFinishedEvidence` - Whether the submitter has finished submitting evidence with the context of their action. (boolean)
+
+#### Permissions
+No explicit permissions need to be granted to call this function. However, only the action submitter can call this function.
+
+#### Syntax
+
+```
+exec agreement.open disputeAction <actionId> <submitterFinishedEvidence>
+```
+
+</details>
+
+<details><summary>submitEvidence</summary>
+This function will submit evidence for a disputed action on behalf of the challenger or action submitter. It can be called as often as needed until the dispute is resolved.
+
+#### Parameters
+
+- `disputeId` - The ID number of the dispute on the arbitrator contract. (uint256)
+- `evidence` - The evidence to be submitted. (bytes)
+- `finished` - Whether the evidence submitter has finished submitting evidence. (boolean)
+
+#### Permissions
+No explicit permissions need to be granted to call this function. However, only the action submitter or the challenger can call this function.
+
+#### Syntax 
+
+```
+exec agreement.open <disputeId> <evidence> <finished>
+```
+</details>
+
+<details><summary>closeEvidencePeriod</summary>
+This function closes the evidence period for a dispute.
+
+#### Parameters
+
+- `disputeId` - The ID number of the dispute on the arbitrator contract. (uint256)
+
+#### Permissions
+No permissions are needed to call this function, and any entity can call it.
+
+#### Syntax
+
+```
+exec agreement.open closeEvidencePeriod <disputeId>
+```
+
+</details>
+
+<details><summary>resolve</summary>
+This function will resolve the specific dispute with the ruling from the arbitrator.
+
+#### Parameters
+- `disputeId` - The ID number of the dispute on the arbitrator contract. (uint256)
+
+#### Permissions
+No permissions are needed to call this function. However, it can be called only once by any entity once the arbitrator has finalized the ruling.
+
+#### Syntax
+```
+exec agreement.open resolve <disputeId>
+```
+
+</details>

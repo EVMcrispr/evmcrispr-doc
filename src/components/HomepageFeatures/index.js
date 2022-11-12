@@ -10,7 +10,7 @@ const FeatureList = [
     link: './aragonOS/token-manager',
     description: (
       <>
-      Create and manage tokens; distributing reputation, granting membership or augmenting governance rights using the Token-Manager.
+      Create and manage tokens; distributing reputation, granting membership or augmenting governance rights using AragonOS Token Manager.
       </>
     ),
   },

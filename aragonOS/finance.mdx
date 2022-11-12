@@ -4,8 +4,9 @@ title: Finance
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import styles from '../src/css/articles.css'
+import TypesOfEntities from '../partials/_typesOfEntities.mdx'
 
-The Finance App will allow you to keep track of your DAO's finances, each app can only interact with funds held in one Ethereum Address. Having multiple Finance Apps will allow you to manage multiple treasuries.
+The Finance App will allow you to keep track of your DAO's finances, and each app can only interact with funds held in one Ethereum Address. Having multiple Finance Apps will allow you to manage various treasuries.
 
 
 ## Installing the App
@@ -19,20 +20,22 @@ install finance:new <vaultAddress> <periodDuration>
 
 To Install the Voting App you'll need to include two parameters:
  - `vault`
-    - This is the address of the installed Vault or Agent where the finance app will manage funds.
+    - This is the address of the installed Vault or Agent where the Finance app will manage funds.
  - `periodDuration`
-    - This is the budgeting period duration. This parameter is required but only relevant if you plan to make use of the budgeting feature (currently not on the UI).
+    - This is the budgeting period duration. This parameter is required but only relevant if you plan to use the budgeting feature (currently not on the UI).
 
 
 ### Common Usage Example
 
-You can install a vault (or an agent) alongside with the finance app, and set up these permissions.
+You can install a Vault (or an Agent) alongside the Finance app and set up these permissions.
 ```
-connect exampleDAO token-manager voting (
-install vault:new
-install finance:new vault:new 30d
-grant finance:new vault:new TRANSFER_ROLE voting
-grant voting finance:new CREATE_PAYMENTS_ROLE voting
+load aragonos as ar
+
+ar:connect exampleDAO token-manager voting (
+  install vault:new
+  install finance:new vault:new 30d
+  grant finance:new vault:new TRANSFER_ROLE voting
+  grant voting finance:new CREATE_PAYMENTS_ROLE voting
 )
 ```
 
@@ -43,24 +46,24 @@ import InstallVersioning from '../partials/_installVersioning.mdx'
 ## Granting Permissions
 
 :::warning
-This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
+This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. This is because we usually want to set the main Voting app as the permission manager of all permissions.
 :::
 
-To grant permissions you'll use the following syntax:
+To grant permissions, you'll use the following syntax:
 
 ```
 grant <entity> <app> <roleName> [defaultPermissionManager]
 ```
 
-In practice this would look like:
+In practice, this would look like this:
 
 ```
 grant voting finance CREATE_PAYMENTS_ROLE voting
-````
+```
 
-Which would give the voting app permission to create payments on the finance app.
+It would allow the Voting app to create payments on the Finance app.
 
-Before installing an app you should consider any permissions it will need to fit your purposes. Here is an exhaustive list of roles for the voting app:
+Before installing an app, you should consider any permissions needed to fit your purposes. Here is an exhaustive list of roles for the Voting app:
 
 - `CREATE_PAYMENTS_ROLE`
     - Allows an entity to create a payment request
@@ -73,8 +76,6 @@ Before installing an app you should consider any permissions it will need to fit
 - `MANAGE_PAYMENTS_ROLE`
     - Allows an entity to manage payments
 
-import TypesOfEntities from '../partials/_typesOfEntities.mdx';
-
 <TypesOfEntities />
 
 
@@ -82,29 +83,29 @@ import OracleGrant from '../partials/_oracleGrant.mdx';
 
 <OracleGrant />
 
-Some functionalities have been added to the contract that have not yet been added to the UI, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance).
+Some functionalities that have not yet been added to the UI are already present in the contract, including creating budgets and setting budget periods. You can create and manage these on the DAO but will have no practical way to interact with them on the UI, and you can learn more in the [Aragon developer documentation](https://hack.aragon.org/docs/guides-custom-deploy#adding-a-vault-and-finance-instance).
 
 ## Revoking Permissions
 
-To remove a permission from an entity follow this syntax:
+To remove permission from an entity, follow this syntax:
 
 ```
 revoke <entity> <app> <roleName> [removePermissionManager=false]
 ```
 
-in practice this could look like:
+In practice, this could look like this:
 
 ```
 revoke voting finance EXECUTE_PAYMENTS_ROLE
 ```
 
-This would remove the ability for the voting app to execute a payment, while keeping the Permission Manager in place should this permission need to be modified in the future.
+It would remove the ability for the Voting app to execute a payment while keeping the Permission Manager in place should this permission need to be modified in the future.
 
 ## Internal Actions
 
-Using the `exec` command we can create internal actions.
+Using the `exec` command, we can create internal actions.
 
-We'll use the `newImmediatePayment` function to show the syntax of the `exec` command. This is the base syntax:
+We'll use the `newImmediatePayment` function to show the syntax of the `exec` command. The base syntax looks like this:
 
 ```
 exec finance[:<id>] newImmediatePayment <token> <to> <amount> <description>
@@ -113,23 +114,25 @@ exec finance[:<id>] newImmediatePayment <token> <to> <amount> <description>
 For example:
 
 ```
-connect exampleDAO token-manager voting (
-exec finance newImmediatePayment @token(ANT) 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"
+load aragonos as ar
+
+ar:connect exampleDAO token-manager voting (
+  exec finance newImmediatePayment @token(ANT) 0x62Bb362d63f14449398B79EBC46574F859A6045D 100e18 "payment for documentation work"
 )
 ```
 
-This would request to send 100 ANT tokens to 0x62Bb362d63f14449398B79EBC46574F859A6045D with the context of "payment for documentation work", which would show up on a DAO vote.
+It would request to send 100 ANT tokens to 0x62Bb362d63f14449398B79EBC46574F859A6045D with the context of "payment for documentation work", which would show up on a DAO vote.
 
-Below is an exhaustive list of all possible actions you can perform with the finance app. we'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+Below is an exhaustive list of all possible actions you can perform with the Finance app. In addition, we will identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 
 <details><summary>deposit</summary>
 
-This will deposit approved ERC20 or ETH tokens into the vault managed by the finance app.
+It will deposit approved ERC20 or ETH tokens into the Vault managed by the Finance app.
 
 #### Parameters
 
-- `token` - The address of the token that you wish to deposit. (address)
-- `amount` - The amount of tokens you wish to deposit. **Take note of the token's decimal precision**. (uint256)
+- `token` - The address of the token you wish to deposit. (address)
+- `amount` - The number of tokens you wish to deposit. **Take note of the token's decimal precision**. (uint256)
 - `reference` - The reason for the deposit. (string)
 
 #### Permissions
@@ -144,13 +147,13 @@ No additional permissions are needed to perform this function.
 
 <details><summary>newImmediatePayment</summary>
 
-This will create a new payment submission, requesting tokens held in the finance app's specified vault.
+It will create a new payment submission, requesting tokens in the Finance app's specified Vault.
 
 #### Parameters
 
-- `token` - The address of the token you are requesting payment of. (address)
-- `receiver` - The address of the entity that will receive the tokens. (address)
-- `amount` - The amount of tokens being requested. **Take note of the token's decimal precision**. (uint256)
+- `token` - The address of the token you request payment. (address)
+- `receiver` - The entity's address that will receive the tokens. (address)
+- `amount` - The number of tokens being requested. **Take note of the token's decimal precision**. (uint256)
 - `reference` - The reason for the deposit. (string)
 
 #### Permissions
@@ -159,22 +162,24 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance newImmediatePayment <token> <receiver> <amount> <reference>`
+```
+exec finance newImmediatePayment <token> <receiver> <amount> <reference>
+```
 
 
 </details>
 
 <details><summary>newScheduledPayment</summary>
 
-Sets up a recurring payment scheduled for a specified amount of time, at set intervals with a specified token.
+It sets up a recurring payment scheduled for a specified amount of time at set intervals with a specified token.
 
 #### Parameters
 
-- `token` - The address of the token you are requesting payment of. (address)
-- `receiver` - The address of the entity that will receive the tokens. (address)
-- `amount` - The amount of tokens being requested. **Take note of the token's decimal precision**. (uint256)
-- `initialPaymentTime` - The timestamp of when the first payment is created. (unint64)
-- `interval` - The amount of time that passes between one payment to the next. (uint64)
+- `token` - The address of the token you request payment. (address)
+- `receiver` - The entity's address that will receive the tokens. (address)
+- `amount` - The number of tokens being requested. **Take note of the token's decimal precision**. (uint256)
+- `initialPaymentTime` - The timestamp of the first payment creation. (unint64)
+- `interval` - The amount of time between one payment and the next. (uint64)
 - `maxExecutions` - The maximum instances a payment can be executed. (uint64)
 - `reference` - The reason for the deposit. (string)
 
@@ -184,18 +189,20 @@ The entity creating the action will need the `CREATE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance newImmediatePayment <token> <receiver> <amount> <initialPaymentTime> <interval> <maxExecutions> <reference>`
+```
+exec finance newScheduledPayment <token> <receiver> <amount> <initialPaymentTime> <interval> <maxExecutions> <reference>
+```
 
 
 </details>
 
 <details><summary>setPeriodDuration</summary>
 
-Changes the accounting period duration, used for establishing periodic budgets.
+Changes the accounting period duration used for establishing periodic budgets.
 
 #### Parameters
 
-- `periodDuration` - The amount of time you want to change the budget duration to. (uint64)
+- `periodDuration` - The amount of time you want to change the budget duration. (uint64)
 
 #### Permissions
 
@@ -203,14 +210,16 @@ The entity creating the action will need the `CHANGE_PERIOD_ROLE` role.
 
 #### Syntax
 
-`exec finance setPeriodDuration <periodDuration>`
+```
+exec finance setPeriodDuration <periodDuration>
+```
 
 
 </details>
 
 <details><summary>setBudget</summary>
 
-This will establish a budget, setting a cap on the amount of a specified token that can be paid out in each period.
+It will establish a budget, setting a cap on the amount of a specified token that can be paid out in each period.
 
 #### Parameters
 
@@ -223,14 +232,16 @@ The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
 #### Syntax
 
-`exec finance setBudget <token> <amount>`
+```
+exec finance setBudget <token> <amount>
+```
 
 
 </details>
 
 <details><summary>removeBudget</summary>
 
-Removes any set budget for the specified token.
+It removes any set budget for the specified token.
 
 #### Parameters
 
@@ -242,7 +253,9 @@ The entity creating the action will need the `CHANGE_BUDGETS_ROLE` role.
 
 #### Syntax
 
-`exec finance removeBudget <token> <amount>`
+```
+exec finance removeBudget <token> <amount>
+```
 
 
 </details>
@@ -261,14 +274,16 @@ The entity that will execute the payment needs the `EXECUTE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance executePayment <paymentId>`
+```
+exec finance executePayment <paymentId>
+```
 
 
 </details>
 
 <details><summary>receiverExecutePayment</summary>
 
-This allows the receipient of the payment to execute it without needing the `EXECUTE_PAYMENTS_ROLE`.
+It allows the payment recipient to execute it without needing the `EXECUTE_PAYMENTS_ROLE`.
 
 #### Parameters
 
@@ -276,18 +291,20 @@ This allows the receipient of the payment to execute it without needing the `EXE
 
 #### Permissions
 
-There are no permissions needed to execute this function, except that the caller must be the payment recipient address.
+No permissions are needed to execute this function, except the caller must be the payment recipient address.
 
 #### Syntax
 
-`exec finance receiverExecutePayment <paymentId>`
+```
+exec finance receiverExecutePayment <paymentId>
+```
 
 
 </details>
 
 <details><summary>setPaymentStatus</summary>
 
-Can activate or disable an established payment.
+Can activate or disable a regular payment.
 
 #### Parameters
 
@@ -296,22 +313,24 @@ Can activate or disable an established payment.
 
 #### Permissions
 
-The entity that wishes to change the status of a payment will need the `MANAGE_PAYMENTS_ROLE` role.
+The entity wishing to change the payment status will need the `MANAGE_PAYMENTS_ROLE` role.
 
 #### Syntax
 
-`exec finance setPaymentStatus <paymentId> <active>`
+```
+exec finance setPaymentStatus <paymentId> <active>
+```
 
 
 </details>
 
 <details><summary>recoverToVault</summary>
 
-Sends the full holdings of a specified token that is held by this contract the vault/agent. This is in case tokens are mistakenly sent to this contract.
+It sends the entire holdings of a specified token held by this contract to the Vault/Agent. You can use it in case tokens are mistakenly sent to this contract.
 
 #### Parameters
 
-- `token` - The address of the token you wish to recover to the vault.
+- `token` - The address of the token you wish to recover to the Vault.
 
 #### Permissions
 
@@ -319,6 +338,8 @@ No permissions are needed to perform this function.
 
 #### Syntax
 
-`exec finance recoverToVault <token>`
+```
+exec finance recoverToVault <token>
+```
 
 </details>

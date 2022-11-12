@@ -35,7 +35,9 @@ You'll need the following parameters to install the Voting App to your DAO:
 to install this app the syntax is as follows:
 
 ```
-connect {yourDAOsAddress} {forwardingPath}
+load aragonos as ar
+
+ar:connect {yourDAOsAddress} {forwardingPath}
 install voting:new {votingTokenAddress} {supportRequiredPercent} {miniumApproval} {voteDuration} 
 // add any permissions you want to grant here.
 ```
@@ -51,7 +53,9 @@ Installing an agent does not require any parameters, however you should configur
 to install this app the syntax is as follows:
 
 ```
-connect {yourDAOsAddress} {forwardingPath}
+load aragonos as ar
+
+ar:connect {yourDAOsAddress} {forwardingPath}
 install agent:new
 // add any permissions you want to grant here.
 ```
