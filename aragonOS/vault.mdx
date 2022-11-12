@@ -3,12 +3,12 @@ id: vault
 title: Vault
 ---
 
-The Vault is a simple app intended to store funds. It doesn't have a user interface so it is typically installed in tandem with the `finance` app to manage the funds inside of it.
+The Vault is a simple app intended to store funds. It doesn't have a user interface, so it is typically installed in tandem with the Finance app to manage the funds inside of it.
 
 
 ## Installing the App
 
-You can use this syntax to install the agent:
+You can use this syntax to install the Vault:
 
 ```
 install vault:new
@@ -18,21 +18,25 @@ There are no parameters needed to install a new vault to your DAO.
 
 ### Common Usage Example
 
-The vault is usually used alongside with the Finance app, although it can be used alone. You can install it and grant voting with the `TRANSFER_ROLE`.
+The Vault is usually used alongside the Finance app, although it can be used alone. You can install it and grant Voting with the `TRANSFER_ROLE`.
 
 ```
 load aragonos as ar
 
 ar:connect exampleDAO token-manager voting (
-install vault:new
-grant voting vault:new TRANSFER_ROLE voting
+  install vault:new
+  grant voting vault:new TRANSFER_ROLE voting
 )
 ```
 
-After filling the vault with some tokens, we can send 1 ANT to our accout with:
+After filling the Vault with some tokens, we can create a vote to send 1 ANT to our account with the following command:
 
 ```
-exec vault transfer @token(ANT) @me 1e18
+load aragonos as ar
+
+ar:connect exampleDAO token-manager voting (
+  exec vault transfer @token(ANT) @me 1e18
+)
 ```
 
 import InstallVersioning from '../partials/_installVersioning.mdx'
@@ -42,12 +46,12 @@ import InstallVersioning from '../partials/_installVersioning.mdx'
 ## Granting Permissions
 
 :::warning
-This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. We usually want to set the main voting app as the permission manager of all permissions.
+This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. This is because we usually want to set the main Voting app as the permission manager of all permissions.
 :::
 
-The vault only has one role it can give to other entities and that is `TRANSFER_ROLE` which would allow a given entity to transfer the funds held in the vault.
+The Vault only has one role it can give to other entities, `TRANSFER_ROLE`, which would allow a given entity to transfer the funds held in the Vault.
 
-To grant permissions you'll use the following syntax:
+To grant permissions, you will use the following syntax:
 
 ```
 grant <entity> <app> <roleName> [defaultPermissionManager]
@@ -56,7 +60,7 @@ grant <entity> <app> <roleName> [defaultPermissionManager]
 Here is an exhaustive list of roles for the vault app:
 
 - `TRANSFER_ROLE`
-  - Allows an entity to transfer tokens from the vault's address.
+  - Allows an entity to transfer tokens from the Vault's address.
 
 import TypesOfEntities from '../partials/_typesOfEntities.mdx';
 
@@ -68,60 +72,64 @@ import OracleGrant from '../partials/_oracleGrant.mdx';
 <OracleGrant />
 
 ## Revoking Permissions
-
-:::warning
- This command can potentially remove a permission that is needed for the DAO to work. Be careful to not remove the permissions to create votes in voting, create permissions in ACL, or manage apps in the Kernel.
-:::
-
-To remove a permission from an entity follow this syntax:
+To remove permission from an entity, follow this syntax:
 
 ```
 revoke <entity> <app> <roleName> [removePermissionManager=false]
 ```
 
-in practice this could look like:
+In practice, this could look like this:
 
 ```
 revoke finance vault TRANSFER_ROLE
 ```
 
-This would remove the ability for the finance app to transfer funds held by the vault, while keeping the Permission Manager in place should this permission need to be modified in the future.
+It would remove the ability for the Finance app to transfer funds held by the Vault, while keeping the Permission Manager in place should this permission need to be modified in the future.
 
 ## Internal Actions
 
-If we wanted to create an interaction between the vault inside of our DAO we can use the following syntax:
+
+Using the `exec` command, we can create internal actions.
+
+We will use the `transfer` function to show the syntax of the `exec` command. The base syntax looks like this:
 
 ```
-exec <app> <methodName> [parameters]
+exec vault[:<id>] transfer <token> <to> <amount>
 ```
 
 For example:
 
 ```
-exec vault transfer @token(ANT) vault:1 10e18
+load aragonos as ar
+
+ar:connect exampleDAO token-manager voting (
+  exec vault transfer @token(ANT) vault:1 100e18
+)
 ```
 
-This would send 10 ANT tokens from the 1st vault to the second vault, assuming two vaults are installed.
+It would create a vote to transfer 100 ANT tokens from the first Vault to the second Vault, given a second Vault is installed.
 
-Below is an exhaustive list of all possible actions you can perform with the vault app. We'll identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+Below is an exhaustive list of all possible internal actions you can perform with the Vault app. In addition, we will identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
 
 <details>
 <summary>transfer</summary>
 
-Transfers tokens from the vault to a specified ETH adress.
+Transfers tokens from the Vault to a specified ETH address.
 
 #### Parameters
 
-- `token` - The token contract address of the token you wish to transfer. (ETHaddress)
-- `to` - The ETH address to send tokens to. (ETHaddress)
-- `value` - The amount of tokens you wish to send, taking into consideration the decimal precision. (uint256)
+- `token` - The token contract address of the token you wish to transfer. (address)
+- `to` - The ETH address to send tokens to. (address)
+- `value` - The number of tokens you wish to send, considering the decimal precision. (uint256)
 
 #### Permissions
 
-The entity executing the action via the vault will need the `TRANSFER_ROLE` role.
+The entity executing the action via the Vault will need the `TRANSFER_ROLE` role.
 
 #### Syntax
 
-`exec vault transfer <token> <to> <value>`
+```
+exec vault transfer <token> <to> <value>
+```
 
 </details>
