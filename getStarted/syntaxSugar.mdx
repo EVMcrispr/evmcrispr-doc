@@ -22,7 +22,7 @@ i.e `1e6` would be 1 USDC, `1e18` would be 1,000,000,000,000 USDC - See the diff
 
 # Time
 
-Typically smart contracts express time in seconds. However with EVMcrispr time can also be expressed by appending s, m, h, d, w, and y at the end of the number for defining them as seconds, minutes, hours, days, weeks, and years respectively. For example 2d would get converted to 172,800 seconds.
+Typically smart contracts express time in seconds. However with EVMcrispr time can also be expressed by appending s, m, h, d, w, mo and y at the end of the number for defining them as seconds, minutes, hours, days, weeks, months and years respectively. For example 2d would get converted to 172,800 seconds.
 
 # Environment Variables
 
@@ -101,6 +101,7 @@ Perhaps a more interesting example:
 set $fundingStrategy (@token(DAI)::balanceOf(agent:1) / 2 * 3 + @token(DAI)::balanceOf(vault:0) - 3(2**3))
 exec agent:1 transfer (@token(DAI)::balanceOf(agent:1) - $fundingStrategy) vault:0
 ```
+
 
 ## raw
 
@@ -438,3 +439,27 @@ exec. . .
 
 This would call the read-only function `token` in the second token-manager, get that address and call the `symbol` read-only function of that address. The variable `$myTokenSymbol` would then be the symbol of the token associated with the specified token-manager in an Aragon DAO.
 :::
+
+## print
+Using `print` will print the result of a variable or referenced information. 
+
+#### Syntax
+
+```
+print <informationToPrint>
+```
+
+For example:
+
+Print the decimal precision of the DAI token.
+```
+print @token(DAI)::decimals()
+```
+Print the UNIX timestamp of 2 weeks from now.
+```
+print @date(now, +2w)
+```
+Print my current DAI balance plus 50, divided by 3.
+```
+print ((@token.balance(DAI,@me) + 50) / 3 )
+```

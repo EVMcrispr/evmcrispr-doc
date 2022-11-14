@@ -12,7 +12,7 @@ The Token Manager app, as the name implies, is for managing tokens. Usually this
 You usually want to create a new token along with the installation of the new token-manager.
 
 ```
-new token <tokenName> <tokenSymbol> <tokenController> [tokenDecimals=18] [transferable=true]
+new-token <tokenName> <tokenSymbol> <tokenController> [tokenDecimals=18] [transferable=true]
 install token-manager:new <tokenAddress> <transferable> <maxPerAccount>
 ```
 
@@ -45,7 +45,7 @@ The following script creates a transferable Test Token (TEST) within the "exampl
 load aragonos as ar
 
 ar:connect exampleDAO token-manager voting (
-new token "Test Token" TEST token-manager:new
+new-token "Test Token" TEST token-manager:new
 install token-manager:new token:TEST true 0
 grant voting token-manager:new MINT_ROLE voting
 grant voting token-manager:new BURN_ROLE voting
