@@ -51,7 +51,18 @@ const config = {
           activeBasePath: 'aragonOS',
           label: 'AragonOS Apps',
           position: 'left'
+        },
+        {
+          href: 'https://evmcrispr.blossom.software/#/terminal',
+          label: 'Terminal',
+          position: 'right'
+        },
+        {
+          label: 'Donate♥',
+          href: 'https://giveth.io/project/evmcrispr-0',
+          position: 'right'
         }
+
       ]
     },
     footer: {
@@ -76,6 +87,10 @@ const config = {
             {
               label: 'GitHub',
               href: 'https://github.com/1hive/evmcrispr'
+            },
+            {
+              href: 'https://evmcrispr.blossom.software/#/terminal',
+              label: 'Terminal',
             }
           ]
         }
