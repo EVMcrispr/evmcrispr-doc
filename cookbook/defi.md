@@ -12,19 +12,23 @@ You'll need to paste the first script, run it, and then replace it with the seco
 switch 100
 # switch to gnosis chain and harvest from farms on sushiSwap
 set $sushiFarm 0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3
+# the price of SUSHI to xDAI - current is $1.20 in this example
+set $sushiXDaiPrice (1.20e18 * 95 / 100)
+# the price of GNO to xDAI - current is $92.68 in this example
+set $gnosisXDaiPrice (92.68e18 * 95 / 100)
+# farms on sushi that we are staked in
 exec $sushiFarm harvest(uint256,address) 0 @me # USDC / WXDAI
 exec $sushiFarm harvest(uint256,address) 1 @me # WETH / WBTC
 exec $sushiFarm harvest(uint256,address) 5 @me # USDT / WXDAI
 
 # Script 2
 switch 100
-# need to fix this so swap for correct amount of xDAI
 set $sushiswap 0x1b02da8cb0d097eb8d57a175b88c7d8b47997506
 set $sushiPath [0x2995D1317DcD4f0aB89f4AE60F3f020A4F17C7CE, 0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb, 0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d]
 set $gnoPath [0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb, 0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d]
 set $token.tokenlist https://token-list.sushi.com
-exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256) @token.balance(SUSHI,@me) (@token.balance(SUSHI,@me)* (95 / 100)) $sushiPath @me @date(now,+10m)
-exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256) @token.balance(GNO,@me) (@token.balance(GNO,@me) * (95 / 100)) $gnoPath @me @date(now,+10m)
+exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256) @token.balance(SUSHI,@me) (@token.balance(SUSHI,@me) * ($sushiXDaiPrice) / 1e18) $sushiPath @me @date(now,+10m)
+exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256) @token.balance(GNO,@me) (@token.balance(GNO,@me) * ($gnosisXDaiPrice) / 1e18) $gnoPath @me @date(now,+10m)
 ```
 
 ## Claim CRV, Lock and Vote! 
@@ -48,18 +52,31 @@ exec $gaugeController vote_for_gauge_weights(address,uint256) $3poolGauge @token
 
 ## Create a leveraged position on AAVE v3
 This script will deposit and consecutively borrow an asset on AAVE, then repeat the process again with the available borrowed assets. The purpose of this script is to create a leveraged borrowing position, maximizing the lend and borrow APYs to earn more yield. The amounts calculated in the `leverage` variables are made to keep your borrowing level under the liquidation threshold.
+
+:::note
+Not financial advice.
+:::
 ```
 switch 137
-
-set $aaveLendingPoolV3 0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9
+set $token.tokenlist https://tokens.honeyswap.org
+# define lending pool contract on polygon
+set $aaveLendingPoolV3 0x794a61358d6845594f94dc1db02a252b5b4814ad
+# get initial token balance
 set $myWMATIC @token.balance(WMATIC,@me)
-set $leverageOne ($myWMATIC * 75 / 100)
-set $leverageTwo ($leverageOne * 75 / 100)
-set $approveAmount ($myWMATIC + $leverageOne + $leverageTwo)
+# set borrow amount to adjust for WMATIC's max borrow threshold
+set $leverageOne ($myWMATIC * 65 / 100)
+# adjust next leverages amount for health factor
+set $leverageTwo ($leverageOne * 65 / 101)
+set $leverageThree ($leverageTwo * 65 / 101)
+# total sum of WMATIC deposited for approval
+set $approveAmount ($myWMATIC + $leverageOne + $leverageTwo + $leverageThree)
 
- exec $aaveLendingPoolV3 supply(address,uint256,address,uint16) @token(WMATIC) @token.balance(DAI,@me) @me 0
- exec $aaveLendingPoolV2 borrow(address,uint256,uint256,uint16,address) @token(WMATIC) $leverageOne 2 0 @me
- exec $aaveLendingPoolV2 deposit(address,uint256,address,uint16) @token(WMATIC) $leverageOne @me 0
- exec $aaveLendingPoolV2 borrow(address,uint256,uint256,uint16,address) @token(WMATIC) $leverageTwo 2 0 @me
- exec $aaveLendingPoolV2 deposit(address,uint256,address,uint16) @token(WMATIC) $leverageTwo @me 0
+ exec @token(WMATIC) approve(address,uint256) $aaveLendingPoolV3 $approveAmount
+ exec $aaveLendingPoolV3 supply(address,uint256,address,uint16) @token(WMATIC) @token.balance(WMATIC,@me) @me 0
+ exec $aaveLendingPoolV3 borrow(address,uint256,uint256,uint16,address) @token(WMATIC) $leverageOne 2 0 @me
+ exec $aaveLendingPoolV3 supply(address,uint256,address,uint16) @token(WMATIC) $leverageOne @me 0
+ exec $aaveLendingPoolV3 borrow(address,uint256,uint256,uint16,address) @token(WMATIC) $leverageTwo 2 0 @me
+ exec $aaveLendingPoolV3 supply(address,uint256,address,uint16) @token(WMATIC) $leverageTwo @me 0
+ exec $aaveLendingPoolV3 borrow(address,uint256,uint256,uint16,address) @token(WMATIC) $leverageThree 2 0 @me
+ exec $aaveLendingPoolV3 supply(address,uint256,address,uint16) @token(WMATIC) $leverageThree @me 0
 ```

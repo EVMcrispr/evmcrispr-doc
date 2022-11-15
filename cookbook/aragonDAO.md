@@ -41,9 +41,9 @@ ar:connect evmcrisprexampledao (
 )
 # tx 2 - create payment schedule for recipients
 ar:connect evmcrisprexampledao token-manager voting (
-    exec finance newScheduledPayment @token(WXDAI) $markoAddress 500e18 @date(now) 1m 4 "payments for copywriting work"
-    exec finance newScheduledPayment @token(WXDAI) $sarahAddress 750e18 @date(now) 1m 4 "payments for design work"
-    exec finance newScheduledPayment @token(WXDAI) $mohammadAddress 250e18 @date(now) 1m 4 "payments for translation work"
+    exec finance newScheduledPayment @token(WXDAI) $markoAddress 500e18 @date(now) 1mo 4 "payments for copywriting work"
+    exec finance newScheduledPayment @token(WXDAI) $sarahAddress 750e18 @date(now) 1mo 4 "payments for design work"
+    exec finance newScheduledPayment @token(WXDAI) $mohammadAddress 250e18 @date(now) 1mo 4 "payments for translation work"
 )
 ```
 In this transaction we deposit a sum of money into our Aragon DAO for an agreed upon amount for some contracted work. We then create a vote to setup scheduled payments for each contributor working on the contracted work.
