@@ -7,7 +7,7 @@ This is actually two scripts that can be ran one after the other. This will harv
 
 You'll need to paste the first script, run it, and then replace it with the second script then run it.
 
-```
+```bash
 # Script 1
 switch 100
 # switch to gnosis chain and harvest from farms on sushiSwap
@@ -33,7 +33,7 @@ exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256)
 
 ## Claim CRV, Lock and Vote! 
 This script will harvest your pending CRV rewards, lock them for 12 weeks (and minting veCRV in the process) and then using them to vote on the gauge for the 3pool LP, thus increasing its rewards allocation. 
-```
+```bash
 # switch to mainnet
 switch 1
 
@@ -56,7 +56,7 @@ This script will deposit and consecutively borrow an asset on AAVE, then repeat 
 :::note
 Not financial advice.
 :::
-```
+```bash
 switch 137
 set $token.tokenlist https://tokens.honeyswap.org
 # define lending pool contract on polygon

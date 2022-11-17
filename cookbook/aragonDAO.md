@@ -5,7 +5,7 @@ title: Aragon DAO
 
 ### Create a reputation token voting system
 This script will allow you to spin up a new token-weighted voting system inside your Aragon DAO and setting up all the permissions you need to start.
-```
+```bash
 load aragonos as ar
 
 ar:connect evmcrisprexampledao token-manager voting (
@@ -23,7 +23,7 @@ This will create a new non-transferrable reputation token and a token-manager to
 
 ### Deposit tokens into a vault and set a payment schedule
 
-```
+```bash
 # switch to gnosis chain
 switch 100
 load aragonos as ar
