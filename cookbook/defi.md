@@ -27,6 +27,12 @@ set $sushiswap 0x1b02da8cb0d097eb8d57a175b88c7d8b47997506
 set $sushiPath [0x2995D1317DcD4f0aB89f4AE60F3f020A4F17C7CE, 0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb, 0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d]
 set $gnoPath [0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb, 0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d]
 set $token.tokenlist https://token-list.sushi.com
+
+#approve tokens to be swapped
+exec @token(SUSHI) approve(address,uint256) $sushiswap @token.balance(SUSHI,@me) 
+exec @token(GNO) approve(address,uint256) $sushiswap @token.balance(GNO,@me) 
+
+# swap harvested tokens for xDAI
 exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256) @token.balance(SUSHI,@me) (@token.balance(SUSHI,@me) * ($sushiXDaiPrice) / 1e18) $sushiPath @me @date(now,+10m)
 exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256) @token.balance(GNO,@me) (@token.balance(GNO,@me) * ($gnosisXDaiPrice) / 1e18) $gnoPath @me @date(now,+10m)
 ```
@@ -40,14 +46,15 @@ switch 1
 # set variables for curve contracts
 set $curveMinter 0xd061D61a4d941c39E5453435B6345Dc261C2fcE0
 set $curveVoterEscrow 0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2
-set $3poolGauge 0xbFcF63294aD7105dEa65aA58F8AE5BE2D9d0952A
+set $3poolGauge 0x762648808EF8B25C6D92270b1C84Ec97dF3bED6B
 set $gaugeController 0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB
 set $veCRV 0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2
 
 # harvest, mint, lock and vote!
-exec $curveMinter mint(address) @me
-exec $curveVoterEscrow create_lock(uint256,uint256) @token.balance(CRV) @date(now, + 12w)
-exec $gaugeController vote_for_gauge_weights(address,uint256) $3poolGauge @token.balance($veCRV)
+exec $curveMinter mint(address) $3poolGauge 
+exec @token(CRV) approve(address,uint256) $curveVoterEscrow @token.balance(CRV,@me) 
+exec $curveVoterEscrow create_lock(uint256,uint256) @token.balance(CRV,@me) @date(now,+12w) 
+exec $gaugeController vote_for_gauge_weights(address,uint256) $3poolGauge 10000 
 ```
 
 ## Create a leveraged position on AAVE v3
