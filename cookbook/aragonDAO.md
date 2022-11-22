@@ -4,14 +4,15 @@ title: Aragon DAO
 ---
 
 ### Create a reputation token voting system
-This script will allow you to spin up a new token-weighted voting system inside your Aragon DAO and setting up all the permissions you need to start.
-```bash
+This script will allow you to spin up a new token-weighted voting system inside your Aragon DAO and set up all the permissions you need to start.
+```
 load aragonos as ar
 
 ar:connect evmcrisprexampledao token-manager voting (
     new-token "my token name" myTokenSymbol token-manager:new 18 false
     install token-manager:new token:myTokenSymbol false 0
     install voting:new token:myTokenSymbol 51e16 10e16 3d
+    grant ANY_ENTITY voting:new CREATE_VOTES_ROLE voting
     grant voting:new token-manager:new MINT_ROLE voting
     grant voting:new token-manager:new BURN_ROLE voting
     grant voting:0 token-manager:new MINT_ROLE voting
@@ -19,16 +20,21 @@ ar:connect evmcrisprexampledao token-manager voting (
     revoke voting:0 token-manager:new MINT_ROLE false 
 )
 ```
-This will create a new non-transferrable reputation token and a token-manager to manage it, it will connect these tokens and token-manager to a fresh voting app (with a support required of 51%, quorum of 10% and vote duration of 3 days) and also mint the sender 1 token which they can use to pass votes and mint or burn more tokens for members in the new voting app.
+This script will:
+* Create a new non-transferrable reputation token and a Token Manager to manage it.
+* Create a new Voting app with support required of 51%, a quorum of 10%, and a vote duration of 3 days.
+* Connect these tokens and Token Manager to the new Voting app.
+* Allow any address to create votes in the new Voting app.
+* Mint the sender one token, which they can use to pass votes and mint or burn more tokens for members in the new voting app.
 
 ### Deposit tokens into a vault and set a payment schedule
 
-```bash
-# switch to gnosis chain
+```
+# switch to Gnosis Chain
 switch 100
 load aragonos as ar
 
-# define variables including recipients
+# define variables, including recipients
 set $token.tokenlist https://tokens.honeyswap.org/
 set $markoAddress 0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5
 set $mohammadAddress 0xdac17f958d2ee523a2206206994597c13d831ec7
@@ -39,11 +45,11 @@ ar:connect evmcrisprexampledao (
     exec @token(WXDAI) approve(address,uint256) finance 3000e18
     exec finance deposit @token(WXDAI) 6000e18 "documentation contract payments"
 )
-# tx 2 - create payment schedule for recipients
+# tx 2 - create a payment schedule for recipients
 ar:connect evmcrisprexampledao token-manager voting (
     exec finance newScheduledPayment @token(WXDAI) $markoAddress 500e18 @date(now) 1mo 4 "payments for copywriting work"
     exec finance newScheduledPayment @token(WXDAI) $sarahAddress 750e18 @date(now) 1mo 4 "payments for design work"
     exec finance newScheduledPayment @token(WXDAI) $mohammadAddress 250e18 @date(now) 1mo 4 "payments for translation work"
 )
 ```
-In this transaction we deposit a sum of money into our Aragon DAO for an agreed upon amount for some contracted work. We then create a vote to setup scheduled payments for each contributor working on the contracted work.
+In this transaction, we deposit a sum of money into our Aragon DAO for an agreed-upon amount for some contracted work. We then create a vote to set up scheduled payments for each contributor working on the contracted work.
