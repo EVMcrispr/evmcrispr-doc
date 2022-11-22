@@ -18,7 +18,11 @@ export default {
       "classic",
       {
         "theme": {
-          "customCss": "/home/sem/Projects/evmcrispr-doc/src/css/custom.css"
+          "customCss": "/home/mitch/github/evmcrispr-doc/src/css/custom.css"
+        },
+        "pages": {
+          "path": "src/pages",
+          "routeBasePath": "/"
         }
       }
     ]
@@ -46,6 +50,12 @@ export default {
           "to": "aragonOS/",
           "activeBasePath": "aragonOS",
           "label": "AragonOS Apps",
+          "position": "left"
+        },
+        {
+          "to": "cookbook/",
+          "activeBasePath": "cookbook",
+          "label": "Cookbook",
           "position": "left"
         }
       ],
@@ -108,7 +118,16 @@ export default {
         "id": "aragonOS",
         "path": "aragonOS",
         "routeBasePath": "aragonOS",
-        "sidebarPath": "/home/sem/Projects/evmcrispr-doc/sidebarAragonOS.js"
+        "sidebarPath": "/home/mitch/github/evmcrispr-doc/sidebarAragonOS.js"
+      }
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        "id": "cookbook",
+        "path": "cookbook",
+        "routeBasePath": "cookbook",
+        "sidebarPath": "/home/mitch/github/evmcrispr-doc/sidebarCookbook.js"
       }
     ]
   ],

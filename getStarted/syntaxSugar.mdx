@@ -105,6 +105,7 @@ set $fundingStrategy (@token(DAI)::balanceOf(agent:1) / 2 * 3 + @token(DAI)::bal
 exec agent:1 transfer (@token(DAI)::balanceOf(agent:1) - $fundingStrategy) vault:0
 ```
 
+
 ## raw
 
 The `raw` command allows sending a transaction to an address using only the raw transaction data.
@@ -445,3 +446,27 @@ ar:connect myDao token-manager voting (
 
 It would call the read-only function `token` in the second Token Manager, get that address and call the `symbol` read-only function of that address. The variable `$myTokenSymbol` would then be the symbol of the token associated with the specified Token Manager in an Aragon DAO.
 :::
+
+## print
+Using `print` will print the result of a variable or referenced information. 
+
+#### Syntax
+
+```
+print <informationToPrint>
+```
+
+For example:
+
+Print the decimal precision of the DAI token.
+```
+print @token(DAI)::decimals()
+```
+Print the UNIX timestamp of 2 weeks from now.
+```
+print @date(now, +2w)
+```
+Print my current DAI balance plus 50, divided by 3.
+```
+print ((@token.balance(DAI,@me) + 50) / 3 )
+```

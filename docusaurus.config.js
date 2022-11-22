@@ -22,8 +22,13 @@ const config = {
       {
         theme: {
           customCss: require.resolve('./src/css/custom.css')
+        },
+      
+        pages: {
+          path: 'src/pages',
+          routeBasePath: '/',
         }
-      }
+      },
     ]
   ],
 
@@ -51,6 +56,12 @@ const config = {
           activeBasePath: 'aragonOS',
           label: 'AragonOS Apps',
           position: 'left'
+        },
+        {
+          to: 'cookbook/',
+          activeBasePath: 'cookbook',
+          label: 'Cookbook',
+          position: 'left',
         }
       ]
     },
@@ -99,6 +110,15 @@ const config = {
         path: 'aragonOS',
         routeBasePath: 'aragonOS',
         sidebarPath: require.resolve('./sidebarAragonOS.js')
+      }
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'cookbook',
+        path: 'cookbook',
+        routeBasePath: 'cookbook',
+        sidebarPath: require.resolve('./sidebarCookbook.js')
       }
     ]
   ]
