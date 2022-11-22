@@ -63,6 +63,7 @@ const config = {
           label: 'Cookbook',
           position: 'left',
           },
+          {
           href: 'https://evmcrispr.blossom.software/#/terminal',
           label: 'Terminal',
           position: 'right'
