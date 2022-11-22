@@ -34,7 +34,7 @@ You can use the `set` command to define variables in EVMcrispr. The `$` symbol i
 
 Here's an example to show you a typical use case of setting and implementing variables in your script:
 
-```bash
+```
 load aragonos as ar
 
 ar:connect exampleDAO token-manager voting (
@@ -105,6 +105,7 @@ set $fundingStrategy (@token(DAI)::balanceOf(agent:1) / 2 * 3 + @token(DAI)::bal
 exec agent:1 transfer (@token(DAI)::balanceOf(agent:1) - $fundingStrategy) vault:0
 ```
 
+
 ## raw
 
 The `raw` command allows sending a transaction to an address using only the raw transaction data.
@@ -138,7 +139,7 @@ The `@me` helper will reference the Ethereum Address that is currently connected
 
 A usage example could look like this:
 
-```bash
+```
 load aragonos as ar 
 ar:connect exampleDAO token-manager voting:0 (
   exec token-manager mint @me 1337e18
@@ -167,7 +168,7 @@ For example:
 
 Using the `set` command, you can use a different token list to reference tokens, including on different chains. To use a different token list, you can follow this syntax:
 
-```bash
+```
 set $token.tokenlist <tokenListURL>
 ```
 
@@ -179,13 +180,13 @@ For example:
 
 #### Syntax
 
-```bash
+```
 @token(<tokenSymbol>)
 ```
 
 An example of using `@token` in your script could look like this:
 
-```bash
+```
 exec vault:0 transfer @token(DAI) vault:1 100e18
 ```
 
@@ -208,13 +209,13 @@ You'll need two parameters to use this helper:
 
 #### Syntax
 
-```bash
+```
 @token.balance(<tokenSymbol>,<entity>)
 ```
 
 An example of using `@token.balance` could look like this:
 
-```bash
+```
 exec vault:0 transfer @token(DAI) agent:0 @token.balance(DAI,vault:0)
 ``` 
 
@@ -224,7 +225,7 @@ It would request to transfer the entire balance of DAI held by the 1st vault to 
 
 A common usage example to showcase the `@token` and `@me` helpers and the $token.tokenlist variable and could look like this:
 
-```bash
+```
 load aragonos as ar
 ar:connect exampleDAO token-manager voting (
   set $token.tokenlist https://token-list.sushi.com/
@@ -267,13 +268,13 @@ The `@id` helper can hash a string using the keccak256 function. It takes only o
 - `content`: The string or variable you want to hash.
 
 #### Syntax
-```bash
+```
 @id(<content>)
 ```
 
 The `@id` helper is handy when working with contracts using [OpenZeppelin standards for Access Control](https://docs.openzeppelin.com/contracts/4.x/access-control#using-access-control). You could use the following syntax as an example:
 
-```bash
+```
 act agent <contract> grantRole(bytes32,address) @id(MINTER_ROLE) @me
 ```
 
@@ -294,18 +295,18 @@ You can reference a specific calendar day using ISO 8601 format. By default, thi
 
 #### Syntax
 For a calendar date, use this format:
-```bash
+```
 @date(<year>-<month>-<day>Z)
 ``` 
 
 For a calendar date with a specific time, use this syntax:
-```bash
+```
 @date(<year>-<month>-<day>T<hour>-<minute>-<second>Z)
 ``` 
 
 For example:
 
- ```bash
+ ```
  @date(2015-07-30Z)
  ``` 
  
@@ -313,7 +314,7 @@ It would return as July 30th, 2015 (The Ethereum genesis block date :smile:).
 
  OR 
 
- ```bash
+ ```
  @date(2021-01-12T15:30:45)
  ```
 
@@ -325,22 +326,22 @@ We can use the time helpers inside of `@date` to specify a time in the future or
 
 
 #### Syntax
-```bash
+```
 @date(<calendarDateOrNow>,[-/+]<timeToAddOrSubtract>)
 ```
 To make this clearer let's look at a few examples:
 
-```bash
+```
 @date(now,-2y-1m)
 ```
 It would return as two years and one month in the past from now.
 
-```bash
+```
 @date(now,+2y+1m)
 ```
 It would return as two years and one month in the future from now.
 
-```bash
+```
 @date(2000-01-01Z,+12y+6m+30d+5h+12m+21s)
 ```
 
@@ -348,7 +349,7 @@ It would return as 12 years, six months, 30 days, 5 hours, 12 minutes, and 21 se
 
 A typical example of using the `@date` helper would be to create a vesting schedule using [Aragon's Token Manager App](/aragonOS/token-manager#internal-actions)
 
-```bash
+```
 exec token-manager assignVested @me 1000e18 @date(now) @date(now,+10d) @date(now,+30d) false
 ```
 
@@ -445,3 +446,28 @@ ar:connect myDao token-manager voting (
 
 It would call the read-only function `token` in the second Token Manager, get that address and call the `symbol` read-only function of that address. The variable `$myTokenSymbol` would then be the symbol of the token associated with the specified Token Manager in an Aragon DAO.
 :::
+
+## print
+
+The `print` command will show the result of a variable or referenced information.
+
+#### Syntax
+
+```
+print <informationToPrint>
+```
+
+For example:
+
+Print the decimal precision of the DAI token.
+```
+print @token(DAI)::decimals()
+```
+Print the UNIX timestamp of 2 weeks from now.
+```
+print @date(now, +2w)
+```
+Print my current DAI balance plus 50, divided by 3.
+```
+print ((@token.balance(DAI,@me) + 50) / 3 )
+```
