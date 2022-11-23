@@ -9,7 +9,7 @@ module.exports = {
     {
       type: "category",
       label: "Gardens Apps",
-      items: ['disputableVoting','agreement']
+      items: ['disputableVoting','convictionVoting', 'agreement']
     }
   ]
 }
