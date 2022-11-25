@@ -3,7 +3,7 @@ id: aragonRecipes
 title: Aragon DAO
 ---
 
-### Create a reputation token voting system
+### Creating a reputation token voting system
 This script will allow you to spin up a new token-weighted voting system inside your Aragon DAO and set up all the permissions you need to start.
 ```
 load aragonos as ar
@@ -27,7 +27,7 @@ This script will:
 * Allow any address to create votes in the new Voting app.
 * Mint the sender one token, which they can use to pass votes and mint or burn more tokens for members in the new voting app.
 
-### Deposit tokens into a vault and set a payment schedule
+### Depositing tokens into a vault and setting a payment schedule
 
 ```
 # switch to Gnosis Chain

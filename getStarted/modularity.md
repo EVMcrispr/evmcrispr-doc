@@ -6,7 +6,7 @@ title: Modularity
 
 EVMcrispr has been designed as a tool that can support various platforms and protocols. Specialized commands and helpers have been broken down into modules that users can load separately. This allows EVMcrispr to scale and become modular.
 
-## Loading Modules
+## Loading modules
 
 Modules can be loaded using the following syntax: 
 
@@ -25,7 +25,7 @@ ar:connect exampleDAO token-manager voting (
 )
 ```
 
-## List of Modules
+## List of modules
 
  Here is a breakdown of current modules, how to load them, and their associated commands and helpers: 
 

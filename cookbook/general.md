@@ -3,7 +3,7 @@ id: generalRecipes
 title: General
 ---
 
-### Deploying a multisig to many chains
+### Deploying a multisig to many chains with Gnosis Safe
 When you spin up a Gnosis Safe Multisig on a particular chain, it has its unique contract address. However, if you want to create the same multisig on another chain, it will be given a different address. However, there is a way to deploy a multisig to many chains with the same contract address. EVMcrispr makes it easy!
 
 <details><summary>Steps to get your deploymentData</summary>

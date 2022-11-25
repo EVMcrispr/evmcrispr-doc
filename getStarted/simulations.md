@@ -33,7 +33,7 @@ This script will generate a pop-up containing the link to your forked simulation
 <img alt='EVMcrispr simulation in Tenderly' src={useBaseUrl('img/evmSimulation.png')} />
 
 
-## Simulating from another Address
+## Simulating from another address
 
 If you would like to simulate a transaction using a different address than the connected one as the sender, We can do this with the `--from` option. We can add this next to `sim:fork` or append it onto the `exec` commands executing an action. As an example, the syntax could look like this:
 
@@ -116,7 +116,7 @@ sim:fork (
 )
 ```
 
-## Simulating from a specific Block Number
+## Simulating from a specific block number
 
 You can simulate a transaction specifying a certain past block number to make the simulation from. We can implement the syntax as such:
 

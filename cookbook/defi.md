@@ -2,7 +2,7 @@
 id: defiRecipes
 title: DeFi
 ---
-## Harvesting and Cashing Out!
+## Harvesting and cashing out of Sushi
 This script will harvest pending rewards from a series of SushiSwap farms and then swap the $SUSHI and $GNO rewards to XDAI.
 
 ```
@@ -35,7 +35,7 @@ exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256)
 exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256) @token.balance(GNO,@me) (@token.balance(GNO,@me) * ($gnosisXDaiPrice) / 1e18) $gnoPath @me @date(now,+10m)
 ```
 
-## Claim CRV, Lock, and Vote! 
+## Harvesting, locking, and voting on Curve 
 This script will harvest your pending CRV rewards, lock them for 12 weeks (minting veCRV in the process), and then use them to vote on the gauge for the 3pool LP, thus increasing its rewards allocation. 
 ```
 # Switch to mainnet
@@ -55,7 +55,7 @@ exec $curveVoterEscrow create_lock(uint256,uint256) @token.balance(CRV,@me) @dat
 exec $gaugeController vote_for_gauge_weights(address,uint256) $3poolGauge 10000 
 ```
 
-## Create a leveraged position on AAVE v3
+## Creating leveraged positions on AAVE v3
 This script will deposit and consecutively borrow an asset on AAVE, then repeat the process again with the available borrowed assets. The purpose of this script is to create a leveraged borrowing position, maximizing the lend and borrow APYs to earn more yield. The amounts calculated in the `leverage` variables are made to keep your borrowing level under the liquidation threshold.
 
 :::note
