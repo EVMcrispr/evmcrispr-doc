@@ -28,7 +28,7 @@ sim:fork (
 )
 ```
 
-This script will generate a pop-up containing the link to your forked simulation on Tenderly; paste the link into your browser to see the magic happening!
+This script will generate a pop-up containing the link to your forked simulation on Tenderly; click on it to see the magic happening!
 
 <img alt='EVMcrispr simulation in Tenderly' src={useBaseUrl('img/evmSimulation.png')} />
 
@@ -110,9 +110,8 @@ sim:fork (
 
   wait 30d 5s
 
-  expect (
-    exec $conviction executeProposal(uint) $proposalId
-  ) toEmit ProposalExecuted
+  exec $conviction executeProposal(uint) $proposalId
+  expect $conviction::requestToken()::balanceOf($somebodyElse) >= 50e18
 )
 ```
 
@@ -121,9 +120,9 @@ sim:fork (
 You can simulate a transaction specifying a certain past block number to make the simulation from. We can implement the syntax as such:
 
 ```
-switch <chainIdNumber>
+switch <chainId>
 
-sim:fork --blocknumber <blockNumber>  (  
+sim:fork --block-number <blockNumber>  (  
   # Insert the body of your script here
 )
 ```
@@ -140,7 +139,7 @@ set $GIVstakingContract 0xD93d3bDBa18ebcB3317a57119ea44ed2Cf41C2F2
 set $GIVtokenManager 0x24F2d06446AF8D6E89fEbC205e7936a602a87b60
 
 # Start the simulation at block 24029921 on Gnosis Chain
-sim:fork --blocknumber 24029921 (
+sim:fork --block-number 24029921 (
   # Wrap GIV tokens into gGIV - begin earning yield on GIVfarm
   exec $GIVtokenManager wrap(uint256) @token.balance(GIV, @me)
   wait 3mo
@@ -156,18 +155,38 @@ Within the same concept as specifying the block number in a simulation, we can a
 
 
 ```
-switch 1
 load tenderly as sim
 load aragonos as ar
-set $tenderly mitch/best-project/123456LOL1337rofl911irl
+switch 100
+set $tenderly semi/sim/1eN9a5Iy27L8WDhCb-B4zzXFXHdFWdob
 
+set $tokenholder 0x62bb362d63f14449398b79ebc46574f859a6045d
 set $mohammadAddress 0xdac17f958d2ee523a2206206994597c13d831ec7
+set $token.tokenlist https://tokens.honeyswap.org
 
-sim:fork (
+sim:fork --from $tokenholder (
+
+  # We create a new vote to start a new scheduled payment
+
   ar:connect evmcrisprexampledao token-manager voting (
+    set $voteId voting::votesLength()
+    set $paymentId finance::paymentsNextIndex()
     exec finance newScheduledPayment @token(WXDAI) $mohammadAddress 250e18 @date(now) 1mo 4 "payments for translation work"
   )
-  wait (1mo + 30s)
-  exec finance receiverExecutePayment 0 --from $mohammadAddress
+
+  # We vote on it and wait 1 day to execute it.
+  ar:connect evmcrisprexampledao (
+    exec voting vote $voteId true
+  )
+  wait 1d
+  ar:connect evmcrisprexampledao (
+    exec voting executeVote $voteId
+  )
+
+  # We wait one month to receive the first payment
+  wait (1mo + 1d)
+  ar:connect evmcrisprexampledao (
+    exec finance receiverExecutePayment $paymentId --from $mohammadAddress
+  )
 )
 ```
