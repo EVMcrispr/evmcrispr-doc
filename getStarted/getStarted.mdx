@@ -41,13 +41,13 @@ Once you're ready to send your script, hit `Forward`, and EVMcrispr will generat
 
 You can use the' exec' command to send a script of multiple actions to a specific contract or multiple contracts on the connected network. Follow this syntax:
 
-```bash
+```
 exec <contractAddress> <functionName>([...argumentTypes]) [...parameters]
 ```
 
 For example:
 
-```bash
+```
 set $token.tokenlist https://tokens.honeyswap.org/
 set $farm 0xD93d3bDBa18ebcB3317a57119ea44ed2Cf41C2F2
 set $token-manager 0x24F2d06446AF8D6E89fEbC205e7936a602a87b60
@@ -63,7 +63,7 @@ Or, if you're sending scripts to an AragonOS-compatible DAO, you'll need to pref
 
 If you want to send multiple scripts at once, you must separate them with a blank row. Each separated script will produce a separate transaction that needs to be signed with your web wallet. Here's a basic idea of how this would look:
 
-```bash
+```
 # script 1
 connect <myDAO> [...forwardPath] (
   [...actions]

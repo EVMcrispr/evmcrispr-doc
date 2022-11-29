@@ -22,8 +22,13 @@ const config = {
       {
         theme: {
           customCss: require.resolve('./src/css/custom.css')
+        },
+      
+        pages: {
+          path: 'src/pages',
+          routeBasePath: '/',
         }
-      }
+      },
     ]
   ],
 
@@ -53,6 +58,12 @@ const config = {
           position: 'left'
         },
         {
+          to: 'cookbook/',
+          activeBasePath: 'cookbook',
+          label: 'Cookbook',
+          position: 'left',
+          },
+          {
           href: 'https://evmcrispr.blossom.software/#/terminal',
           label: 'Terminal',
           position: 'right'
@@ -114,6 +125,15 @@ const config = {
         path: 'aragonOS',
         routeBasePath: 'aragonOS',
         sidebarPath: require.resolve('./sidebarAragonOS.js')
+      }
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'cookbook',
+        path: 'cookbook',
+        routeBasePath: 'cookbook',
+        sidebarPath: require.resolve('./sidebarCookbook.js')
       }
     ]
   ]
