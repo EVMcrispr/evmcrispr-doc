@@ -31,6 +31,12 @@
   --ifm-background-color: #121212;
 }
 
+.flex {
+  display: flex;
+  gap: 15px;
+  justify-content: space-evenly;
+}
+
 .column {
   float: left;
   width: 33.33%;
