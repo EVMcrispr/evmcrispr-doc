@@ -47,15 +47,16 @@
 
 .bigButton {
   padding: 30px;
-  border-radius: 5px;
+  border: 3px solid #54ef1c;
+  border-radius: 2px;
   font-size: 1.25em;
   font-weight: bold;
-  background: #70ea3d;
+  background: rgb(31, 43, 26);
   color: white !important;
   text-decoration: none;
 }
 
 a:hover.bigButton {
   text-decoration: none;
-  background: #94f76a;
+  background: rgb(63, 97, 48);
 }
