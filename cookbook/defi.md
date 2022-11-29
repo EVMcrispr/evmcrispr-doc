@@ -58,7 +58,7 @@ exec $gaugeController vote_for_gauge_weights(address,uint256) $3poolGauge 10000
 ## Creating leveraged positions on AAVE v3
 This script will deposit and consecutively borrow an asset on AAVE, then repeat the process again with the available borrowed assets. The purpose of this script is to create a leveraged borrowing position, maximizing the lend and borrow APYs to earn more yield. The amounts calculated in the `leverage` variables are made to keep your borrowing level under the liquidation threshold.
 
-:::note
+:::caution
 This operation is hazardous. It is here only for educational purposes. Do not be a degen, and this is not financial advice.
 :::
 ```
@@ -91,3 +91,18 @@ exec $aaveLendingPoolV3 supply(address,uint256,address,uint16) @token(WMATIC) $l
 exec $aaveLendingPoolV3 borrow(address,uint256,uint256,uint16,address) @token(WMATIC) $leverageThree 2 0 @me
 exec $aaveLendingPoolV3 supply(address,uint256,address,uint16) @token(WMATIC) $leverageThree @me 0
 ```
+
+```
+
+
+:::tip
+#### Using Aave v2
+
+If you want to use Aave v2 instead for performing scripts on mainnet (at time of writing Aave Mainnet still uses v2 contracts) then you should take note that the
+`supply` function is named `deposit` - however it takes in the exact same parameters. It can be written in full like this:
+
+```
+deposit(address,uint256,address,uint16)
+```
+:::
+
