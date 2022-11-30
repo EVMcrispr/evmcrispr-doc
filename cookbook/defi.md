@@ -92,14 +92,12 @@ exec $aaveLendingPoolV3 borrow(address,uint256,uint256,uint16,address) @token(WM
 exec $aaveLendingPoolV3 supply(address,uint256,address,uint16) @token(WMATIC) $leverageThree @me 0
 ```
 
-```
-
 
 :::tip
 #### Using Aave v2
 
-If you want to use Aave v2 instead for performing scripts on mainnet (at time of writing Aave Mainnet still uses v2 contracts) then you should take note that the
-`supply` function is named `deposit` - however it takes in the exact same parameters. It can be written in full like this:
+Suppose you want to use Aave v2 instead for performing scripts on mainnet (at the time of writing, Aave Mainnet still uses v2 contracts). In that case, you should note that the
+`supply` function is named `deposit` - however, it takes in the same parameters. You can write it in full like this:
 
 ```
 deposit(address,uint256,address,uint16)
