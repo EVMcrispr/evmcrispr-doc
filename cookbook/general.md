@@ -84,3 +84,34 @@ exec $CFAv1Forwarder createFlow(address,address,address,int96,bytes) $HNYx @me $
 # Stop the flow
 exec $CFAv1Forwarder deleteFlow(address,address,address,bytes) $HNYx @me $destination 0x
 ```
+
+## Managing Roles and Access Control
+
+Access Control allows for scoping permissions within smart contracts by assigning roles to specific external addresses or contracts. Most often contract admin's can assign these roles allowing only certain entities to call certain functions. We can make this magic happen using EVMcrispr and the `@id` helper.
+
+```
+switch 100
+
+load aragonos as ar
+# define our contracts
+set $distributorContract 0x18a46865AAbAf416a970eaA8625CFC430D2364A1
+set $myDAOAgent 0x8ca46B4b9Bf0fa6Ba4bC528606B4cb101B3401A4
+
+# grant distributor role and assign tokens to distribute
+exec $distributorContract grantRole(bytes32,address) @id(DISTRIBUTOR_ROLE) $myDAOAgent
+exec $distributorContract assign(address,uint256) $myDAOAgent 10000e18
+
+# create a DAO vote to distribute tokens to specific addresses in specific amounts
+ar:connect evmcrisprexampledao token-manager voting (
+    act $myDAOAgent $distributorContract allocateMany(address[],uint256[]) [0x865c2f85c9fea1c6ac7f53de07554d68cb92ed88,0x5d28fe1e9f895464aab52287d85ebff32b351674,0xed8db37778804a913670d9367aaf4f043aad938b] [1000e18, 2100e18, 900e18]
+)
+```
+
+
+This example shows an implementation of a token distributor contract. The contract admin can assign a role for a given entity to distribute tokens held by the contract. We can use the `@id` helper to find the hashed bytes of any access control role in a given contract. In this case, we get the hash of the `DISTRIBUTOR_ROLE` and give it to a DAO agent. We assign the agent tokens to distribute and then connect to the DAO and create a vote to distribute tokens using `allocateMany`. You can find [more information for Access Control in the OpenZeppelin documentation](https://docs.openzeppelin.com/contracts/4.x/api/access#AccessControl).
+
+Conversely we can revoke a role using `revokeRole`, for example:
+
+```
+exec $distributorContract revokeRole(bytes32,address) @id(DISTRIBUTOR_ROLE) $myDAOAgent
+```
