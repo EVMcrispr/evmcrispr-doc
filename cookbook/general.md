@@ -87,7 +87,7 @@ exec $CFAv1Forwarder deleteFlow(address,address,address,bytes) $HNYx @me $destin
 
 ## Managing Roles and Access Control
 
-Access Control allows for scoping permissions within smart contracts by assigning roles to specific external addresses or contracts. Most often contract admin's can assign these roles allowing only certain entities to call certain functions. We can make this magic happen using EVMcrispr and the `@id` helper.
+Access Control allows for scoping permissions within smart contracts by assigning roles to specific external addresses or contracts. Contract admins can often assign these roles, allowing only certain entities to call particular functions. We can make this magic happen using EVMcrispr and the `@id` helper.
 
 ```
 switch 100
@@ -108,9 +108,9 @@ ar:connect evmcrisprexampledao token-manager voting (
 ```
 
 
-This example shows an implementation of a token distributor contract. The contract admin can assign a role for a given entity to distribute tokens held by the contract. We can use the `@id` helper to find the hashed bytes of any access control role in a given contract. In this case, we get the hash of the `DISTRIBUTOR_ROLE` and give it to a DAO agent. We assign the agent tokens to distribute and then connect to the DAO and create a vote to distribute tokens using `allocateMany`. You can find [more information for Access Control in the OpenZeppelin documentation](https://docs.openzeppelin.com/contracts/4.x/api/access#AccessControl).
+This example shows an implementation of a token distributor contract. The contract admin can assign a role for a given entity to distribute tokens held by the contract. We can use the `@id` helper to calculate the hash of any access control role of a given contract. In this case, we calculate the hash of the `DISTRIBUTOR_ROLE` and give it to a DAO agent. We assign the agent tokens to distribute and then connect to the DAO and create a vote to distribute tokens using `allocateMany`. You can find [more information on Access Control in the OpenZeppelin documentation](https://docs.openzeppelin.com/contracts/4.x/api/access#AccessControl).
 
-Conversely we can revoke a role using `revokeRole`, for example:
+Conversely, we can revoke a role using `revokeRole`, for example:
 
 ```
 exec $distributorContract revokeRole(bytes32,address) @id(DISTRIBUTOR_ROLE) $myDAOAgent
