@@ -3,7 +3,7 @@ id: generalRecipes
 title: General
 ---
 
-### Deploying a multisig to many chains with Gnosis Safe
+## Deploying a multisig to many chains with Gnosis Safe
 When you spin up a Gnosis Safe Multisig on a particular chain, it has its unique contract address. However, if you want to create the same multisig on another chain, it will be given a different address. However, there is a way to deploy a multisig to many chains with the same contract address. EVMcrispr makes it easy!
 
 <details><summary>Steps to get your deploymentData</summary>
@@ -34,7 +34,7 @@ switch 10
 raw $gnosisFactory $deploymentData
 ```
 
-### Creating a stream with Superfluid 
+## Creating a stream with Superfluid 
 This script will create a Superfluid flow for a given token. There are two examples one for creating a flow for a native token and the second for a typical ERC20 token. You can [learn more about Superfluid here](https://www.superfluid.finance/).
 ```
 switch 100
@@ -115,3 +115,7 @@ Conversely we can revoke a role using `revokeRole`, for example:
 ```
 exec $distributorContract revokeRole(bytes32,address) @id(DISTRIBUTOR_ROLE) $myDAOAgent
 ```
+
+## Upgrading Proxies
+
+We can also benefit from the Upgradable Proxy Pattern introduced by Open Zeppelin to upgrade our proxy smart contracts to new implementations using the basic functionality of EVMcrispr. We can even tie in upgrading proxies into more complex actions. Depending on the type of proxy used this can be done with the function named `upgradeTo` or `upgradeProxy`
