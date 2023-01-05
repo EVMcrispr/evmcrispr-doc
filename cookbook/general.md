@@ -118,4 +118,28 @@ exec $distributorContract revokeRole(bytes32,address) @id(DISTRIBUTOR_ROLE) $myD
 
 ## Upgrading Proxies
 
-We can also benefit from the Upgradable Proxy Pattern introduced by Open Zeppelin to upgrade our proxy smart contracts to new implementations using the basic functionality of EVMcrispr. We can even tie in upgrading proxies into more complex actions. Depending on the type of proxy used this can be done with the function named `upgradeTo` or `upgradeProxy`
+We can also benefit from the Upgradable Proxy Pattern introduced by Open Zeppelin to upgrade our proxy smart contracts to new implementations using the basic functionality of EVMcrispr. We can even tie in upgrading proxies into more complex actions. Depending on the type of proxy used this can be done with a function typically named `upgradeTo` or `upgradeProxy`.
+
+Here's an example recipe of pulling off complex upgrades in EVMcrispr:
+
+```
+set $proxyContract 0x32e8D4c9d1B711BC958d0Ce8D14b41F77Bb03a64
+set $proxyDAIbalance @token.balance(DAI, $proxyContract)
+set $proxyCRVbalance @token.balance(CRV, $proxyContract)
+
+# escapeFunds is a typical function used to move funds to a secure address
+exec $proxyContract escapeFunds(address) @token(DAI)
+exec $proxyContract escapeFunds(address) @token(CRV)
+# use the upgrade function and define our new implementation contract
+exec $proxyContract upgradeTo(address) 0xA6aD366bfD2f43615bbeC56f50cf606036fc11fe
+
+load aragonos as ar
+
+ar:connect token-manager voting (
+    # assume the DAO vault was our secure address and create DAO votes to replace funds in upgraded proxy contract
+    exec vault transfer @token(DAI) $proxyContract $proxyDAIbalance 
+    exec vault transfer @token(CRV) $proxyContract $proxyCRVbalance 
+)
+```
+
+In this example we save our proxy contract and its token balances in a few variables, we use a theoretical function called 
