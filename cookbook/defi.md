@@ -5,6 +5,10 @@ title: DeFi
 ## Harvesting and cashing out of Sushi
 This script will harvest pending rewards from a series of SushiSwap farms and then swap the $SUSHI and $GNO rewards to XDAI.
 
+The current pools yielding rewards and the rewards rate on sushiswap might change, so might the minimum price of the tokens you want to swap. Check out current prices and pools on Sushiswap before running the script to avoid MEV loss or transaction failure.
+
+The minimum price effectively decides how much slippage you'll accept. 
+
 ```
 # Switch to Gnosis Chain and define the two smart contracts we will use
 switch 100
@@ -36,7 +40,12 @@ exec $sushiswap swapExactTokensForETH(uint256,uint256,address[],address,uint256)
 ```
 
 ## Harvesting, locking, and voting on Curve 
-This script will harvest your pending CRV rewards, lock them for 12 weeks (minting veCRV in the process), and then use them to vote on the gauge for the 3pool LP, thus increasing its rewards allocation. 
+This script will harvest your pending CRV rewards, lock them for 12 weeks (minting veCRV in the process), and then use them to vote on the gauge for the 3pool LP, thus increasing its rewards allocation. It engages with three critical pieces of CRV's smart contract system.
+- The minter contract for the CRV token - this mints CRV based on your pending rewards from having provided liquidity to a rewards eligible pool on Curve.
+- Voter Escrow CRV (veCRV) - this handles minting veCRV from locking up your CRV for a period of time. The longer the lockup the more veCRV you earn.
+- Gauge controller - Manages the allocations of users voting weight on all rewards eligible curve pools, users assign a percentage of their voting weight (veCRV) to certain gauges(pools), the more voting weight the greater the rewards to those gauges.
+- 3pool(USDT,USDC,DAI) Gauge - The gauge for the most popular curve pool, 3pool stables, voting for this gauge increases rewards for uses who provided liquidity to the corresponding pool.
+
 ```
 # Switch to mainnet
 switch 1

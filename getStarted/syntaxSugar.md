@@ -24,6 +24,24 @@ i.e., `1e6` would be 1 USDC, `1e18` would be 1,000,000,000,000 USDC - See the di
 
 Typically smart contracts express time in seconds. However, with EVMcrispr, time can also be represented by appending s, m, h, d, w, mo, and y at the end of the number to define them as seconds, minutes, hours, days, weeks, months, and years respectively. So, for example, 2d would get converted to 172,800 seconds.
 
+# Sending Native Tokens
+
+With any `exec` command that calls a payable function on a smart contract you can use th `--value` option to send Ether or any native token to the target contract. 
+
+#### Syntax 
+```
+exec <targetContract> <payableFunction> --value <amountOfTokensToSend>
+```
+
+For example:
+
+```
+switch gnosis
+
+exec @token(WXDAI) deposit() --value 60e18
+```
+This would send 60 xDAI to the wxDAI token contract, wrapping them 1:1 into wxDAI and sending them to the caller. 
+
 # Environment Variables
 
 Environment variables let you reference information faster and assign information to names you can use inside your script commands. You need two pieces of information to set a variable, the name you want to give the variable and the data you want to be equal. You can use this syntax:

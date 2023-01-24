@@ -114,6 +114,19 @@ sim:fork (
   expect $conviction::requestToken()::balanceOf($somebodyElse) >= 50e18
 )
 ```
+:::tip
+`expect` can also be used outisde of a `sim:fork` block with `sim:expect`. When you run EXECUTE, EVMcrispr will print a notification telling you whether your expect command returned true or false.
+
+For example:
+```
+set $numberOne 2
+set $numberTwo 3
+
+load tenderly as sim
+
+sim:expect ($numberOne + $numberTwo) == 5
+```
+:::
 
 ## Simulating from a specific block number
 
