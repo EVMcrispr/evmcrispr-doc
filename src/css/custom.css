@@ -66,3 +66,10 @@ a:hover.bigButton {
   text-decoration: none;
   background: rgb(63, 97, 48);
 }
+
+#bigItalic {
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.4em;
+  padding-bottom: 7px;
+}
