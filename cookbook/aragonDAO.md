@@ -28,7 +28,8 @@ This script will:
 * Mint the sender one token, which they can use to pass votes and mint or burn more tokens for members in the new voting app.
 
 ### Depositing tokens into a vault and setting a payment schedule
-We can use some hidden features built inside of the Aragon Finance app to create a payment schedule for internal or external contributors. These payment schedule functions are not available through the AragonOS UI and only through direct function calls. 
+We can use the unknown features built inside the Aragon Finance app to create a payment schedule for internal or external contributors. Unfortunately, these payment schedule functions are unavailable through the AragonOS UI and only through direct function calls.
+
 ```
 # switch to Gnosis Chain
 switch 100

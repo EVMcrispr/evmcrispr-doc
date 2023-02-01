@@ -115,7 +115,7 @@ sim:fork (
 )
 ```
 :::tip
-`expect` can also be used outisde of a `sim:fork` block with `sim:expect`. When you run EXECUTE, EVMcrispr will print a notification telling you whether your expect command returned true or false.
+`expect` can also be used outside a `sim:fork` block with `sim:expect`. When you run EXECUTE, EVMcrispr will print a notification telling you whether your `expect` command returned true or false.
 
 For example:
 ```
