@@ -4,7 +4,7 @@ module.exports = {
     {
       type: "category",
       label: "Aragon Apps",
-      items: ['token-manager', 'voting', 'finance', 'vault', 'agent', 'transactions']
+      items: ['token-manager', 'voting', 'finance', 'vault', 'agent','vote-aggregator','token-wrapper', 'transactions']
     },
     {
       type: "category",
