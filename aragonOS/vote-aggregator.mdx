@@ -1,0 +1,257 @@
+---
+id: vote-aggregator
+title: Vote Aggregator
+---
+import useBaseUrl from '@docusaurus/useBaseUrl'
+import styles from '../src/css/articles.css'
+
+This Aragon App can aggregate the voting weight from multiple sources (checkpointed ERC20 tokens and ERC900 staking contracts) into a single voting token. It has no UI and can only be manipulated directly from the smart contract or using EVMcrispr. For ERC20 tokens without checkpointing, you can use the [Token Wrapper app](./token-wrapper.mdx) to wrap them into a compatible token type.
+
+The Vote Aggregator was built by Aragon One and is currently maintained by 1Hive. It is used in the default deployment of [Gardens](https://gardens.1hive.org/#/home) as the governance token of the [Disputable Voting App](./disputableVoting.mdx).
+
+## Installing the App
+
+The syntax is as follows to install this app:
+
+```
+install vote-token-aggregator.open <tokenName> <tokenSymbol> <tokenDecimals>
+```
+
+You'll need the following parameters to install a new Vote Aggregator to your DAO:
+
+- `tokenName`
+    - The name of the token you wish to create.
+- `tokenSymbol`
+    - The symbol you wish to set for the token.
+- `tokenDecimals`
+    - The number of decimal precision you wish to set for the token. The default decimal precision is 18.
+
+### Common Usage Example
+
+An example of how to install this app is as follows:
+
+```
+load aragonos as ar
+
+ar:connect exampleDAO token-manager voting (
+  install vote-token-aggregator.open:new "VA Test Token" "VATT" 18
+  grant voting vote-token-aggregator.open:new ADD_POWER_SOURCE_ROLE voting
+)
+```
+
+This command would install a new Vote Aggregator app into your Aragon DAO, named "VA Test Token" with the token symbol VATT and decimal precision of 18. In the following command, we grant the Voting Aggregator app permission to add new power sources (tokens or staking apps) to be aggregated by the app. Refer to the [Power Sources](#power-sources) section to learn more about adding power sources.
+
+:::info
+Some versions of the Vote Aggregator App will prevent you from granting and using the `MANAGE_POWER_SOURCE_ROLE` because of a misconfiguration in the Aragon App artifact.json. Fortunately, there is a workaround: you will have to add the permission manually into the ACL (permission management contract). To do this, add this command to your installation script:
+
+```
+exec acl createPermission voting vote-token-aggregator.open @id(MANAGE_POWER_SOURCE_ROLE) voting
+```
+
+This command will allow the voting app to utilize the role mentioned earlier, which is necessary for enabling and disabling power sources. Once you add this to your app, this permission can be managed normally through the `grant` and `revoke` commands.
+:::
+
+import InstallVersioning from '../partials/_installVersioning.mdx'
+
+<InstallVersioning />
+
+## Granting Permissions
+
+:::warning
+This command can potentially burn a permission manager if it is set to the wrong address, making the permission unable to be changed in the future. Because of this, we usually want to set the main voting app as the permission manager of all permissions.
+:::
+
+To grant permissions, you'll use the following syntax:
+
+```
+grant <entity> <app> <roleName> [defaultPermissionManager]
+```
+
+In practice, it could look something like this:
+
+```
+grant ANY_ENTITY vote-token-aggregator.open ADD_POWER_SOURCE_ROLE voting
+```
+
+It would permit any entity to add a power source to the Vote Aggregator, and the voting app manages the permission.
+
+Before installing an app, you should consider any permissions needed to fit your purposes. Here is an exhaustive list of roles for the Vote Aggregator app:
+
+- `ADD_POWER_SOURCE_ROLE`
+    - Entity that can add a power source.
+- `MANAGE_POWER_SOURCE_ROLE`
+    - Entity that can enable or disable added power sources.
+- `MANAGE_WEIGHTS_ROLE`
+    - Entity that can modify the weights of added power sources.
+
+
+import TypesOfEntities from '../partials/_typesOfEntities.mdx';
+
+<TypesOfEntities />
+
+import OracleGrant from '../partials/_oracleGrant.mdx';
+
+<OracleGrant />
+
+
+## Revoking Permissions
+
+
+To remove permission from an entity, follow this syntax:
+
+```
+revoke <entity> <app> <roleName> [removePermissionManager]
+```
+
+In practice, this could look like this:
+
+```
+revoke ANY_ENTITY vote-token-aggregator.open ADD_POWER_SOURCE_ROLE false
+```
+
+It would remove the ability for anyone to add a power source to the Vote Aggregator while keeping the Permission Manager in place should this permission need to be modified in the future.
+
+## Power Sources
+
+The Power sources are checkpointed ERC20 tokens or [ERC900 staking apps](https://github.com/aragon/staking) that are added to the Vote Aggregator as sources of voting power to aggregate. Power sources come with a weight property, their relative voting weight, compared to other power sources. You can have up to 20 power sources connected to a single Vote Aggregator app.
+
+:::info
+The total supply of a token aggregated from a single source is limited to a maximum amount of 2^192, not including decimals. If a total token supply exceeds this number, it will only be aggregated until the total amount, which could cause voting anomalies. 
+:::
+
+Power sources are given a relative weight in whole numbers, starting from `1` with nearly no maximum limit (uint256). You can learn more about adding a power source further below in [Internal Actions](#internal-actions).
+
+### Example Vote Aggregation Calculation
+
+In this scenario, we have one hypothetical voter and three tokens added as power sources to the vote aggregator: Token A, Token B, and Token C. The distribution is as follows:
+
+> - _Token A weights 1_ 
+>     - It has a total supply of 100, and the voter holds 20 tokens
+>     - With the weight of 1 applied, the relative amounts remain the same
+> - _Token B weights 3_
+>     - It has a total supply of 400, and the voter holds 50 tokens
+>     - With the weight of 3 applied, the relative amounts become 1,200 and 150, respectively 
+> - _Token C weights 4_
+>     - It has a total supply of 1,200, and the voter holds 100 tokens
+>     - With the weight of 4 applied, the relative amounts become 4,800 and 400, respectively 
+> 
+> Given these amounts and their weight, the **final voting token supply becomes 6,100**, where the **voter holds 570 tokens**, having a **relative voting power of 9.34%** of the total.
+
+## Internal Actions
+
+Using the `exec` command, we can create internal actions that will modify the settings of our app.
+
+Below is an exhaustive list of all possible internal actions you can perform with the Vote Aggregator app. In addition, we will identify the function in the contract and outline any parameters and permissions you need and the expected syntax to run them.
+
+<details><summary>addPowerSource</summary>
+This function will add a checkpointed token (MiniMe or [wrapped token](./tokenWrapper.mdx) that will be aggregated into a single, weighted token, which is represented by the Vote Aggregator app itself.
+
+#### Parameters
+- `sourceAddress` - The address of the token you wish to add to the Vote Aggregator. (address) 
+- `sourceType` - The interface type of the power source. You can bring either a checkpointed ERC20 or an ERC900 interface. There are three options, however:
+    - 0 = Invalid
+    - 1 = Checkpointed ERC20
+    - 2 = ERC900
+- `weight` - The relative voting weight of the power source to be added. [Learn more](#power-sources). (uint256)
+
+#### Permissions
+
+The entity creating the action will need the `ADD_POWER_SOURCE` role.
+
+#### Syntax
+
+```
+exec vote-token-aggregator.open addPowerSource <sourceAddress> <sourceType> <weight>
+```
+
+#### Usage example
+
+The following script would add a currently installed token-manager token to the Vote Aggregator, with a weight of 1:
+
+```
+exec vote-token-aggregator.open addPowerSource token-manager::token() 1 1
+```
+</details>
+
+<details><summary>changeSourceWeight</summary>
+This function will change the voting weight of an already added power source.
+
+#### Parameters 
+
+- `sourceAddress` - The token address of the already added power source.
+- `weight` - the desired voting weight you wish to update the power source with.
+
+#### Permissions
+
+The entity creating the action will need the `MANAGE_WEIGHTS_ROLE` role.
+
+#### Syntax
+
+```
+exec vote-token-aggregator.open changeSourceWeight <sourceAddress> <weight>
+```
+
+#### Usage example
+
+The following script would change the voting weight of the added power source (token-manager token) to 3.
+
+```
+exec vote-token-aggregator.open changeSourceWeight token-manager::token() 3
+```
+
+</details>
+
+<details><summary>disableSource</summary>
+
+This function will disable an already added power source, removing its voting power from the Vote Aggregator. It can be re-enabled with the `enableSource` function.
+
+#### Parameters 
+
+- `sourceAddress` - The token address of the already added power source.
+
+#### Permissions
+
+The entity creating the action will need the `MANAGE_WEIGHTS_ROLE` role.
+
+#### Syntax
+
+```
+exec vote-token-aggregator.open disableSource <sourceAddress>
+```
+
+#### Usage example
+
+The following script would disable the power source of the token-manager token.
+
+```
+exec vote-token-aggregator.open disableSource token-manager::token()
+```
+
+</details>
+
+<details><summary>enableSource</summary>
+This function will enable an already added power source that has been disabled. It will re-add voting power from the power source to the Vote Aggregator.
+
+#### Parameters 
+
+- `sourceAddress` - The token address of the already added power source.
+
+#### Permissions
+
+The entity creating the action will need the `MANAGE_WEIGHTS_ROLE` role.
+
+#### Syntax
+
+```
+exec vote-token-aggregator.open enableSource <sourceAddress>
+```
+
+#### Usage example
+
+The following script would re-enable the power source of the token-manager token.
+
+```
+exec vote-token-aggregator.open enableSource token-manager::token()
+```
+
+</details>
