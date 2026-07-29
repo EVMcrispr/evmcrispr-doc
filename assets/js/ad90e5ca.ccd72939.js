@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkevmcrispr_doc=self.webpackChunkevmcrispr_doc||[]).push([[2418],{6550:function(e){e.exports=JSON.parse('{"permalink":"/evmcrispr-old-docs/blog/tags/facebook","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkevmcrispr_doc=self.webpackChunkevmcrispr_doc||[]).push([[20],{9164:function(s){s.exports=JSON.parse('{"permalink":"/evmcrispr-old-docs/blog/tags/docusaurus","page":1,"postsPerPage":10,"totalPages":1,"totalCount":4,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

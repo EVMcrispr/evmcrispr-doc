@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkevmcrispr_doc=self.webpackChunkevmcrispr_doc||[]).push([[3994],{7795:function(e){e.exports=JSON.parse('{"permalink":"/evmcrispr-doc/blog/tags/hola","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
