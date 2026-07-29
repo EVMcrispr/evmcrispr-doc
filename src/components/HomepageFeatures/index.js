@@ -1,12 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
 
 const FeatureList = [
   {
     title: 'Tokens',
-    img: '/img/token.png',
+    img: 'img/token.png',
     link: './aragonOS/token-manager',
     description: (
       <>
@@ -16,7 +17,7 @@ const FeatureList = [
   },
   {
     title: 'Voting',
-    img: '/img/voting.png',
+    img: 'img/voting.png',
     link: './aragonOS/voting',
     description: (
       <>
@@ -26,7 +27,7 @@ const FeatureList = [
   },
   {
     title: 'Treasury',
-    img: '/img/treasury.png',
+    img: 'img/treasury.png',
     link: './aragonOS/finance',
     description: (
       <>
@@ -37,10 +38,11 @@ const FeatureList = [
 ];
 
 function Feature({img, title,link, description}) {
+  const imageUrl = useBaseUrl(img);
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
-        <a href={link}><img src={img} className={styles.featureSvg} /></a>
+        <a href={link}><img src={imageUrl} className={styles.featureSvg} /></a>
       </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
