@@ -8,13 +8,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 const config = {
   title: 'EVMcrispr Docs',
   tagline: "Mutate a DAO's DNA",
-  url: 'https://docs.evmcrispr.com',
-  baseUrl: '/',
+  url: 'https://evmcrispr.github.io',
+  baseUrl: '/evmcrispr-doc/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'BlossomLabs', // Usually your GitHub org/user name.
+  organizationName: 'EVMcrispr', // Usually your GitHub org/user name.
   projectName: 'evmcrispr-doc', // Usually your repo name.
+  trailingSlash: false,
 
   presets: [
     [
@@ -34,6 +35,14 @@ const config = {
 
   themeConfig: {
     image: 'img/card.png',
+    announcementBar: {
+      id: 'archived-docs',
+      content:
+        'This documentation is archived for <strong>v0.4–v0.10</strong>. The new website is at <a target="_blank" rel="noopener noreferrer" href="https://evmcrispr.com">evmcrispr.com</a>.',
+      backgroundColor: '#1f2b1a',
+      textColor: '#75f248',
+      isCloseable: false,
+    },
     colorMode: {
       defaultMode: 'dark',
       disableSwitch: true,

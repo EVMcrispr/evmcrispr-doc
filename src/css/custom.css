@@ -73,3 +73,13 @@ a:hover.bigButton {
   font-size: 1.4em;
   padding-bottom: 7px;
 }
+
+div[class^='announcementBar'] a {
+  color: #75f248;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+div[class^='announcementBar'] a:hover {
+  color: #b7f8a0;
+}
