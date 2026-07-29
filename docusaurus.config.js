@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 const config = {
   title: 'EVMcrispr Docs',
   tagline: "Mutate a DAO's DNA",
-  url: 'https://docs.evmcrispr.blossom.software',
+  url: 'https://docs.evmcrispr.com',
   baseUrl: '/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
@@ -64,7 +64,7 @@ const config = {
           position: 'left',
           },
           {
-          href: 'https://evmcrispr.blossom.software/#/terminal',
+          href: 'https://evmcrispr.com/#/terminal',
           label: 'Terminal',
           position: 'right'
         },
@@ -100,7 +100,7 @@ const config = {
               href: 'https://github.com/1hive/evmcrispr'
             },
             {
-              href: 'https://evmcrispr.blossom.software/#/terminal',
+              href: 'https://evmcrispr.com/#/terminal',
               label: 'Terminal',
             }
           ]
