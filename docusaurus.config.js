@@ -9,12 +9,12 @@ const config = {
   title: 'EVMcrispr Docs',
   tagline: "Mutate a DAO's DNA",
   url: 'https://evmcrispr.github.io',
-  baseUrl: '/evmcrispr-doc/',
+  baseUrl: '/evmcrispr-old-docs/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'EVMcrispr', // Usually your GitHub org/user name.
-  projectName: 'evmcrispr-doc', // Usually your repo name.
+  projectName: 'evmcrispr-old-docs', // Usually your repo name.
   trailingSlash: false,
 
   presets: [
