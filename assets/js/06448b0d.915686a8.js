@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkevmcrispr_doc=self.webpackChunkevmcrispr_doc||[]).push([[7161],{6361:function(s){s.exports=JSON.parse('{"allTagsPath":"/evmcrispr-doc/blog/tags","name":"hola","count":1,"permalink":"/evmcrispr-doc/blog/tags/hola"}')}}]);
